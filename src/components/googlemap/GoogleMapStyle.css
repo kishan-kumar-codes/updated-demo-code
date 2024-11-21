@@ -1,0 +1,38 @@
+.green-circle {
+  width: 34px; /* Same width and height for a perfect circle */
+  height: 34px; /* Matches the width */
+  background-color: #00914c; /* Fill color */
+  border-radius: 50%; /* Makes the div a circle */
+  display: flex; /* Enables flexbox layout */
+  justify-content: center; /* Horizontally centers the content */
+  align-items: center; /* Vertically centers the content */
+}
+
+.yellow-circle {
+  width: 34px;
+  height: 34px;
+  background-color: #faac18;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.red-circle {
+  width: 34px;
+  height: 34px;
+  background-color: #cf232a;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.context-position {
+  color: #f4f4f4;
+  font-family: Arial, sans-serif; /* Includes fallback font */
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal; /* Default is usually 1, but can be adjusted if wanted */
+}

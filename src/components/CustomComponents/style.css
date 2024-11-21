@@ -1,0 +1,13 @@
+.star-rating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+.star-rating svg {
+  margin-right: 0.395rem;
+}
+/* Remove margin for the last star */
+.star-rating svg:last-child {
+  margin-right: 0;
+}
