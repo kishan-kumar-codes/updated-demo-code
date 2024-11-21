@@ -1,7 +1,7 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import { NextPage, NextPageContext } from "next";
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import AutoComplete from "@/components/onboarding/AutoComplete";
 import Layout from "../../layout";
 import Image from "next/image";
@@ -13,7 +13,7 @@ import DesktopOnboardingBusinessProfile from "@/app/onboardingDesktop/trials/bus
 import Profile from "@/app/onboarding/trials/profile";
 import ProgressBar from "../../layout/progressBar";
 
-const Trials: NextPage = () => {
+export default function Trials() {
   const router = useRouter();
   const { data, status } = useSession();
   const [showEmailField, setShowEmailField] = useState(false);
@@ -179,15 +179,4 @@ const Trials: NextPage = () => {
       }
     />
   );
-};
-
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
-  return {
-    props: {
-      session,
-    },
-  };
 }
-
-export default Trials;
