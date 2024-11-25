@@ -4,9 +4,10 @@
   "private": true,
  "scripts": {
     "dev": "next dev",
-    "build": "next build && yarn run build:widget",
-    "build:widget": "webpack --config webpack.config.js && yarn run copy-widget",
-    "copy-widget": "cp -r public/dist .next/public/dist",
+    "build": "next build",
+    "build:widget": "webpack --config webpack.config.js",
+    "copy-widget": "mkdir -p .next/public/dist && cp -r public/dist/* .next/public/dist/",
+    "vercel-build": "yarn build && yarn build:widget && yarn copy-widget" ,
     "start": "next start",
     "lint": "next lint",
     "email": "email dev",

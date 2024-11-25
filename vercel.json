@@ -1,4 +1,5 @@
 {
-  "buildCommand": "yarn run build && yarn run build:widget",
+  "buildCommand": "yarn vercel-build",
+  "outputDirectory": ".next",
   "framework": "nextjs"
 }
