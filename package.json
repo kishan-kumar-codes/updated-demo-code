@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "email": "email dev",
-    "build:widget": "node node_modules/webpack/bin/webpack.js --config webpack.config.js",
+    "build:widget": "webpack --config webpack.config.js" ,
     "clean": "rimraf ./public/dist"
   },
   "dependencies": {

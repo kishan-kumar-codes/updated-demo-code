@@ -31,8 +31,7 @@ const readDirectory = (directoryPath: string): Promise<string[]> => {
 export async function POST(req: NextRequest) {
     try {
         // Run the Webpack bundling command
-        await runCommand('npx webpack --config webpack.config.js');
-
+        await runCommand('node ./node_modules/webpack/bin/webpack.js --config webpack.config.js');
         // Locate the generated file in the public/dist folder
         const distPath = path.resolve('./public/dist');
         const files = await readDirectory(distPath);
@@ -44,6 +43,10 @@ export async function POST(req: NextRequest) {
                 { status: 500 }
             );
         }
+
+        console.log('Current working directory:', process.cwd());
+        console.log('Files in current directory:', await readDirectory(process.cwd()));
+        console.log('Environment variables:', process.env);
 
         return NextResponse.json({
             message: `Bundling completed: ${widgetFile}`,
