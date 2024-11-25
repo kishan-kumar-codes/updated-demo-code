@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import MobileNumberInput from "../../../../components/onboarding/MobileNumberInput";
 import Layout from "../../layout";
@@ -10,19 +10,22 @@ import { useClientMediaQuery } from "../../../../utils/srchooksuseClientMediaQue
 import DesktopOnboardingPhoneNumber from "../../../onboardingDesktop/trials/input-phone-number/page";
 import Image from "next/image";
 import hubSparkLogo from "@/assets/images/HubSpark New Logo 5.png";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Phone = () => {
   const context = useContext(MyContext);
   // const { contextData, updateContextData } = context;
   const [mobileNumber, setMobileNumber] = React.useState("");
   const router = useRouter();
-  const isMobile = useClientMediaQuery("(max-width: 769px)");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleMobileNumberChange = (mobileNumber: string) => {
     setMobileNumber(mobileNumber);
   };
 
   const handleSendCode = async () => {
+    setIsLoading(true);
     // Validate mobile number
     if (mobileNumber.length < 10) {
       alert("Please enter a valid mobile number.");
@@ -38,12 +41,14 @@ const Phone = () => {
     // router
     //   .push("/onboarding/trials/verify-account?product=")
     //   .catch((error) => console.error("Navigation error:", error));
-    try {
-      await router.push("/onboarding/trials/verify-account?product=");
-      // Optionally, handle successful navigation here if needed
-    } catch (error) {
-      console.error("An error occurred during navigation:", error);
-    }
+    setTimeout(async () => {
+      try {
+        await router.push("/onboarding/trials/verify-account?product=");
+        // Optionally, handle successful navigation here if needed
+      } catch (error) {
+        console.error("An error occurred during navigation:", error);
+      }
+    }, 3000);
   };
 
   return (
@@ -62,12 +67,16 @@ const Phone = () => {
                 onMobileNumberChange={handleMobileNumberChange}
               />
             </div>
-            <button
-              className="mx-auto  text-[16px] md:text-xl lg:text-[36px] font-bold text-white py-[10px] lg:py-5  mt-[14px] lg:mt-[20px] w-[221px] lg:w-[30%]  text-center bg-palatinatePurple rounded-2xl lg:rounded-[35px]"
+            <Button
               onClick={handleSendCode}
-              style={{ cursor: "pointer" }}>
-              Send Code
-            </button>
+              disabled={isLoading}
+              className="mx-auto  text-[16px] md:text-xl lg:text-[36px] font-bold text-white py-[10px] lg:py-8  mt-[14px] lg:mt-[20px] w-[221px] lg:w-[30%]  text-center bg-palatinatePurple rounded-2xl lg:rounded-[35px]">
+              {isLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                "Send Code"
+              )}
+            </Button>
           </div>
           <div className="flex flex-col  lg:text-[26px] text-center mt-[21px]">
             <div className="mx-auto md:w-[55%] lg:w-[40%] text-[14px] md:text-lg text-center font-normal lg:text-[26px] tracking-tight leading-normal lg:leading-8 text-darkSilverColor">
