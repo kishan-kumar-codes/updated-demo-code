@@ -1,7 +1,7 @@
 
 
 
-export {};
+export { };
 
 // Extending the Window interface
 declare global {
@@ -30,6 +30,7 @@ declare module "next-auth" {
       image?: string | null;
       accessToken?: string;
     };
+    provider: string | null;
   }
 }
 
@@ -41,6 +42,6 @@ export interface WidgetConfig {
   showRatings?: boolean;
   displayMode?: string;
   showAvatar?: boolean;
-  customizeBackground?:any
+  customizeBackground?: any
 }
 

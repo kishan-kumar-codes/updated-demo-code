@@ -25,9 +25,7 @@ export default function Trials() {
   const [isProfileComplete, setIsProfileComplete] = useState(false);
 
   // Determine if the sign-in provider is Google or Facebook
-  const provider = data?.user?.name;
-
-  console.log("Provider", provider);
+  const provider = data?.provider;
 
   const onEmailClick = () => {
     setShowEmailField(true);
@@ -58,7 +56,10 @@ export default function Trials() {
       hHeading=""
       Childrens={
         <div className="relative flex justify-center items-center flex-col">
-          {data?.user && (provider || isProfileComplete) ? (
+          {data?.user &&
+          (provider === "google" ||
+            provider === "facebook_business" ||
+            isProfileComplete) ? (
             <>
               <div className="absolute top-0">
                 <ProgressBar count={3} />

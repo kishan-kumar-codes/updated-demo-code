@@ -532,14 +532,17 @@ export const authOptions: AuthOptions = ({
         },
         async session({ session, token }): Promise<ExtendedSession> {
             const extendedToken = token as ExtendedJWT;
+
             const extendedSession: ExtendedSession = {
                 ...session,
                 user: extendedToken.user,
-                expires: typeof extendedToken.exp === 'number' ? new Date
-                    (extendedToken.exp * 1000).toISOString() : session.expires,
+                expires: typeof extendedToken.exp === 'number'
+                    ? new Date(extendedToken.exp * 1000).toISOString()
+                    : session.expires,
                 error: extendedToken.error,
             };
 
+            // Add access token if available
             if (extendedToken.accessToken) {
                 extendedSession.accessToken = extendedToken.accessToken;
             }
@@ -547,6 +550,11 @@ export const authOptions: AuthOptions = ({
             // Only add refreshToken for credentials provider sessions
             if (extendedToken.refreshToken && extendedToken.provider === 'credentials') {
                 extendedSession.refreshToken = extendedToken.refreshToken;
+            }
+
+            // Add the provider to the session
+            if (extendedToken.provider) {
+                (extendedSession as any).provider = extendedToken.provider;
             }
 
             return extendedSession;

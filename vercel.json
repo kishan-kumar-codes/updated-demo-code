@@ -1,5 +1,4 @@
 {
   "buildCommand": "yarn run build && yarn run build:widget",
-  "outputDirectory": ".next",
   "framework": "nextjs"
 }
