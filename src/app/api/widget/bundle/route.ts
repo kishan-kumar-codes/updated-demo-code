@@ -27,11 +27,8 @@ const readDirectory = (directoryPath: string): Promise<string[]> => {
     });
 };
 
-export const config = {
-    runtime: 'nodejs',
-    maxDuration: 300,
-};
-
+export const runtime = 'nodejs';
+export const maxDuration = 300;
 // Handler for POST requests
 export async function POST(req: NextRequest) {
     try {
