@@ -4,11 +4,12 @@
   "private": true,
  "scripts": {
     "dev": "next dev",
-    "build": "next build --no-lint",
+    "build": "next build && yarn run build:widget",
+    "build:widget": "webpack --config webpack.config.js && yarn run copy-widget",
+    "copy-widget": "cp -r public/dist .next/public/dist",
     "start": "next start",
     "lint": "next lint",
     "email": "email dev",
-    "build:widget": "webpack --config webpack.config.js" ,
     "clean": "rimraf ./public/dist"
   },
   "dependencies": {

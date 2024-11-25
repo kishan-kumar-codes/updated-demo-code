@@ -1,6 +1,5 @@
 {
-  "buildCommand": "yarn run build",
+  "buildCommand": "yarn run build && yarn run build:widget",
   "outputDirectory": ".next",
-  "postbuild": "yarn run build:widget && cp -r public .next/public",
   "framework": "nextjs"
 }
