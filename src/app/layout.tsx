@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth/authOptions";
 import { ThemeProvider } from "@/feature/auth/Theme-Provider";
 import Script from "next/script";
 import { ToastProvider } from "@/components/ui/toast";
-import { PaymentToastProvider } from "./Payment/components/toasterProvider";
+// import { PaymentToastProvider } from "./Payment/components/toasterProvider";
 // import { ToastProvider } from "@/components/crmDesktop/components/toasterProvider";
 
 export const metadata = {
@@ -47,9 +47,9 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange>
           <ToastProvider>
-            <PaymentToastProvider>
-              <SessionProvider session={session}>{children}</SessionProvider>
-            </PaymentToastProvider>
+            {/* <PaymentToastProvider> */}
+            <SessionProvider session={session}>{children}</SessionProvider>
+            {/* </PaymentToastProvider> */}
           </ToastProvider>
         </ThemeProvider>
       </body>
