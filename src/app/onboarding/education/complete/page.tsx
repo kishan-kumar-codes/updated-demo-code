@@ -38,7 +38,7 @@ const Complete: React.FC = () => {
     //       "Content-Type": "application/json",
     //     },
     //     body: JSON.stringify({
-    //       token: session?.session[0],
+    //        token: session?.user?.accessToken,
     //       firstName: firstName,
     //       lastName: lastName,
     //       email: session?.email,

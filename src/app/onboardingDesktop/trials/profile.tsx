@@ -21,11 +21,11 @@ const Profile: React.FC = () => {
   if (session) {
     localStorage.setItem(
       "sessionToken",
-      String(session?.session[0]?.sessionToken)
+      String(session?.user?.id?.sessionToken)
     );
     localStorage.setItem(
       "sessionRefreshToken",
-      String(session?.session[0]?.refreshToken)
+      String(session?.user?.id?.refreshToken)
     );
   }
   useEffect(() => {
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
     //       "Content-Type": "application/json",
     //     },
     //     body: JSON.stringify({
-    //       token: session?.session[0],
+    //        token: session?.user?.accessToken,
     //       firstName: firstName,
     //       lastName: lastName,
     //       email: session?.email,

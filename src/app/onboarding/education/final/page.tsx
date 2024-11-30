@@ -23,7 +23,7 @@ const Final: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: session?.accessToken,
+          token: session?.user?.accessToken,
           email: session?.user?.email,
           firstName: context && context.contextData.firstName,
           lastName: context && context.contextData.lastName,
@@ -115,6 +115,15 @@ const Final: React.FC = () => {
               <Link href="/get-reviews">
                 {/* Skip This For Now */}
                 Go to Reputation
+              </Link>
+            </button>
+            <button
+              className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[30%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
+              onClick={handleContinueClick}
+              style={{ cursor: "pointer" }}>
+              <Link href="/crm/companies">
+                {/* Skip This For Now */}
+                Go to Crm
               </Link>
             </button>
           </div>

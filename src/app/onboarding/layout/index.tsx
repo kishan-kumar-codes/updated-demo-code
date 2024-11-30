@@ -14,7 +14,11 @@ const index: React.FC<layoutProps> = ({ Childrens, hHeading }) => {
   return (
     <div className="min-h-screen flex flex-col bg-cultured ">
       {/* <Header module="Account Setup" /> */}
-      <CitationNavbar heading="Account Setup" isHeaderVisible={false} />
+      <CitationNavbar
+        isNameVisible={true}
+        heading="Account Setup"
+        isHeaderVisible={false}
+      />
       <div className="hidden w-full text-center lg:text-[50px] text-[#6D6D6D] font-bold justify-center lg:flex">
         Account Setup
       </div>

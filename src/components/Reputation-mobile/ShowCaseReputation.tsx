@@ -37,22 +37,25 @@ const RecentArray = [
 
 interface ShowcaseReviewProps {
   bundle?: string | null;
-  bundleLoading?: boolean
+  bundleLoading?: boolean;
 }
 
-export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReviewProps) {
+export default function ShowcaseReview({
+  bundle,
+  bundleLoading,
+}: ShowcaseReviewProps) {
   const dispatch = useDispatch();
   const [showInput, setShowInput] = useState(false);
-  const [bundleValue, setBundleValue] = useState('');
+  const [bundleValue, setBundleValue] = useState("");
   const [isCopy, setIsCopy] = useState(false);
   const [listWidget, setListWidget] = useState(false);
   const [crowsalWidget, setCrowsalWidget] = useState(false);
 
   useEffect(() => {
     if (bundle) {
-      handleBundlevalue()
+      handleBundlevalue();
     }
-  }, [bundle])
+  }, [bundle]);
 
   const handleShowListWidget = () => {
     dispatch(
@@ -67,7 +70,7 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
 
   const handleBundlevalue = async () => {
     try {
-      const response = await fetch('/api/widget/get-widget-content');
+      const response = await fetch("/api/widget/get-widget-content");
       const data = await response.json();
       if (data.error) {
         return;
@@ -75,14 +78,17 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
 
       // const fileContent = data.content;
       const fileName = data.filename;
-      let filenameWithpoutExtension = fileName.split('.').slice(0, -1).join('.');
+      let filenameWithpoutExtension = fileName
+        .split(".")
+        .slice(0, -1)
+        .join(".");
       console.log(filenameWithpoutExtension);
-      let value = `<div data-embed-placeholder="1"><script src="https://www.HubSpark.com/external/showcase-reviews/embed/${filenameWithpoutExtension}?id=1"></script></div>`
+      let value = `<div data-embed-placeholder="1"><script src="https://www.HubSpark.com/external/showcase-reviews/embed/widget-builder.103f512622ffeee79548?id=1"></script></div>`;
+      // let value = `<div data-embed-placeholder="1"><script src="https://www.HubSpark.com/external/showcase-reviews/embed/${filenameWithpoutExtension}?id=1"></script></div>`
       setBundleValue(value);
-      console.log(fileName)
+      console.log(fileName);
     } catch (error) {
-      console.log("error:", error)
-
+      console.log("error:", error);
     }
   };
 
@@ -168,12 +174,14 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
                 <div className="text-[10px] md:text-lg lg:text-[20px] tracking-[-0.06em] text-[#7F7F7F] text-center">
                   Display reviews in an ordered,{" "}
                   <span className="text-[#631363]">customizable</span> list
-                  { }
-                  {bundle && <textarea
-                    className={`py-2 font-normal text-[10px] lg:text-[15px] w-full pl-2  px-3 h-[111px]  italic rounded-xl focus:outline-none lg:w-full lg:h-[130px]`}
-                    cols={10}
-                    value={bundleValue}
-                  />}
+                  {}
+                  {bundle && (
+                    <textarea
+                      className={`py-2 font-normal text-[10px] lg:text-[15px] w-full pl-2  px-3 h-[111px]  italic rounded-xl focus:outline-none lg:w-full lg:h-[130px]`}
+                      cols={10}
+                      value={bundleValue}
+                    />
+                  )}
                 </div>
                 <div className="flex justify-center gap-1">
                   <button
@@ -182,10 +190,9 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
                     className={`${!!bundle ? "cursor-not-allowed" : ""} font-bold md:text-lg mt-0 md:mt-4 lg:text-[20px] border px-6 py-2 text-[10px] rounded-xl w-fit text-white text-center bg-[#631363]`}>
                     Create
                   </button>
-                {bundle &&
-                  <CopyWidgetBuilder setIsCopy={setIsCopy} />}
+                  {bundle && <CopyWidgetBuilder setIsCopy={setIsCopy} />}
                 </div>
-                {isCopy && <PreviewWidgetButton />}
+                {/* {isCopy && <PreviewWidgetButton />} */}
               </div>
             </div>
           </div>
@@ -249,11 +256,11 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
                 <div className="text-[10px] md:text-lg lg:text-[20px] tracking-[-0.06em] text-[#7F7F7F] text-center">
                   Display reviews in a compact animated carousel.
                 </div>
-                  <button
-                    onClick={handleShowCarouselWidget}
+                <button
+                  onClick={handleShowCarouselWidget}
                   className="font-semibold border mt-0 md:mt-4 px-6 py-2 text-[10px] md:text-lg lg:text-[20px] rounded-xl w-fit text-white text-center bg-[#631363]">
-                    Create
-                  </button>
+                  Create
+                </button>
               </div>
             </div>
           </div>
@@ -271,10 +278,7 @@ export default function ShowcaseReview({ bundle, bundleLoading }: ShowcaseReview
                 <div className="text-xs md:text-xl lg:text-[26px] text-center pt-4 text-[#6D6D6D] font-semibold w-full">
                   JSON Feed
                 </div>
-                {showInput &&
-
-                  <InputBarField textField />
-                }
+                {showInput && <InputBarField textField />}
                 <div className="text-[10px] md:text-xl tracking-[-0.06em] lg:text-[20px] lg:leading-6 px-2 lg:px-0 pt-2 text-[#7F7F7F] text-center">
                   Use just the review data only to completely customize the
                   layout to fit your interface&apos;s code the way you want it

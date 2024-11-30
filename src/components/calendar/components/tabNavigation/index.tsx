@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { FC, useState } from "react";
+import { useSearchParams, usePathname } from "next/navigation";
 
 interface Tab {
   link: string;
@@ -9,8 +10,12 @@ interface Tab {
 }
 
 const TabNavigation: FC = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>("Contact");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const name = searchParams?.get("name");
 
   const handleTabClick = (menuName: string) => {
     setActiveTab(menuName);
@@ -44,8 +49,7 @@ const TabNavigation: FC = () => {
           <div
             onClick={() => handleTabClick(tab.menuName)}
             className={`relative w-full flex justify-center items-center text-blackOlive textBreak ripple select-none text-[14px]  tab border-x border-solid border-chinesWhite cursor-pointer  text-center ${
-              router.query.name === tab.menuName ||
-              router.pathname.includes(tab.menuString)
+              name === tab.menuName || pathname?.includes(tab.menuString)
                 ? " bg-limeGreen"
                 : " "
             } h-[42px] ${ind == 0 ? "rounded-l-lg" : ""} ${
