@@ -3,7 +3,10 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
    "functions": {
-    "api/widget/bundle.js": {
+    "api/**/*.js": {
+      "maxDuration": 60
+    },
+    "api/**/*.ts": {
       "maxDuration": 60
     }
   }
