@@ -35,33 +35,8 @@ export const config = {
 // Handler for POST requests
 export async function POST(req: NextRequest) {
     try {
-        // Run the Webpack bundling command
-        await runCommand('node ./node_modules/webpack/bin/webpack.js --config webpack.config.js');
-        // Locate the generated file in the public/dist folder
-        const distPath = path.resolve('./public/dist');
-        const files = await readDirectory(distPath);
-        const widgetFile = files.find((file) => file.startsWith('widget-builder'));
-
-        if (!widgetFile) {
-            return NextResponse.json(
-                { error: 'Bundling succeeded but no output file found' },
-                { status: 500 }
-            );
-        }
-
-        console.log('Current working directory:', process.cwd());
-        console.log('Files in current directory:', await readDirectory(process.cwd()));
-        console.log('Environment variables:', process.env);
-
-        return NextResponse.json({
-            message: `Bundling completed: ${widgetFile}`,
-        });
+        return true
     } catch (error) {
-        console.error(`Bundling error: ${error}`);
-        return NextResponse.json(
-            { error: 'Bundling failed', details: (error as Error).message },
-            { status: 500 }
-        );
     }
 }
 
