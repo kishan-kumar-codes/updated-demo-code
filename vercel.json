@@ -1,5 +1,10 @@
 {
   "buildCommand": "yarn vercel-build",
   "outputDirectory": ".next",
-  "framework": "nextjs"
+  "framework": "nextjs",
+   "functions": {
+    "api/widget/bundle/route.ts": {
+      "maxDuration": 60
+    }
+  }
 }

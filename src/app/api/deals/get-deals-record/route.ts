@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GraphQLClient } from "graphql-request";
 
+export const dynamic = 'force-dynamic'
+
 // Initialize GraphQL client with endpoint and authentication key
 const client = new GraphQLClient(process.env.DGRAPH_GRAPHQL_ENDPOINT!, {
   headers: {
