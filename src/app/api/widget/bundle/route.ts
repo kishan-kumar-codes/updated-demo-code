@@ -27,11 +27,6 @@ const readDirectory = (directoryPath: string): Promise<string[]> => {
     });
 };
 
-export const config = {
-    runtime: 'edge',
-    regions: ['iad1'],
-    maxDuration: 60,
-};
 // Handler for POST requests
 export async function POST(req: NextRequest) {
     try {
