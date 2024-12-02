@@ -563,8 +563,8 @@ export const authOptions: AuthOptions = ({
             // Define the allowed email addresses for each provider
             const allowedEmails: any = {
                 credentials: 'demo123@gmail.com',
-                // google: 'jay@hubspark.com',
-                google: 'kishan.excel2011@gmail.com',
+                google: 'jay@hubspark.com',
+                // google: 'kishan.excel2011@gmail.com',
                 facebook: 'uzgjdw@hi2.in.com',
             };
 
