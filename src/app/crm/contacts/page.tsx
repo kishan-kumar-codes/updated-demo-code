@@ -185,7 +185,7 @@ const Contacts: React.FC = () => {
                       key={index}
                       href={{
                         pathname: "/crm/contacts/detailContact",
-                        query: { name: "Contact" },
+                        query: { name: contact.id },
                       }}>
                       <ContactCard
                         name={`${contact.firstName || "Unknown"} ${contact.lastName || ""}`}
