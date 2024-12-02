@@ -70,23 +70,23 @@ export default function ShowcaseReview({
 
   const handleBundlevalue = async () => {
     try {
-      const response = await fetch("/api/widget/get-widget-content");
-      const data = await response.json();
-      if (data.error) {
-        return;
-      }
+      // const response = await fetch("/api/widget/get-widget-content");
+      // const data = await response.json();
+      // if (data.error) {
+      //   return;
+      // }
 
       // const fileContent = data.content;
-      const fileName = data.filename;
-      let filenameWithpoutExtension = fileName
-        .split(".")
-        .slice(0, -1)
-        .join(".");
-      console.log(filenameWithpoutExtension);
+      // const fileName = data.filename;
+      // let filenameWithpoutExtension = fileName
+      //   .split(".")
+      //   .slice(0, -1)
+      //   .join(".");
+      // console.log(filenameWithpoutExtension);
       let value = `<div data-embed-placeholder="1"><script src="https://www.HubSpark.com/external/showcase-reviews/embed/widget-builder.103f512622ffeee79548?id=1"></script></div>`;
       // let value = `<div data-embed-placeholder="1"><script src="https://www.HubSpark.com/external/showcase-reviews/embed/${filenameWithpoutExtension}?id=1"></script></div>`
       setBundleValue(value);
-      console.log(fileName);
+      // console.log(fileName);
     } catch (error) {
       console.log("error:", error);
     }
@@ -103,6 +103,7 @@ export default function ShowcaseReview({
     );
   };
 
+  console.log("bundle value", bundle);
   return (
     <>
       <CitationNavbar heading="Reputation" isHeaderVisible={false} />
@@ -190,7 +191,12 @@ export default function ShowcaseReview({
                     className={`${!!bundle ? "cursor-not-allowed" : ""} font-bold md:text-lg mt-0 md:mt-4 lg:text-[20px] border px-6 py-2 text-[10px] rounded-xl w-fit text-white text-center bg-[#631363]`}>
                     Create
                   </button>
-                  {bundle && <CopyWidgetBuilder setIsCopy={setIsCopy} />}
+                  {bundle && (
+                    <CopyWidgetBuilder
+                      bundleValue={bundleValue}
+                      setIsCopy={setIsCopy}
+                    />
+                  )}
                 </div>
                 {/* {isCopy && <PreviewWidgetButton />} */}
               </div>

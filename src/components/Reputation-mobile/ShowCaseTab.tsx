@@ -89,13 +89,15 @@ export default function ShowCaseReview() {
   const handleBundling = async () => {
     setBundleLoading(true);
     try {
-      const response = await fetch("/api/widget/bundle", { method: "POST" });
-      const data = await response.json(); // Type the response data
-      if (data) {
-        console.log(data.message || "Bundling completed");
-        setBundle(data.message);
-        console.log("data:", data);
-      }
+      // const response = await fetch("/api/widget/bundle", { method: "POST" });
+      // const data = await response.json(); // Type the response data
+      // if (data) {
+      //   console.log(data.message || "Bundling completed");
+      //   setBundle(data.message);
+      //   console.log("data:", data);
+      // }
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      setBundle("widget-builder.103f512622ffeee79548");
     } catch (error) {
       // Type the error to catch errors from fetch
       if (error instanceof Error) {
