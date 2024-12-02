@@ -28,8 +28,11 @@ const Contacts: React.FC = () => {
   const [filteredContacts, setFilteredContacts] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sortOrder, setSortOrder] = useState(null);
 
   const router = useRouter();
+
+  console.log(" filteredContacts", filteredContacts);
 
   function navigation() {
     router.push("/crm/contacts/addNewContact");
@@ -53,9 +56,9 @@ const Contacts: React.FC = () => {
       },
       body: JSON.stringify({ userId }), // Pass the userId in the request body
     });
-    console.log('contacts', response)
+    console.log("contacts", response);
     const contacts = await response.json();
-    console.log('contacts:::::------', contacts)
+    console.log("contacts:::::------", contacts);
     setContactsData(contacts);
     setFilteredContacts(contacts);
     extractUniqueTags(contacts);
@@ -73,7 +76,19 @@ const Contacts: React.FC = () => {
     setTags(uniqueTags); // Set unique tags to state
   };
 
-
+  const handleSortChange = (type) => {
+    let sortedContacts;
+    if (type === "firstName") {
+      sortedContacts = [...filteredContacts].sort((a, b) =>
+        a.firstName.localeCompare(b.firstName)
+      );
+    } else if (type === "lastName") {
+      sortedContacts = [...filteredContacts].sort((a, b) =>
+        a.lastName.localeCompare(b.lastName)
+      );
+    }
+    setFilteredContacts(sortedContacts);
+  };
   // function setShowSorting(){}
 
   // return addNewCompany ? (
@@ -98,8 +113,7 @@ const Contacts: React.FC = () => {
             <div className="section relative flex w-full justify-between mt-[16px] px-[20px]">
               <button
                 onClick={() => setShowFilterCard(true)}
-                className={`ml-[4px] ${showFilterCard ? "hidden" : ''} md:hidden`}>
-
+                className={`ml-[4px] ${showFilterCard ? "hidden" : ""} md:hidden`}>
                 <Image src={FilterIcon} alt="filter" />
               </button>
               {/* {showFilterCard && (
@@ -127,10 +141,14 @@ const Contacts: React.FC = () => {
                   />
                   {showSorting && (
                     <div className="absolute w-[137px] z-[9] text-[10px] top-7 left-0 text-palatinatePurple bg-white border-[1px] border-palatinatePurple rounded-md pb-3 md:text-[18px] md:w-[214px] md:top-11 ">
-                      <h5 className="mt-[7px] pl-[17px] px-[3px] ripple">
+                      <h5
+                        onClick={() => handleSortChange("lastName")}
+                        className="mt-[7px] pl-[17px] px-[3px] ripple">
                         Last name ascending
                       </h5>
-                      <h5 className="mt-[7px] pl-[17px] px-[3px] ripple">
+                      <h5
+                        onClick={() => handleSortChange("firstName")}
+                        className="mt-[7px] pl-[17px] px-[3px] ripple">
                         First name ascending
                       </h5>
                       <h5 className="mt-[7px] pl-[17px] px-[3px] ripple">
@@ -154,15 +172,11 @@ const Contacts: React.FC = () => {
             <div className="flex">
               <div className="hidden md:flex md:w-[383px] md:flex-col gap-4 mt-[35px]">
                 <span className="w-full mx-auto pl-[30px]">
-
                   <SearchBox Component={""} />
                 </span>
                 <FilterContacts setShowFilterCard={setShowFilterCard} />
-
               </div>
               <div className="mt-[35px] h-full overflow-y-auto w-full flex-1 md:pl-3 2xl:pr-32 ">
-
-
                 {loading ? (
                   "Loading..."
                 ) : filteredContacts.length > 0 ? (
@@ -172,8 +186,7 @@ const Contacts: React.FC = () => {
                       href={{
                         pathname: "/crm/contacts/detailContact",
                         query: { name: "Contact" },
-                      }}
-                    >
+                      }}>
                       <ContactCard
                         name={`${contact.firstName || "Unknown"} ${contact.lastName || ""}`}
                         role={contact.title || "No Title"}
@@ -188,9 +201,6 @@ const Contacts: React.FC = () => {
                   <p>No contacts found</p>
                 )}
 
-
-
-
                 <Link
                   href={{
                     pathname: "/crm/contacts/detailContact",
@@ -204,8 +214,6 @@ const Contacts: React.FC = () => {
                     daysAgo="6"
                   />
                 </Link>
-
-
               </div>
             </div>
           </div>
