@@ -5,6 +5,8 @@ import SearchBox from "../component/searchBox/page";
 import TabNavigation from "../component/tabNavigation";
 import FilterIcon from "@/assets/images/filter-icon.svg";
 import ExportIcon from "@/assets/images/export-icon.svg";
+import Company1 from "@/assets/images/companies-1.png";
+import Company2 from "@/assets/images/companies-2.png";
 import Image from "next/image";
 import CompaniesCard from "../component/companiesCard";
 // import AddNewCompany from "./newCompanyForm";
@@ -22,8 +24,8 @@ interface Company {
   id: string;
   size?: string;
   business?: Business;
-  logo?: StaticImageData;
-  name: string;
+  logo?: StaticImageData; // Assuming 'logo' is a string (URL or file path)
+  name: string; // Assuming 'name' is always required
   contactCount?: number;
   dealCount?: number;
   accountManager?: string;
@@ -53,14 +55,6 @@ const Companies: React.FC = () => {
   const [selectedBusinessType, setSelectedBusinessType] = useState<
     string | null
   >(null);
-
-  console.log("Selected size ", selectedSize);
-  console.log("Business size ", selectedBusinessType);
-
-  // const [formData, setFormData] = useState({
-  //   token: session?.session[0],
-  //   userId: session?.userId,
-  // });
 
   function setAddNewCompany() {
     // router.push("/crmDesktop/companies/addNewCompany");
@@ -153,25 +147,24 @@ const Companies: React.FC = () => {
   };
 
   const filteredCompanies = companiesList.filter((company) => {
-    console.log(company, "FilteredCompanies");
-
-    // Check if selectedSize is null or company.size matches selectedSize
+    console.log("This is matched businessType", company);
     const matchesSize =
       selectedSize === null ||
       (company.size &&
         company.size.toLowerCase() === selectedSize.toLowerCase());
-
     const matchesBusinessType =
       selectedBusinessType === null ||
       (company.business &&
         company.business.toString().toLowerCase() ===
           selectedBusinessType.toLowerCase());
+    console.log("This is matched businessType 2", matchesBusinessType);
 
     return matchesSize && matchesBusinessType;
   });
 
+  console.log(">>>>>>SADSADASDSAD", filteredCompanies);
+
   const exportToCSV = () => {
-    console.log("Csv");
     // Define CSV headers
     const headers = [
       "ID",
@@ -255,13 +248,10 @@ const Companies: React.FC = () => {
               )} */}
 
               <div className="w-full flex justify-end text-[10px] font-bold font-arial text-cultured md:pr-16">
-                <button className="px-[6px] py-[7px] lg:py-2 bg-palatinatePurple flex items-center text-white mr-[5px] md:text-[17px] rounded-lg">
-                  <Image
-                    onClick={exportToCSV}
-                    src={ExportIcon}
-                    alt="export"
-                    className="mr-[5px]"
-                  />
+                <button
+                  onClick={exportToCSV}
+                  className="px-[6px] py-[7px] lg:py-2 bg-palatinatePurple flex items-center text-white mr-[5px] md:text-[17px] rounded-lg">
+                  <Image src={ExportIcon} alt="export" className="mr-[5px]" />
                   Export
                 </button>
                 <button

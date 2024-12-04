@@ -6,6 +6,7 @@ import LogoIcon2 from "../../../assets/images/D-logo-icon2.svg";
 import RoundIcon from "../../../assets/images/D-round.svg";
 import UserImage from "../../../assets/images/user-image.png";
 import { useRouter } from "next/navigation";
+import MarketingNavBar from "@/components/marketing-desktop/MarketingNavBar";
 
 import Image from "next/image";
 
@@ -18,9 +19,7 @@ function Header() {
           <Image src={Logo} alt="logo" height="" width="" />
         </div>
         <div className="flex">
-          <Image src={LogoIcon} alt="logo icon" height="" width="" />
-          <Image src={LogoIcon1} alt="logo icon1" height="" width="" />
-          <Image src={LogoIcon2} alt="logo icon2" height="" width="" />
+          <MarketingNavBar />
         </div>
       </div>
       {/* <div className="tabs col-span-2">

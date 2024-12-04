@@ -1,6 +1,6 @@
 import React from "react";
-import MarketingNavBar from "@/components/marketing-desktop/MarketingNavBar";
 import { BgProfileSvg, RefereshSvgs } from "@/svgs/marketing-desktop/svgs";
+import MarketingNavBar from "@/components/marketing-desktop/MarketingNavBar";
 import Image from "next/image";
 import { MenuIcon, RefreshCw } from "lucide-react";
 import "./styles.css";

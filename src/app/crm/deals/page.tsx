@@ -43,7 +43,6 @@ const Deals: React.FC = () => {
   const [showStage, setShowStage] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { data: session, status } = useSession();
-  const isMobile = useClientMediaQuery("(max-width: 769px)");
   const [dealsData, setDealsData] = useState<Deal[]>([]);
   const [filteredDeals, setFilteredDeals] = useState<Deal[]>([]);
   const [selectedType, setSelectedType] = useState("");
@@ -236,7 +235,9 @@ const Deals: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <button className="px-[5px] py-[7px] bg-palatinatePurple flex items-center text-white mr-[5px] rounded-lg md:text-[17px] md:px-4 md:py-3">
+                <button
+                  onClick={exportToCSV}
+                  className="px-[5px] py-[7px] bg-palatinatePurple flex items-center text-white mr-[5px] rounded-lg md:text-[17px] md:px-4 md:py-3">
                   <Image
                     src={ExportIcon}
                     alt="export"
