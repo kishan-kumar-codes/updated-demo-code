@@ -15,9 +15,9 @@ function Header() {
   return (
     <div className="w-full grid grid-cols-4  h-[87px] bg-white  justify-between">
       <div className="logo flex ml-[60px] col-span-3">
-        <div>
+        {/* <div>
           <Image src={Logo} alt="logo" height="" width="" />
-        </div>
+        </div> */}
         <div className="flex">
           <MarketingNavBar />
         </div>

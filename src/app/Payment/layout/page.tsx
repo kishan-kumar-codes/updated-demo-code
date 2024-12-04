@@ -7,6 +7,7 @@ import Header from "../components/header";
 import HeaderMobile from "../components/headerMobile";
 import { useRouter } from "next/navigation";
 import BottomBar from "../components/bottomBar";
+import CitationNavbar from "@/components/review-dashboard-mobile/ReviewNavbar";
 
 interface LayoutViewProps {
   Childrens: React.ReactNode;
@@ -25,7 +26,8 @@ const Layout: React.FC<LayoutViewProps> = ({ Childrens, hHeading }) => {
     <div className="relative min-h-screen w-screen overflow-x-hidden flex flex-col">
       <div className="relative flex flex-col flex-1">
         <div className="hidden md:block">
-          <Header />
+          {/* <Header /> */}
+          <CitationNavbar heading="" isHeaderVisible={false} />
         </div>
         <div className="md:hidden">
           <HeaderMobile

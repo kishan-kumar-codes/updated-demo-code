@@ -130,7 +130,7 @@ const TransactionView = () => {
                   Monthly Reccuring Services
                 </h5>
                 <h5 className="md:text-[26px] ">
-                  ${transaction?.transaction_amount / 100}
+                  {/* ${transaction?.transaction_amount / 100}  */} -
                 </h5>
               </div>
               <div className="mt-[12px]">
@@ -139,7 +139,7 @@ const TransactionView = () => {
                     Subtotal
                   </h5>
                   <h5 className="md:text-[26px] ">
-                    ${transaction?.transaction_amount / 100}
+                    {/* ${transaction?.transaction_amount / 100} */} -
                   </h5>
                 </div>
                 <div className="flex justify-between py-[12px] px-[13px] border-b-[.5] border-chinesWhite">
@@ -147,7 +147,7 @@ const TransactionView = () => {
                     Total
                   </h5>
                   <h5 className="md:text-[26px] ">
-                    ${transaction?.transaction_amount / 100}
+                    {/* ${transaction?.transaction_amount / 100} */} -
                   </h5>
                 </div>
                 <div className="flex justify-between py-[12px] px-[13px] border-b-[.5] border-chinesWhite">
@@ -155,7 +155,7 @@ const TransactionView = () => {
                     Amount Paid
                   </h5>
                   <h5 className="text-limeGreen font-semibold md:text-[26px] ">
-                    ${transaction?.transaction_amount / 100}
+                    {/* ${transaction?.transaction_amount / 100}  */} -
                   </h5>
                 </div>
               </div>
@@ -188,7 +188,7 @@ const TransactionView = () => {
               <div className="flex-1 flex justify-between items-center">
                 <div className="flex flex-col md:flex-row flex-1 justify-between">
                   <h5 className="md:text-[26px]  font-bold text-darkSilverColor">
-                    #{transaction?.invoice_number}
+                    {/* #{transaction?.invoice_number}   */} -
                   </h5>
                   <div className="md:hidden flex-1">
                     <h5 className="md:text-[26px]  text-darkSilverColor">
@@ -213,7 +213,7 @@ const TransactionView = () => {
 
                 <div className="flex  flex-col justify-between">
                   <h5 className="md:text-[26px]  text-darkSilverColor">
-                    ${transaction?.transaction_amount / 100}
+                    {/* ${transaction?.transaction_amount / 100}  */} -
                   </h5>
                   <h5 className="md:text-[26px]  text-darkSilverColor">
                     Posted
