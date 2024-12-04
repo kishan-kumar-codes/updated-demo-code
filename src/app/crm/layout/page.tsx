@@ -19,7 +19,7 @@ const Layout: React.FC<LayoutViewProps> = ({ Childrens }) => {
     setIsOpen(isDrawerOpen);
   };
   return (
-    <div className=" w-screen  justify-center bg-[#F4F4F4]">
+    <div className=" w-screen lg:min-h-screen justify-center bg-[#F4F4F4]">
       {/* <div className="w-full lg:max-w-full bg-cultured flex flex-col mx-auto  sm:container md:container md:mx-auto h-full md:overflow-y-hidden sm:overflow-y-scroll"> */}
       {/* <Header showDrawer={handleDrawer} module="CRM" /> */}
       {/* <CitationNavbar

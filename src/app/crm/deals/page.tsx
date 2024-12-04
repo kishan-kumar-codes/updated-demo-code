@@ -23,6 +23,8 @@ import { useSession } from "next-auth/react";
 interface Company {
   logo: string; // Or `StaticImageData` if you are using static imports
   name: string;
+  id: string;
+  accountManager: string;
 }
 
 interface Deal {
@@ -32,11 +34,14 @@ interface Deal {
   type: string;
   amount: number;
   company: Company; // `company` object with `logo` and `name`
+  dealName: string;
+  startAt: string;
 }
 
 const Deals: React.FC = () => {
   const [showSorting, setShowSorting] = useState(false);
   const [showStage, setShowStage] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const { data: session, status } = useSession();
   const isMobile = useClientMediaQuery("(max-width: 769px)");
   const [dealsData, setDealsData] = useState<Deal[]>([]);
@@ -74,16 +79,77 @@ const Deals: React.FC = () => {
   }, [session?.user?.id]);
 
   useEffect(() => {
-    if (selectedType) {
-      const filtered = dealsData.filter((deal) => deal.type === selectedType);
+    console.log("checked is clicked", checked);
+    if (selectedType || checked) {
+      let filtered = [...dealsData];
+
+      // Filter by type if selected
+      if (selectedType) {
+        filtered = filtered.filter((deal) => deal.type === selectedType);
+      }
+      // console.log("filtered", filtered);
+
+      // Filter by account manager if checked
+      if (checked) {
+        filtered = filtered.filter(
+          (deal) => deal.company.accountManager === "me"
+        );
+        // console.log("filtered in checked", filtered);
+      }
+      // console.log("filtered out of checked", filtered);
       setFilteredDeals(filtered);
     } else {
-      setFilteredDeals(dealsData); // Show all deals if no type is selected
+      setFilteredDeals(dealsData); // Show all deals if no filters are active
     }
-  }, [selectedType, dealsData]);
+  }, [selectedType, checked, dealsData]);
 
   const handleTypeClick = (type: string) => {
     setSelectedType(type); // Update the selected type when clicked
+  };
+
+  const exportToCSV = () => {
+    // Define CSV headers
+    const headers = [
+      "ID",
+      "Name",
+      "Company_Id",
+      "Stage",
+      "Description",
+      "Category",
+      "Amount",
+      "Started_At",
+    ];
+
+    // Convert deals data to CSV format
+    const dealRows = filteredDeals.map((deal) => [
+      deal.id || "-",
+      deal.dealName || "-",
+      deal.company?.id || "-",
+      deal.stage || "-",
+      deal.description || "-",
+      deal.type || "-",
+      deal.amount || "-",
+      deal.startAt || "-",
+    ]);
+
+    // Combine headers and data
+    const csvContent = [
+      headers.join(","),
+      ...dealRows.map((row) => row.join(",")),
+    ].join("\n");
+
+    // Create blob and download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", "deals.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -101,11 +167,11 @@ const Deals: React.FC = () => {
             <div className="section relative w-full mt-[16px]">
               <div className="relative w-full flex justify-end text-[10px] font-bold font-arial text-cultured">
                 <span className="relative">
-                  <button
+                  {/* <button
                     onClick={() => setShowStage(!showStage)}
                     className="bg-palatinatePurple px-[6px] mr-[40px] text-[10px] font-bold py-[7px] text-cultured rounded-lg md:text-[17px] md:px-4 md:py-3">
                     + New Stage
-                  </button>
+                  </button> */}
                   {showStage && (
                     <div className="absolute bg-white top-8 left-0 w-[290px] px-[10px] border border-palatinatePurple rounded-2xl z-50 md:w-[490px] md:h-[98px] md:-left-80 md:top-16">
                       <h5 className="text-[12px] font-bold text-darkSilverColor mt-[6px] md:text-[20px]">
@@ -125,7 +191,9 @@ const Deals: React.FC = () => {
                     onClick={() => setShowSorting(!showSorting)}
                     src={DownArrow}
                     alt="sort"
-                    className={`mr-[5px] ${showSorting ? "-rotate-180" : ""} md:w-[12px] md:h-[6px]`}
+                    className={`mr-[5px] ${
+                      showSorting ? "-rotate-180" : ""
+                    } md:w-[12px] md:h-[6px]`}
                   />
                   <h5
                     onClick={() => setShowSorting(!showSorting)}
@@ -139,30 +207,30 @@ const Deals: React.FC = () => {
                     className="md:w-[22px] md:h-[12px]"
                   />
                   {showSorting && (
-                    <div className="absolute w-[137px] z-[999] text-[10px] top-7 left-0 text-[#5F1762] bg-white border-[1px] border-palatinatePurple rounded-md md:w-[244px] md:text-[18px] md:top-14">
+                    <div className="absolute w-[137px] z-[999] text-[10px] top-7 left-0 text-[#5F1762] bg-white border-[1px] border-palatinatePurple rounded-md md:w-[244px] md:text-[18px] md:top-14 py-[10px] md:py-[20px]">
                       <h5
                         onClick={() => handleTypeClick("")}
-                        className="md:pl-[33px] pl-[17px] md:pt-[20px] pt-[7px] ripple">
+                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px]  ripple">
                         Clear
                       </h5>
                       <h5
                         onClick={() => handleTypeClick("Copywriting")}
-                        className="md:pl-[33px] pl-[17px] md:pt-[20px] pt-[7px] ripple">
+                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
                         Copywriting
                       </h5>
                       <h5
                         onClick={() => handleTypeClick("Print Project")}
-                        className="md:pl-[33px] pl-[17px] md:pt-[20px] pt-[7px] ripple">
+                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
                         Print Project
                       </h5>
                       <h5
                         onClick={() => handleTypeClick("UI Design")}
-                        className="md:pl-[33px] pl-[17px] md:pt-[20px] pt-[7px] ripple">
+                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
                         UI Design
                       </h5>
                       <h5
                         onClick={() => handleTypeClick("Website Design")}
-                        className="md:pl-[33px] pl-[17px] md:pt-[20px] pt-[7px] ripple">
+                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
                         Website Design
                       </h5>
                     </div>
@@ -189,7 +257,7 @@ const Deals: React.FC = () => {
             </div>
 
             <div className="flex justify-end mt-[20px]">
-              <ToggleSwitch />
+              <ToggleSwitch checked={checked} setChecked={setChecked} />
               <h5 className="text-[10px] text-darkSilverColor font-bold ml-[11px] md:text-[18px]">
                 Only Companies I Manage
               </h5>
@@ -197,104 +265,7 @@ const Deals: React.FC = () => {
             <div className=" hidden md:flex md:w-full md:my-4">
               <SearchBox Component={""} />
             </div>
-            {/* <div className="mt-[14px] overflow-y-auto h-[100%] pe-2">
-              <ExpansionPanel title="Opportunity">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-              <ExpansionPanel title="Proposal Sent">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-              <ExpansionPanel title="In Negotiation">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-              <ExpansionPanel title="Won">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-              <ExpansionPanel title="Lost">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-              <ExpansionPanel title="Delayed">
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-              </ExpansionPanel>
-            </div> */}
+
             <div className="mt-[14px] overflow-y-auto  pe-2 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-6 gap-4  md:px-2 lg:rounded-lg">
               <ExpansionPanel title="Opportunity">
                 {filteredDeals &&
@@ -310,20 +281,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
               <ExpansionPanel title="Proposal Sent">
                 {filteredDeals &&
@@ -339,20 +296,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
               <ExpansionPanel title="In Negotiation">
                 {filteredDeals &&
@@ -368,20 +311,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
               <ExpansionPanel title="Won">
                 {filteredDeals &&
@@ -397,20 +326,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
               <ExpansionPanel title="Lost">
                 {filteredDeals &&
@@ -426,20 +341,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
               <ExpansionPanel title="Delayed">
                 {filteredDeals &&
@@ -455,20 +356,6 @@ const Deals: React.FC = () => {
                         category={deal.company.name}
                       />
                     ))}
-                <ExpansionCard
-                  logoSrc={Company1}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
-                <ExpansionCard
-                  logoSrc={Company2}
-                  description="Description for item"
-                  quantity={1}
-                  price={100}
-                  category="Finance"
-                />
               </ExpansionPanel>
             </div>
           </div>

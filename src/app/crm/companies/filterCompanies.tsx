@@ -57,10 +57,10 @@ const FilterCompanies: React.FC<{
 
   const employeeSizes = [
     "1 Employee",
-    "2-9 Employees",
-    "10-49 Employees",
-    "50-249 Employees",
-    "250 or more Employees",
+    "2-9 Employee",
+    "10-49 Employee",
+    "50-249 Employee",
+    "249 or more Employee",
   ];
 
   const filteredSizes = employeeSizes.filter((size) =>

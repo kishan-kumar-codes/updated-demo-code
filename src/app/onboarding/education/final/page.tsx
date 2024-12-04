@@ -77,7 +77,7 @@ const Final: React.FC = () => {
       hHeading=""
       Childrens={
         <div className="h-full flex flex-col items-center w-full px-[43px]">
-          <ProgressBar count={13} />
+          <ProgressBar count={12} />
           <div className="text-center flex flex-col justify-center items-center mt-[28px]">
             <h2 className="text-[22px] leading-6 lg:w-[60%] lg:text-[45px] lg:leading-[44px] font-bold text-darkSilverColor ">
               Congrats! In two minutes, you will be able to accept payments from
@@ -91,7 +91,12 @@ const Final: React.FC = () => {
               style={{ cursor: "pointer" }}>
               Finish HubSpark Payments Setup
             </button> */}
-
+            <button
+              className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[45%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
+              onClick={handleContinueClick}
+              style={{ cursor: "pointer" }}>
+              <Link href="">Finish HubSpark Payments Setup</Link>
+            </button>
             <button
               className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[30%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
               onClick={handleContinueClick}

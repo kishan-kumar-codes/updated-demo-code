@@ -118,6 +118,7 @@ const getAllDealsQuery = `
           id
           name
           logo
+          accountManager
         }
         startAt
         stage
@@ -144,6 +145,7 @@ interface GetDealsByUserResponse {
       company: {
         id: string;
         name: string;
+        accountManager: string;
       };
       startAt: string;
       stage: string;

@@ -5,8 +5,6 @@ import SearchBox from "../component/searchBox/page";
 import TabNavigation from "../component/tabNavigation";
 import FilterIcon from "@/assets/images/filter-icon.svg";
 import ExportIcon from "@/assets/images/export-icon.svg";
-import Company1 from "@/assets/images/companies-1.png";
-import Company2 from "@/assets/images/companies-2.png";
 import Image from "next/image";
 import CompaniesCard from "../component/companiesCard";
 // import AddNewCompany from "./newCompanyForm";
@@ -21,12 +19,21 @@ interface Business {
 }
 
 interface Company {
+  id: string;
   size?: string;
   business?: Business;
-  logo?: StaticImageData; // Assuming 'logo' is a string (URL or file path)
-  name: string; // Assuming 'name' is always required
+  logo?: StaticImageData;
+  name: string;
   contactCount?: number;
   dealCount?: number;
+  accountManager?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  phoneNumber?: string;
+  linkedin?: string;
+  website?: string;
 }
 
 const Companies: React.FC = () => {
@@ -46,6 +53,9 @@ const Companies: React.FC = () => {
   const [selectedBusinessType, setSelectedBusinessType] = useState<
     string | null
   >(null);
+
+  console.log("Selected size ", selectedSize);
+  console.log("Business size ", selectedBusinessType);
 
   // const [formData, setFormData] = useState({
   //   token: session?.session[0],
@@ -143,24 +153,78 @@ const Companies: React.FC = () => {
   };
 
   const filteredCompanies = companiesList.filter((company) => {
-    console.log(company);
+    console.log(company, "FilteredCompanies");
+
+    // Check if selectedSize is null or company.size matches selectedSize
     const matchesSize =
       selectedSize === null ||
       (company.size &&
         company.size.toLowerCase() === selectedSize.toLowerCase());
+
     const matchesBusinessType =
       selectedBusinessType === null ||
       (company.business &&
-        company.business.name.toLowerCase() ===
+        company.business.toString().toLowerCase() ===
           selectedBusinessType.toLowerCase());
 
     return matchesSize && matchesBusinessType;
   });
 
+  const exportToCSV = () => {
+    console.log("Csv");
+    // Define CSV headers
+    const headers = [
+      "ID",
+      "Name",
+      "Account_Manager",
+      "Business",
+      "Address",
+      "City",
+      "State",
+      "Zip_Code",
+      "Phone_Number",
+      "LinkedIn",
+      "Website",
+      "Size",
+    ];
+
+    // Convert company data to CSV format
+    const companyRows = filteredCompanies.map((company) => [
+      company.id || "-",
+      company.name || "-",
+      company.accountManager || "-",
+      company.business || "-",
+      company.address || "-",
+      company.city || "-",
+      company.state || "-",
+      company.zipCode || "-",
+      company.phoneNumber || "-",
+      company.linkedin || "-",
+      company.website || "-",
+      company.size || "-",
+    ]);
+
+    // Combine headers and data
+    const csvContent = [
+      headers.join(","),
+      ...companyRows.map((row) => row.join(",")),
+    ].join("\n");
+
+    // Create blob and download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", "companies.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    // addNewCompany ? (
-    //     <AddNewCompany />
-    // ) : (
     <LayoutView
       Childrens={
         <div className="relative h-full px-[20px] w-full md:px-0 bg-[#F4F4F4] md:bg-white">
@@ -192,7 +256,12 @@ const Companies: React.FC = () => {
 
               <div className="w-full flex justify-end text-[10px] font-bold font-arial text-cultured md:pr-16">
                 <button className="px-[6px] py-[7px] lg:py-2 bg-palatinatePurple flex items-center text-white mr-[5px] md:text-[17px] rounded-lg">
-                  <Image src={ExportIcon} alt="export" className="mr-[5px]" />
+                  <Image
+                    onClick={exportToCSV}
+                    src={ExportIcon}
+                    alt="export"
+                    className="mr-[5px]"
+                  />
                   Export
                 </button>
                 <button
@@ -215,48 +284,6 @@ const Companies: React.FC = () => {
                   setSelectedBusinessType={setSelectedBusinessType}
                 />
               </div>
-              {/* <div className="w-full md:flex-1">
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName={"Handyman Repair Service"}
-                  comDesc={"Legal Services"}
-                  compContacts={17}
-                  compDeals={7}
-                />
-
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName={"Hanover Attorney At Law"}
-                  comDesc={"Legal Services"}
-                  compContacts={17}
-                  compDeals={7}
-                />
-
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName={"Hanover Attorney At Law"}
-                  comDesc={"Legal Services"}
-                  compContacts={17}
-                  compDeals={7}
-                />
-
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName={"Hanover Attorney At Law"}
-                  comDesc={"Legal Services"}
-                  compContacts={17}
-                  compDeals={7}
-                />
-
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName={"Hanover Attorney At Law"}
-                  comDesc={"Legal Services"}
-                  compContacts={17}
-                  compDeals={7}
-                />
-              </div> */}
-              {/* <div className="w-full flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4"> */}
               <div
                 className="w-full flex-1 grid gap-4 p-4"
                 style={{
@@ -275,104 +302,18 @@ const Companies: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  // "No companies match your criteria"
-                  // <p>Loading</p>
                   <>
-                    <div className="w-full mx-auto ">
-                      <CompaniesCard
-                        comLogo={Company1}
-                        comName={"Hanover Attorney At Law"}
-                        comDesc={"Legal Services"}
-                        compContacts={17}
-                        compDeals={7}
-                      />
+                    <div className="text-[#6D6D6D] font-bold ">
+                      No compaines to show{" "}
                     </div>
                   </>
                 )}
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Handyman Repair Service"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                {/* <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company2}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                />
-                <CompaniesCard
-                  comLogo={Company1}
-                  comName="Hanover Attorney At Law"
-                  comDesc="Legal Services"
-                  compContacts={17}
-                  compDeals={7}
-                /> */}
               </div>
             </div>
           </div>
         </div>
       }
     />
-    // )
   );
 };
 

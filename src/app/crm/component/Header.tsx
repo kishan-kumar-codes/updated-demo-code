@@ -48,7 +48,7 @@ const Header = ({
 }: NavbarProps) => {
   const { data: session } = useSession();
 
-  console.log("This is the session data", session);
+  // console.log("This is the session data", session);
   return (
     <>
       <div className="flex md:hidden rounded-b-3xl items-center justify-between w-full h-[60px] bg-[#E0E0E0]">

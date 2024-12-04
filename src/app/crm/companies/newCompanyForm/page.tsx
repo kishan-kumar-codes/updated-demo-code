@@ -549,6 +549,11 @@ const NewCompanyForm: React.FC = () => {
                       className="text-[12px] md:text-[20px]">
                       Me
                     </SelectItem>
+                    <SelectItem
+                      value="other"
+                      className="text-[12px] md:text-[20px]">
+                      Other
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 {/* <CustomSelect

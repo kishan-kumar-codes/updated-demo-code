@@ -562,10 +562,10 @@ export const authOptions: AuthOptions = ({
         async signIn({ user, account, profile, email, credentials }) {
             // Define the allowed email addresses for each provider
             const allowedEmails: any = {
-                credentials: 'demo123@gmail.com',
+                credentials: 'demo@gmail.com',
                 google: 'jay@hubspark.com',
                 // google: 'kishan.excel2011@gmail.com',
-                facebook: 'uzgjdw@hi2.in.com',
+                facebook: 'uzgjdw@hi2.in',
             };
 
             // Ensure account and provider are defined

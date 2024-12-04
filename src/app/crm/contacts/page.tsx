@@ -18,15 +18,35 @@ import { useRouter } from "next/navigation";
 import DesktopContact from "../../../components/crmDesktop/contacts/index";
 import { useSession } from "next-auth/react";
 
+interface Contact {
+  id: string;
+  firstName: string;
+  lastName: string;
+  company?: {
+    id: string;
+    logo?: string;
+  };
+  hasNewsLetter?: boolean;
+  background?: string;
+  email?: string;
+  phoneNumber_1?: string;
+  phoneNumber_2?: string;
+  tag?: string;
+  title?: string;
+  logo?: string[];
+  notes?: number;
+  daysAgo?: string;
+}
+
 const Contacts: React.FC = () => {
   const [addNewCompany, setAddNewCompany] = useState(false);
   const [showFilterCard, setShowFilterCard] = useState(false);
   const [showSorting, setShowSorting] = useState(false);
   const isMobile = useClientMediaQuery("(max-width: 769px)");
   const { data: session, status } = useSession();
-  const [contactsData, setContactsData] = useState([]);
-  const [filteredContacts, setFilteredContacts] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [contactsData, setContactsData] = useState<Contact[]>([]);
+  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState(null);
 
@@ -65,8 +85,8 @@ const Contacts: React.FC = () => {
     setLoading(false);
   };
 
-  const extractUniqueTags = (contacts) => {
-    const allTags = contacts.reduce((acc, contact) => {
+  const extractUniqueTags = (contacts: any) => {
+    const allTags = contacts.reduce((acc: any, contact: any) => {
       if (contact.tag) {
         acc.push(contact.tag); // Push the tag string into the array
       }
@@ -76,7 +96,7 @@ const Contacts: React.FC = () => {
     setTags(uniqueTags); // Set unique tags to state
   };
 
-  const handleSortChange = (type) => {
+  const handleSortChange = (type: any) => {
     let sortedContacts;
     if (type === "firstName") {
       sortedContacts = [...filteredContacts].sort((a, b) =>
@@ -88,6 +108,57 @@ const Contacts: React.FC = () => {
       );
     }
     setFilteredContacts(sortedContacts);
+  };
+
+  const exportToCSV = () => {
+    // Define CSV headers
+    const headers = [
+      "ID",
+      "First_Name",
+      "Last_Name",
+      "Company_Id",
+      "Has_NewsLetter",
+      "Background",
+      "Email",
+      "Phone_number_1",
+      "Phone_number_2",
+      "Tag",
+      "Title",
+    ];
+
+    // Convert contact data to CSV format
+    const contactRows = filteredContacts.map((contact) => [
+      contact.id || "-",
+      contact.firstName || "-",
+      contact.lastName || "-",
+      contact.company?.id || "-",
+      contact.hasNewsLetter || "-",
+      contact.background || "-",
+      contact.email || "-",
+      contact.phoneNumber_1 || "-",
+      contact.phoneNumber_2 || "-",
+      contact.tag || "-",
+      contact.title || "-",
+    ]);
+
+    // Combine headers and data
+    const csvContent = [
+      headers.join(","),
+      ...contactRows.map((row) => row.join(",")),
+    ].join("\n");
+
+    // Create blob and download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute("href", url);
+    link.setAttribute("download", "contacts.csv");
+    link.style.visibility = "hidden";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
   // function setShowSorting(){}
 
@@ -157,7 +228,9 @@ const Contacts: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <button className="px-[10px] py-[7px] bg-palatinatePurple flex items-center text-white mr-[5px] rounded-lg  md:text-[17px]">
+                <button
+                  onClick={exportToCSV}
+                  className="px-[10px] py-[7px] bg-palatinatePurple flex items-center text-white mr-[5px] rounded-lg  md:text-[17px]">
                   <Image src={ExportIcon} alt="export" className="mr-[5px]" />
                   Export
                 </button>
@@ -205,15 +278,7 @@ const Contacts: React.FC = () => {
                   href={{
                     pathname: "/crm/contacts/detailContact",
                     query: { name: "Contact" },
-                  }}>
-                  <ContactCard
-                    name="John Doe"
-                    role="CEO at"
-                    notes={3}
-                    tags={["football-fun", "musician"]}
-                    daysAgo="6"
-                  />
-                </Link>
+                  }}></Link>
               </div>
             </div>
           </div>
