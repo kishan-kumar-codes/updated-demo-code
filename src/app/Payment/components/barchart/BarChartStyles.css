@@ -1,0 +1,173 @@
+.barChartContainer {
+    width: 20.9181em;
+    height: 15.0904em;
+    /*background-color: #ADD8E6;*/ /* Light blue color */
+    position: relative; /* Set to relative for absolute positioning of children */
+}
+
+.svgIcon,
+.svgIcon2 {
+    position: absolute;
+    bottom: 0; /* Position the SVGs above the bottom */
+}
+
+.svgIcon2 {
+    left: .230625em; /* Position the second SVG to the right of the first */
+}
+
+.newSvgIcon,
+.newSvgIcon2 {
+    position: absolute;
+    bottom: 50px; /* Position the SVG above the bottom */
+}
+
+.newSvgIcon2 {
+    left: .230625em
+}
+
+.newerSvgIcon,
+.newerSvgIcon2 {
+    position: absolute;
+    bottom: 100px; /* Position the SVG above the bottom */
+}
+
+.newerSvgIcon2 {
+    left: .230625em
+}
+
+.newerrSvgIcon,
+.newerrSvgIcon2 {
+    position: absolute;
+    bottom: 150px; /* Position the SVG above the bottom */
+}
+
+.newerrSvgIcon2 {
+    left: .230625em
+}
+
+.newestSvgIcon,
+.newestSvgIcon2 {
+    position: absolute;
+    bottom: 200px; /* Position the SVG above the bottom */
+}
+
+.newestSvgIcon2 {
+    left: .230625em
+}
+
+.localSearchNumberOfRankingsTextValue1 {
+    position: absolute;
+    bottom: 10px;
+    color: #6D6D6D;
+    font-family: "Glacial Indifference", "sans-serif";
+    font-size: .683625em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.localSearchNumberOfRankingsTextValue2 {
+    position: absolute;
+    bottom: 60px;
+    color: #6D6D6D;
+    font-family: "Glacial Indifference", "sans-serif";
+    font-size: .683625em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.localSearchNumberOfRankingsTextValue3 {
+    position: absolute;
+    bottom: 110px;
+    color: #6D6D6D;
+    font-family: "Glacial Indifference", "sans-serif";
+    font-size: .683625em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.localSearchNumberOfRankingsTextValue4 {
+    position: absolute;
+    bottom: 160px;
+    color: #6D6D6D;
+    font-family: "Glacial Indifference", "sans-serif";
+    font-size: .683625em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.localSearchNumberOfRankingsTextValue5 {
+    position: absolute;
+    bottom: 210px;
+    color: #6D6D6D;
+    font-family: "Glacial Indifference", "sans-serif";
+    font-size: .683625em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.svgRectangle1 {
+    position: absolute;
+    bottom: 0;
+    left: 2.67875em;
+}
+
+.svgRectangle2 {
+    position: absolute;
+    bottom: 0;
+    left: 5.705em;
+}
+
+.svgRectangle3 {
+    position: absolute;
+    bottom: 0;
+    left: 8.741875em;
+}
+
+.svgRectangle4 {
+    position: absolute;
+    bottom: 0;
+    left: 11.76875em;
+}
+
+.svgRectangle5 {
+    position: absolute;
+    bottom: 0;
+    left: 14.8em;
+}
+
+.svgRectangle6 {
+    position: absolute;
+    bottom: 0;
+    left: 17.831875em;
+}
+
+
+/* HorizontalAxis.css */
+
+.horizontal-axis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .axis-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .label {
+    width: 50px; /* Adjust width as needed */
+    text-align: right;
+    margin-right: 10px;
+  }
+  
+  .line {
+    flex-grow: 1;
+  }
+  
