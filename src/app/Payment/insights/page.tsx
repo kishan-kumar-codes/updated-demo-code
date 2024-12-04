@@ -187,7 +187,7 @@ function Index() {
     <Layout
       // hHeading="Payments"
       Childrens={
-        <div className="px-[15px] pt-[18px] flex-1 flex lg:container mx-auto flex-col h-full bg-cultured ">
+        <div className="px-[15px] pt-[18px] flex-1 flex mx-auto flex-col h-full bg-cultured ">
           <div className="hidden md:block">
             <TabNavigation tabData={tabData} />
           </div>

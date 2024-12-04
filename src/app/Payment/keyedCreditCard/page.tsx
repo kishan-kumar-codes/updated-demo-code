@@ -228,7 +228,7 @@ const Index = () => {
               {clientToken && (
                 <div className="container mx-auto">
                   <div className="bg-chinesWhite pb-[27px]  rounded-lg">
-                    {!elementsLoading && (
+                    {elementsLoading && (
                       <div className="w-full md:py-[18px] py-[9px] pl-[32px] md:pl-[16px] bg-palatinatePurple rounded-lg mt-[16px] text-white mb-5">
                         <h5 className="md:text-[26px] text-[16px] font-bold  md:pl-[15px] ">
                           Information
