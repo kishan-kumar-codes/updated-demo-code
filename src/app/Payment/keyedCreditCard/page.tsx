@@ -259,7 +259,7 @@ const Index = () => {
                         onClick={(e) => e.stopPropagation()}
                         className="bg-white rounded-lg shadow-xl py-16 md:py-28 px-4 w-full max-w-md md:max-w-lg lg:max-w-3xl">
                         <div className="text-[#6D6D6D] text-lg font-bold pt-4 lg:text-2xl text-center">
-                          Please wait while we are generating your paymnet setup{" "}
+                          Please wait...
                           <div className="flex justify-center pt-4 space-x-2">
                             {[...Array(4)].map((_, i) => (
                               <motion.div
