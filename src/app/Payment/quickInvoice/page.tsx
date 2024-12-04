@@ -794,12 +794,3 @@ const Input: React.FC<CustomInputProps> = ({
     </div>
   );
 };
-
-export async function getServerSideProps(context: any) {
-  const { mode } = context.params || context.query;
-  return {
-    props: {
-      mode: mode || null, // Provide the ID as a prop
-    },
-  };
-}
