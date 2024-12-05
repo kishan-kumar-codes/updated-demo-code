@@ -16,14 +16,14 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { StaticImageData } from "next/image";
 
-interface Business {
-  name: string;
-}
+// interface Business {
+//   name: string;
+// }
 
 interface Company {
   id: string;
   size?: string;
-  business?: Business;
+  business?: string | undefined;
   logo?: StaticImageData; // Assuming 'logo' is a string (URL or file path)
   name: string; // Assuming 'name' is always required
   contactCount?: number;
@@ -220,7 +220,7 @@ const Companies: React.FC = () => {
   return (
     <LayoutView
       Childrens={
-        <div className="relative h-full px-[20px] w-full md:px-0 bg-[#F4F4F4] md:bg-white">
+        <div className="relative h-full px-[20px] w-full md:px-0 bg-[#F4F4F4] md:bg-white ">
           {showFilterCard && (
             <FilterCompanies
               setShowFilterCard={setShowFilterCard}
@@ -275,7 +275,7 @@ const Companies: React.FC = () => {
                 />
               </div>
               <div
-                className="w-full flex-1 grid gap-4 p-4"
+                className="w-full flex-1 grid gap-4 p-4 min-h-screen"
                 style={{
                   gridTemplateColumns: "repeat(auto-fit, minmax(308px, 1fr))",
                 }}>
@@ -285,7 +285,7 @@ const Companies: React.FC = () => {
                       <CompaniesCard
                         comLogo={data.logo}
                         comName={data.name}
-                        comDesc={data?.business?.name}
+                        comDesc={data?.business}
                         compContacts={data?.contactCount}
                         compDeals={data?.dealCount}
                       />

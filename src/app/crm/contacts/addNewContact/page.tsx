@@ -27,6 +27,7 @@ const AddNewContact: React.FC = () => {
   // if(isMobile){
   const [fileList, setFiles] = useState<File[]>([]);
   const [check, setCheck] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   // const { data: session, status } = useSession();
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
@@ -97,7 +98,7 @@ const AddNewContact: React.FC = () => {
       background: formData.background,
       logo: logoBase64, // Use base64 string instead of file
       tag: formData.tag,
-      hasNewsLetter: check,
+      hasNewsLetter: checked,
       userId: session?.user?.id,
     };
 
@@ -385,7 +386,7 @@ const AddNewContact: React.FC = () => {
                 </button>
               </div>
               <div className="ml-[14px] hidden md:block col-span-6">
-                <ToggleSwitch check={check} handleCheck={handleCheck} />
+                <ToggleSwitch checked={checked} setChecked={setChecked} />
                 <span className="font-bold text-xs text-darkSilverColor ml-[17px] md:text-[20px]">
                   Has Newsletter
                 </span>

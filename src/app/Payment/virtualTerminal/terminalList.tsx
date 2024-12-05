@@ -45,7 +45,7 @@ function Terminal() {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "keyCreditCard",
+      tabUrl: "keyedCreditCard",
     },
   ];
 

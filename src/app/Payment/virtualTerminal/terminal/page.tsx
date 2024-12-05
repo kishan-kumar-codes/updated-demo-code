@@ -71,7 +71,7 @@ const Index = () => {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "keyCreditCard",
+      tabUrl: "keyedCreditCard",
     },
   ];
   const [accessType, setAccessType] = useState<any>(null);

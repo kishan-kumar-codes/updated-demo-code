@@ -1,13 +1,13 @@
 import Image, { StaticImageData } from "next/image";
 import PersonIcon from "../../../assets/images/person.svg";
 import DollarIcon from "../../../assets/images/dollar.svg";
-
+import DefaultLogo from "../../../assets/images/companies-2.png";
 interface CompaniesCardProps {
-  comLogo: StaticImageData | string | undefined;
+  comLogo?: StaticImageData;
   comName: string;
-  comDesc: string | undefined;
-  compContacts: number | undefined;
-  compDeals: number | undefined;
+  comDesc?: string | undefined;
+  compContacts?: number;
+  compDeals?: number;
 }
 
 const CompaniesCard: React.FC<CompaniesCardProps> = ({
@@ -23,7 +23,7 @@ const CompaniesCard: React.FC<CompaniesCardProps> = ({
         <div className="logo h-[60px] w-[60px] rounded-full bg-chinesWhite relative">
           {
             <Image
-              src={comLogo}
+              src={comLogo || DefaultLogo}
               alt="company logo"
               fill
               className="rounded-full"

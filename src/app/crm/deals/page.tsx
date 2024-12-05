@@ -40,12 +40,20 @@ interface Deal {
 
 const Deals: React.FC = () => {
   const [showSorting, setShowSorting] = useState(false);
+  const [showCompanySorting, setShowCompanySorting] = useState(false);
+  const [showCategorySorting, setShowCategorySorting] = useState(false);
+  const [showTypeSorting, setShowTypeSorting] = useState(false);
   const [showStage, setShowStage] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { data: session, status } = useSession();
   const [dealsData, setDealsData] = useState<Deal[]>([]);
   const [filteredDeals, setFilteredDeals] = useState<Deal[]>([]);
   const [selectedType, setSelectedType] = useState("");
+  const [companiesList, setCompaniesList] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [isCompanySelected, setIsCompanySelected] = useState(false);
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
 
   const getAllDeals = async () => {
     try {
@@ -71,40 +79,75 @@ const Deals: React.FC = () => {
     }
   };
 
+  const getAllCompanies = async () => {
+    const userId = session?.user?.id; // Ensure you extract the correct user ID field
+    if (!userId) {
+      console.error("No user ID found in session.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/companies/get-companies", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Cache-Control": "no-cache",
+        },
+        body: JSON.stringify({ userId }), // Pass the userId in the request body
+      });
+
+      if (!response.ok) {
+        console.error("Failed to fetch companies:", response.statusText);
+        return;
+      }
+
+      const companies = await response.json();
+      setCompaniesList(companies);
+    } catch (error) {
+      console.error("Error fetching companies:", error);
+    }
+  };
+
   useEffect(() => {
     if (session?.user?.id) {
       getAllDeals(); // Call only when session.user.id is available
+      getAllCompanies();
     }
   }, [session?.user?.id]);
 
-  useEffect(() => {
-    console.log("checked is clicked", checked);
-    if (selectedType || checked) {
-      let filtered = [...dealsData];
-
-      // Filter by type if selected
-      if (selectedType) {
-        filtered = filtered.filter((deal) => deal.type === selectedType);
-      }
-      // console.log("filtered", filtered);
-
-      // Filter by account manager if checked
-      if (checked) {
-        filtered = filtered.filter(
-          (deal) => deal.company.accountManager === "me"
-        );
-        // console.log("filtered in checked", filtered);
-      }
-      // console.log("filtered out of checked", filtered);
-      setFilteredDeals(filtered);
-    } else {
-      setFilteredDeals(dealsData); // Show all deals if no filters are active
-    }
-  }, [selectedType, checked, dealsData]);
-
-  const handleTypeClick = (type: string) => {
-    setSelectedType(type); // Update the selected type when clicked
+  const handleCategoryFilter = (type: string) => {
+    setSelectedCategory(type);
   };
+
+  const handleCompanyFilter = (companyName: string) => {
+    setSelectedCompany(companyName);
+  };
+
+  useEffect(() => {
+    let filtered = [...dealsData];
+
+    // Filter by type if selected
+    if (selectedCategory) {
+      filtered = filtered.filter((deal) => deal.type === selectedCategory);
+    }
+
+    // Filter by company if selected
+    if (selectedCompany) {
+      filtered = filtered.filter(
+        (deal) => deal.company.name === selectedCompany
+      );
+    }
+
+    // Filter by account manager if checked
+    if (checked) {
+      filtered = filtered.filter(
+        (deal) => deal.company.accountManager === "me"
+      );
+    }
+
+    setFilteredDeals(filtered);
+  }, [selectedCategory, selectedCompany, checked, dealsData]);
 
   const exportToCSV = () => {
     // Define CSV headers
@@ -151,6 +194,32 @@ const Deals: React.FC = () => {
     document.body.removeChild(link);
   };
 
+  const handleTypeDropdown = () => {
+    setShowTypeSorting((prev) => !prev);
+    setShowCategorySorting(false);
+    setShowCompanySorting(false);
+  };
+
+  const handleCategoryDropdown = () => {
+    setShowCategorySorting((prev) => !prev);
+    setShowCompanySorting(false); // Close company dropdown
+    setShowTypeSorting(false); // Close type dropdown
+  };
+
+  const handleCompanyDropdown = () => {
+    setShowCompanySorting((prev) => !prev);
+    setShowCategorySorting(false); // Close type dropdown
+    setShowTypeSorting(false); // Close type dropdown
+  };
+
+  const handleTypeSelection = (type: "company" | "category") => {
+    if (type === "company") {
+      setIsCompanySelected((prev) => !prev);
+    } else {
+      setIsCategorySelected((prev) => !prev);
+    }
+  };
+
   return (
     <LayoutView
       Childrens={
@@ -185,56 +254,139 @@ const Deals: React.FC = () => {
                     </div>
                   )}
                 </span>
+                {isCompanySelected && (
+                  <div className="relative flex items-center mr-[3px] md:mr-[8px] lg:mr-[14px]">
+                    <Image
+                      onClick={handleCompanyDropdown}
+                      src={DownArrow}
+                      alt="sort"
+                      className={`mr-[5px] ${showCompanySorting ? "-rotate-180" : ""} md:w-[12px] md:h-[6px]`}
+                    />
+                    <h5
+                      onClick={handleCompanyDropdown}
+                      className="text-palatinatePurple text-[10px] font-bold  md:text-[17px] md:mr-[5px] lg:mr-[10px]">
+                      Company
+                    </h5>
+                    <Image
+                      onClick={handleCompanyDropdown}
+                      src={SortIcon}
+                      alt="sort"
+                      className="md:w-[22px] md:h-[12px] hidden md:block"
+                    />
+                    {showCompanySorting && (
+                      <div className="absolute w-[150px] z-[999] text-[10px] top-7 left-0 text-[#5F1762] bg-white border-[1px] border-palatinatePurple rounded-md md:w-[270px] md:text-[18px] md:top-14 py-[10px] md:py-[20px]">
+                        <h5
+                          onClick={() => handleCompanyFilter("")}
+                          className="md:pl-[30px] pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                          Clear
+                        </h5>
+                        {companiesList &&
+                          companiesList.map((company: Company) => (
+                            <h5
+                              key={company.id}
+                              onClick={() => handleCompanyFilter(company.name)}
+                              className="md:pl-[30px] pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                              {company.name}
+                            </h5>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+                {isCategorySelected && (
+                  <div className="relative flex items-center mr-[3px] md:mr-[8px] lg:mr-[14px]">
+                    <Image
+                      onClick={handleCategoryDropdown}
+                      src={DownArrow}
+                      alt="sort"
+                      className={`mr-[2px] md:mr-[5px] ${showCategorySorting ? "-rotate-180" : ""} md:w-[12px] md:h-[6px]`}
+                    />
+                    <h5
+                      onClick={handleCategoryDropdown}
+                      className="text-palatinatePurple text-[10px] font-bold md:text-[17px] md:mr-[5px] lg:mr-[10px]">
+                      Category
+                    </h5>
+                    <Image
+                      onClick={handleCategoryDropdown}
+                      src={SortIcon}
+                      alt="sort"
+                      className="md:w-[22px] md:h-[12px] hidden md:block"
+                    />
+
+                    {showCategorySorting && (
+                      <div className="absolute w-[137px] z-[999] text-[10px] top-7 left-0 text-[#5F1762] bg-white border-[1px] border-palatinatePurple rounded-md md:w-[244px] md:text-[18px] md:top-14 py-[10px] md:py-[20px]">
+                        <h5
+                          onClick={() => handleCategoryFilter("")}
+                          className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px]  ripple">
+                          Clear
+                        </h5>
+                        <h5
+                          onClick={() => handleCategoryFilter("Copywriting")}
+                          className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                          Copywriting
+                        </h5>
+                        <h5
+                          onClick={() => handleCategoryFilter("Print Project")}
+                          className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                          Print Project
+                        </h5>
+                        <h5
+                          onClick={() => handleCategoryFilter("UI Design")}
+                          className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                          UI Design
+                        </h5>
+                        <h5
+                          onClick={() => handleCategoryFilter("Website Design")}
+                          className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
+                          Website Design
+                        </h5>
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="relative flex items-center mr-[14px]">
                   <Image
-                    onClick={() => setShowSorting(!showSorting)}
+                    onClick={handleTypeDropdown}
                     src={DownArrow}
                     alt="sort"
-                    className={`mr-[5px] ${
-                      showSorting ? "-rotate-180" : ""
-                    } md:w-[12px] md:h-[6px]`}
+                    className={`mr-[5px] ${showTypeSorting ? "-rotate-180" : ""} md:w-[12px] md:h-[6px]`}
                   />
                   <h5
-                    onClick={() => setShowSorting(!showSorting)}
+                    onClick={handleTypeDropdown}
                     className="text-palatinatePurple text-[10px] font-bold mr-[5px] md:text-[17px]">
-                    TYPE
+                    Type
                   </h5>
                   <Image
-                    onClick={() => setShowSorting(!showSorting)}
+                    onClick={handleTypeDropdown}
                     src={SortIcon}
                     alt="sort"
                     className="md:w-[22px] md:h-[12px]"
                   />
-                  {showSorting && (
+                  {showTypeSorting && (
                     <div className="absolute w-[137px] z-[999] text-[10px] top-7 left-0 text-[#5F1762] bg-white border-[1px] border-palatinatePurple rounded-md md:w-[244px] md:text-[18px] md:top-14 py-[10px] md:py-[20px]">
-                      <h5
-                        onClick={() => handleTypeClick("")}
-                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px]  ripple">
-                        Clear
-                      </h5>
-                      <h5
-                        onClick={() => handleTypeClick("Copywriting")}
-                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
-                        Copywriting
-                      </h5>
-                      <h5
-                        onClick={() => handleTypeClick("Print Project")}
-                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
-                        Print Project
-                      </h5>
-                      <h5
-                        onClick={() => handleTypeClick("UI Design")}
-                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
-                        UI Design
-                      </h5>
-                      <h5
-                        onClick={() => handleTypeClick("Website Design")}
-                        className="md:pl-[30px]  pl-[17px] flex items-center h-[18px] md:h-[32px] ripple">
-                        Website Design
-                      </h5>
+                      <label className="md:pl-[30px] pl-[17px] flex items-center h-[18px] md:h-[32px] ripple cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={isCompanySelected}
+                          onChange={() => handleTypeSelection("company")}
+                          className="mr-2 accent-green-500 w-[10px] h-[10px] md:w-[20px] md:h-[20px]"
+                        />
+                        <span>Company</span>
+                      </label>
+
+                      <label className="md:pl-[30px] pl-[17px] flex items-center h-[18px] md:h-[32px] ripple cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={isCategorySelected}
+                          onChange={() => handleTypeSelection("category")}
+                          className="mr-2 accent-green-500 w-[10px] h-[10px] md:w-[20px] md:h-[20px]"
+                        />
+                        <span>Category</span>
+                      </label>
                     </div>
                   )}
                 </div>
+
                 <button
                   onClick={exportToCSV}
                   className="px-[5px] py-[7px] bg-palatinatePurple flex items-center text-white mr-[5px] rounded-lg md:text-[17px] md:px-4 md:py-3">
@@ -270,6 +422,8 @@ const Deals: React.FC = () => {
             <div className="mt-[14px] overflow-y-auto  pe-2 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-6 gap-4  md:px-2 lg:rounded-lg">
               <ExpansionPanel title="Opportunity">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "Opportunity")
+                  .length > 0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "Opportunity")
                     .map((deal, key) => (
@@ -281,10 +435,18 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
+
               <ExpansionPanel title="Proposal Sent">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "Proposal Sent")
+                  .length > 0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "Proposal Sent")
                     .map((deal, key) => (
@@ -296,10 +458,18 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
+
               <ExpansionPanel title="In Negotiation">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "In Negotiation")
+                  .length > 0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "In Negotiation")
                     .map((deal, key) => (
@@ -311,10 +481,18 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
+
               <ExpansionPanel title="Won">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "Won").length >
+                  0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "Won")
                     .map((deal, key) => (
@@ -326,10 +504,18 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
+
               <ExpansionPanel title="Lost">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "Lost").length >
+                  0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "Lost")
                     .map((deal, key) => (
@@ -341,10 +527,18 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
+
               <ExpansionPanel title="Delayed">
                 {filteredDeals &&
+                filteredDeals.filter((deal) => deal.stage === "Delayed")
+                  .length > 0 ? (
                   filteredDeals
                     .filter((deal) => deal.stage === "Delayed")
                     .map((deal, key) => (
@@ -356,7 +550,12 @@ const Deals: React.FC = () => {
                         price={deal.amount}
                         category={deal.company.name}
                       />
-                    ))}
+                    ))
+                ) : (
+                  <div className="flex justify-center items-center p-4 text-gray-500">
+                    No deals available
+                  </div>
+                )}
               </ExpansionPanel>
             </div>
           </div>

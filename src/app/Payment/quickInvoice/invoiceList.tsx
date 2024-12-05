@@ -53,7 +53,7 @@ function InvoiceList() {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "keyCreditCard",
+      tabUrl: "keyedCreditCard",
     },
   ];
 

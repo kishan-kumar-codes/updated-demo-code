@@ -26,19 +26,19 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ text, onClick }) => {
 
 interface FilterCompaniesProps {
   setShowFilterCard: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedSize: (size: string) => void;
-  setSelectedBusinessType: (type: string) => void;
+  setSelectedSize: (size: string | null) => void;
+  setSelectedBusinessType: (type: string | null) => void;
 }
 
 interface FilterData {
   name: string;
 }
 
-const FilterCompanies: React.FC<{
-  setSelectedSize: (size: string) => void;
-  setSelectedBusinessType: (type: string) => void;
-  setShowFilterCard: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ setSelectedSize, setSelectedBusinessType, setShowFilterCard }) => {
+const FilterCompanies: React.FC<FilterCompaniesProps> = ({
+  setSelectedSize,
+  setSelectedBusinessType,
+  setShowFilterCard,
+}) => {
   const { data: session, status } = useSession();
 
   const [token, setToken] = useState(session?.user?.accessToken);
@@ -152,8 +152,18 @@ const FilterCompanies: React.FC<{
     setSelectedBusinessType(businessType);
   };
 
+  const clearSizeFilter = () => {
+    setSelectedSize(null);
+    setSearchQuery("");
+  };
+
+  const clearBusinessTypeFilter = () => {
+    setSelectedBusinessType(null);
+    handleSearchChange(""); // Reset business type search
+  };
+
   return (
-    <div className="absolute z-50 bottom-0 left-0 w-[220px] bg-[#F4F4F4] rounded-r-xl pb-2 border-palatinatePurple border-2 md:static md:w-full md:h-full md:flex md:flex-col md:border-none md:bg-[#FFF]">
+    <div className="absolute z-50 top-40 left-0 w-[220px] bg-[#F4F4F4] rounded-r-xl pb-2 border-palatinatePurple border-2 md:static md:w-full md:h-full md:flex md:flex-col md:border-none md:bg-[#FFF]">
       <div className="flex justify-between pl-[14px] pr-[22px] mt-[16px] w-full md:hidden ">
         <div className="flex">
           <Image src={FilterIcon} alt="filter" className="h-3  w-4" />
@@ -170,13 +180,13 @@ const FilterCompanies: React.FC<{
           />
         </div>
       </div>
-      <div className="2xl:ml-[50px] hidden lg:flex ml-[0px]">
-        <div className=" w-full h-10 lg:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
+      <div className="2xl:ml-[50px]  lg:flex ml-[0px]">
+        <div className=" w-full h-8 hidden lg:flex lg:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
           <label
             htmlFor="searchQuery"
             className="text-PhilippineGray relative px-17px w-full h-full flex items-center">
             <FontAwesomeIcon
-              className="cursor-pointer mr-[10px]  w-[25px] h-[25px]  text-sm"
+              className="cursor-pointer mr-[10px] w-[20px]  lg:w-[25px] h-[20px]  lg:h-[25px]  text-sm"
               icon={faSearch}
               size="1x"
             />
@@ -184,7 +194,7 @@ const FilterCompanies: React.FC<{
             <input
               className=" w-full text-sm lg:text-[20px] bg-none outline-none"
               type="text"
-              placeholder="Search employee size"
+              placeholder="Search Employee Size"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               id="searchQuery"
@@ -193,36 +203,70 @@ const FilterCompanies: React.FC<{
         </div>
       </div>
 
-      <div className="h-[36.8px] w-full bg-palatinatePurple mt-[22px] mr-[10px] flex items-center lg:mt-10 md:h-[64px] md:rounded-br-3xl ">
-        <Image
-          src={BuildingIcon}
-          alt="close"
-          className="h-[22px] w-[22px] ml-[14px] md:h-[41px] md:w-[39px]"
-        />
-        <h5 className="text-xs font-bold ml-[7px] text-cultured md:text-[20px]">
-          Size
-        </h5>
-      </div>
-
-      <div className="ml-[44px] overflow-y-auto h-40 md:overflow-visible md:h-auto">
-        {filteredSizes.map((size) => (
-          <FilterMenu
-            key={size}
-            text={size}
-            onClick={() => handleSizeClick(size)} // Pass selected size on click
+      <div className="h-[36.8px] w-full bg-palatinatePurple mt-[7px] mr-[10px] flex items-center justify-between lg:mt-10 md:h-[64px] md:rounded-br-3xl">
+        <div className="flex items-center">
+          <Image
+            src={BuildingIcon}
+            alt="close"
+            className="h-[22px] w-[22px] ml-[14px] md:h-[41px] md:w-[39px]"
           />
-        ))}
+          <h5 className="text-xs font-bold ml-[7px] text-cultured md:text-[20px]">
+            Size
+          </h5>
+        </div>
+      </div>
+      <div className="w-full flex justify-center">
+        <div className="w-[180px] md:w-[80%] h-8 flex lg:hidden my-3 md:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
+          <label
+            htmlFor="searchQuery"
+            className="text-PhilippineGray relative px-17px w-full h-full flex items-center">
+            <FontAwesomeIcon
+              className="cursor-pointer mr-[10px] w-[15px]  md:w-[25px] h-[15px]  md:h-[25px]  text-sm"
+              icon={faSearch}
+              size="1x"
+            />
+
+            <input
+              className=" w-full text-[10px] md:text-[20px] bg-none outline-none"
+              type="text"
+              placeholder="Search Employee Size"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              id="searchQuery"
+            />
+          </label>
+        </div>
+      </div>
+      <div className="ml-[44px] overflow-y-auto h-40 md:overflow-visible md:h-auto">
+        {filteredSizes && filteredSizes.length > 0 ? (
+          filteredSizes.map((size) => (
+            <FilterMenu
+              key={size}
+              text={size}
+              onClick={() => handleSizeClick(size)}
+            />
+          ))
+        ) : (
+          <FilterMenu text="No Business Size" />
+        )}
+        <button
+          onClick={clearSizeFilter}
+          className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px]">
+          Clear
+        </button>
       </div>
 
-      <div className="h-[36.8px] w-full bg-palatinatePurple mt-[22px] mr-[10px] flex items-center md:mt-5 md:h-[64px] md:rounded-br-3xl">
-        <Image
-          src={VanIcon}
-          alt="close"
-          className="h-[22px] w-[22px] ml-[14px]  md:h-[41px] md:w-[39px]"
-        />
-        <h5 className="text-xs font-bold ml-[7px] text-cultured md:text-[20px]">
-          Sector
-        </h5>
+      <div className="h-[36.8px] w-full bg-palatinatePurple mt-[22px] mr-[10px] flex items-center justify-between md:mt-5 md:h-[64px] md:rounded-br-3xl">
+        <div className="flex items-center">
+          <Image
+            src={VanIcon}
+            alt="close"
+            className="h-[22px] w-[22px] ml-[14px]  md:h-[41px] md:w-[39px]"
+          />
+          <h5 className="text-xs font-bold ml-[7px] text-cultured md:text-[20px]">
+            Sector
+          </h5>
+        </div>
       </div>
       <div className="w-full">
         <div
@@ -232,24 +276,26 @@ const FilterCompanies: React.FC<{
           className="ml-[44px] text-[#5F1762] text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px] ">
           + ADD BUSINESS TYPE
         </div>
-        <div className="border-2 hidden lg:flex mx-10 rounded-full border-[#F4F4F4]">
-          <label
-            htmlFor="searchQuery"
-            className="text-PhilippineGray relative px-4 py-2 w-full h-full flex items-center">
-            <FontAwesomeIcon
-              className="cursor-pointer mr-[10px]  w-[25px] h-[25px]  text-sm"
-              icon={faSearch}
-              size="1x"
-            />
+        <div className="w-full flex justify-center">
+          <div className="w-[180px] md:w-[80%] lg:w-full h-8 md:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
+            <label
+              htmlFor="searchQuery"
+              className="text-PhilippineGray relative px-17px w-full h-full flex items-center">
+              <FontAwesomeIcon
+                className="cursor-pointer mr-[10px] w-[15px]  md:w-[25px] h-[15px]  md:h-[25px]  text-sm"
+                icon={faSearch}
+                size="1x"
+              />
 
-            <input
-              className="w-full text-[20px] bg-none outline-none"
-              type="text"
-              placeholder="Search"
-              id="searchQuery"
-              onChange={(e) => handleSearchChange(e.target.value)}
-            />
-          </label>
+              <input
+                className=" w-full  text-[10px] md:text-[20px] bg-none outline-none"
+                type="text"
+                placeholder="Search Business Type"
+                id="searchQuery"
+                onChange={(e) => handleSearchChange(e.target.value)}
+              />
+            </label>
+          </div>
         </div>
       </div>
 
@@ -265,6 +311,11 @@ const FilterCompanies: React.FC<{
         ) : (
           <FilterMenu text="No Business Type" />
         )}
+        <button
+          onClick={clearBusinessTypeFilter}
+          className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px]">
+          Clear
+        </button>
       </div>
       {showPopup && (
         <div className="popup fixed left-0 top-0 h-full w-full bg-black-transparet z-10">

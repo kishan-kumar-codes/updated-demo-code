@@ -66,7 +66,7 @@ const TransactionView = () => {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "/Payment/keyCreditCard",
+      tabUrl: "/Payment/keyedCreditCard",
     },
   ];
 

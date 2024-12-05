@@ -49,7 +49,7 @@ const Index = () => {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "/Payment/keyCreditCard",
+      tabUrl: "/Payment/keyedCreditCard",
     },
   ];
 
@@ -64,7 +64,7 @@ const Index = () => {
     },
     {
       tabName: `Keyed Credit Card`,
-      tabUrl: "keyCreditCard",
+      tabUrl: "keyedCreditCard",
     },
   ];
 

@@ -95,7 +95,9 @@ const Final: React.FC = () => {
               className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[45%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
               onClick={handleContinueClick}
               style={{ cursor: "pointer" }}>
-              <Link href="">Finish HubSpark Payments Setup</Link>
+              <Link href="/onboarding/merchent-onboarding">
+                Finish HubSpark Payments Setup
+              </Link>
             </button>
             <button
               className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[30%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
@@ -131,8 +133,17 @@ const Final: React.FC = () => {
                 Go to Crm
               </Link>
             </button>
+            <button
+              className="text-[16px] lg:text-[36px] font-bold text-white py-[10px] w-[221px] lg:w-[30%] text-center mt-[20px] bg-palatinatePurple rounded-xl lg:rounded-2xl"
+              onClick={handleContinueClick}
+              style={{ cursor: "pointer" }}>
+              <Link href="/Payment/insights">
+                {/* Skip This For Now */}
+                Go to Payments
+              </Link>
+            </button>
           </div>
-          <div className="absolute lg:hidden bottom-14">
+          <div className="lg:hidden py-4">
             <Image src={hubSparkLogo} alt="Hub Spark Logo" />
           </div>
         </div>
