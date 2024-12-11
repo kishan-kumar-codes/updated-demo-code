@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Layout from "../../layout";
 // import ProgressBar from "@/pages/onboarding/layout/progressBar";
@@ -13,10 +13,38 @@ import hubSparkLogo from "@/assets/images/HubSpark New Logo 5.png";
 
 const Verify = () => {
   const [code, setCode] = useState("");
+  const [number, setNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
   const isMobile = useClientMediaQuery("(max-width: 769px)");
+  const searchParams = useSearchParams();
+  const mobileNumber = searchParams?.get("number");
+
+  const handleMobile = (number: string | null) => {
+    let value = number;
+    let numericValue = value?.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+
+    // Limit the numericValue to 10 digits
+    if (numericValue.length > 10) {
+      numericValue = numericValue.slice(0, 10);
+    }
+
+    if (numericValue.length > 3 && numericValue.length <= 6) {
+      value = `(${numericValue.slice(0, 3)}) ${numericValue.slice(3)}`;
+    } else if (numericValue.length > 6) {
+      value = `(${numericValue.slice(0, 3)}) ${numericValue.slice(3, 6)}-${numericValue.slice(6, 10)}`;
+    } else {
+      value = numericValue; // If it's less than 3 digits, just show the raw input
+    }
+    setNumber(value);
+
+    // This line sends the unformatted value to the parent component
+  };
+
+  useEffect(() => {
+    handleMobile(mobileNumber);
+  }, [mobileNumber]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -64,8 +92,8 @@ const Verify = () => {
               Perfect! We just texted you a code.
             </h1>
             <p className="text-[14px] md:text-xl tracking-tight lg:max-w-[55%] lg:leading-8 lg:text-[30px] text-darkSilverColor mt-[24px]">
-              We sent a 4-digit code to <strong>(702)750-7081 </strong>. Enter
-              the code to continue setting up
+              We sent a 4-digit code to <strong> {number} </strong>. Enter the
+              code to continue setting up
             </p>
             <input
               type="text"

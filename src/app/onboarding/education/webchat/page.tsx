@@ -181,20 +181,20 @@ const Webchat: React.FC = () => {
           {/* Conditionally render the website preview */}
           {showPreview && (
             <div style={{ marginTop: "20px", border: "1px solid #ccc" }}>
-              {isLoading && (
-                <div className="absolute top-[65%] lg:top-[82%]  left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  {/* Spinner, can customize this part */}
-                  <div
-                    className="w-[36px] h-[36px] lg:w-[100px] lg:h-[100px]"
-                    style={{
-                      border: "4px solid rgba(0, 0, 0, 0.1)",
-                      borderRadius: "50%",
-                      borderLeft: "4px solid #000",
-                      animation: "spin 1s linear infinite",
-                    }}></div>
-                </div>
-              )}
               <div className="relative">
+                {isLoading && (
+                  <div className="absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    {/* Spinner, can customize this part */}
+                    <div
+                      className="w-[36px] h-[36px] lg:w-[100px] lg:h-[100px]"
+                      style={{
+                        border: "4px solid rgba(0, 0, 0, 0.1)",
+                        borderRadius: "50%",
+                        borderLeft: "4px solid #000",
+                        animation: "spin 1s linear infinite",
+                      }}></div>
+                  </div>
+                )}
                 <iframe
                   className="w-[300px] h-[200px] md:w-[500px] md:h-[300px] lg:w-[904px] lg:h-[397px]"
                   src={`https://${currentPreviewWebsite}`}

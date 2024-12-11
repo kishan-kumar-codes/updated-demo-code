@@ -36,11 +36,21 @@ function DetailContact() {
     router.push("/crm/contacts/addNewContact");
   }
 
+  const [tags, setTags] = useState<string[]>([]);
+
   const getContactDetails = async () => {
     try {
       const response = await fetch(`/api/contact/get-contact-record/${id}`);
       const contact = await response.json();
       setResponse(contact);
+      if (contact.tag) {
+        setTags(
+          contact.tag
+            .split(",")
+            .map((tag: string) => tag.trim())
+            .filter(Boolean)
+        );
+      }
       console.log("contacts api response", contact);
     } catch (error) {
       console.log("Api error", error);
@@ -51,6 +61,32 @@ function DetailContact() {
   useEffect(() => {
     getContactDetails();
   }, [id]);
+
+  const [showTagInput, setShowTagInput] = useState(false);
+  const [newTag, setNewTag] = useState("");
+
+  const handleAddTag = async () => {
+    try {
+      const response = await fetch("/api/contact/create-tag", {
+        method: "POST",
+        body: JSON.stringify({
+          contactId: id,
+          tag: newTag,
+        }),
+      });
+      if (response.ok) {
+        console.log("tag added successfully");
+        const data = await response.json();
+        console.log("tag data", data);
+        setTags((prevTags) => [...prevTags, newTag]);
+        setShowTagInput(false);
+        setNewTag("");
+      }
+    } catch (error) {
+      console.log("error adding tag", error);
+    }
+  };
+
   return (
     <div>
       {response && (
@@ -141,7 +177,8 @@ function DetailContact() {
                   <div className="mt-[29px] px-[14px] pb-[25px] xl:w-[72%]  bg-chinesWhite xl:p-11 xl:rounded-2xl ">
                     <div className="flex justify-between items-center mt-[12px] mx-[14px] ">
                       <div className="logo bg-grayX11 rounded-full h-[35px] w-[39px] text-[15px] text-white font-bold flex justify-center items-center md:h-[90px] md:w-[90px] md:text-[39px]">
-                        JD
+                        {response.firstName[0]}
+                        {response.lastName[0]}
                       </div>
                       <div className="flex-grow ml-[14px]">
                         <h5 className="text-[14px] text-darkSilverColor font-bold md:text-[36px]">
@@ -152,6 +189,7 @@ function DetailContact() {
                         </h5>
                       </div>
                       <div className="logo bg-[#F4F4F4] rounded-full h-[43px] w-[48px] text-[15px]  font-bold flex justify-center items-center md:h-[90px] md:w-[90px]">
+                        {}
                         <Image src={company1} alt="" className="" />
                       </div>
                     </div>
@@ -234,20 +272,62 @@ function DetailContact() {
                       </p>
                     </div>
 
-                    <div className="mt-[25px]">
-                      <h5 className="text-[16px] text-[#5F1762] font-bold">
+                    <div className="mt-[25px] relative">
+                      <h5 className="text-[16px] text-palatinatePurple font-bold md:text-[26px]">
                         Tags{" "}
-                        <span className="bg-[#5F1762] text-white  py-[2px] px-[15px] rounded-lg text-[12px] md:font-bold md:text-[26px]">
+                        <span
+                          onClick={() => setShowTagInput(!showTagInput)}
+                          className="bg-[#5F1762] text-white py-[2px] px-[15px] rounded-lg text-[12px] md:font-bold md:text-[26px] cursor-pointer">
                           +
                         </span>
                       </h5>
-                      <div className="w-[190px] h-[1px] bg-[#6D6D6D] md:w-[301px] " />
-                      <button className="block px-[6px] py-[4px] bg-darkSilverColor text-white text-[8px] font-bold rounded-xl mt-3 md:text-[12px] md:px-[13px] md:py-[8px]">
-                        football-fun
-                      </button>
-                      <button className="px-[6px] py-[4px] bg-palatinatePurple text-white text-[8px] font-bold rounded-xl md:text-[12px] md:px-[13px] md:py-[8px] mt-2">
-                        musiician
-                      </button>
+
+                      {showTagInput && (
+                        <div className="absolute z-10 bottom-[105%] left-0 bg-[#F4F4F4] p-4 rounded-lg shadow-md border border-gray-200 w-[250px] md:w-[300px]">
+                          <h6 className="text-[14px] md:text-[18px] font-bold mb-3">
+                            Enter Tag
+                          </h6>
+                          <input
+                            type="text"
+                            value={newTag}
+                            onChange={(e) => setNewTag(e.target.value)}
+                            className="w-full p-2 border border-gray-300 rounded-md mb-3"
+                            placeholder="Enter tag name"
+                          />
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => setShowTagInput(false)}
+                              className="px-4 py-2 text-sm bg-gray-200 rounded-md">
+                              Cancel
+                            </button>
+                            <button
+                              onClick={handleAddTag}
+                              className="px-4 py-2 text-sm bg-palatinatePurple text-white rounded-md">
+                              Save
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="w-[190px] h-[1px] bg-[#6D6D6D] md:w-[301px]" />
+
+                      {tags && tags.length > 0 ? (
+                        tags.map((tag, index) => (
+                          <button
+                            key={index}
+                            className={`block px-[6px] py-[4px] ${
+                              index % 2 === 0
+                                ? "bg-darkSilverColor"
+                                : "bg-palatinatePurple"
+                            } text-white text-[8px] font-bold rounded-xl mt-2 md:text-[12px] md:px-[13px] md:py-[8px]`}>
+                            {tag}
+                          </button>
+                        ))
+                      ) : (
+                        <p className="text-[10px] text-darkSilverColor font-bold mt-[6px] md:text-[16px]">
+                          No Tags Available
+                        </p>
+                      )}
                     </div>
 
                     <div className="mt-[18px]">

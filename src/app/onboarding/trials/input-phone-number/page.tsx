@@ -43,7 +43,9 @@ const Phone = () => {
     //   .catch((error) => console.error("Navigation error:", error));
     setTimeout(async () => {
       try {
-        await router.push("/onboarding/trials/verify-account?product=");
+        await router.push(
+          `/onboarding/trials/verify-account?number=${mobileNumber}&product=`
+        );
         // Optionally, handle successful navigation here if needed
       } catch (error) {
         console.error("An error occurred during navigation:", error);

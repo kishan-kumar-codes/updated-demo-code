@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/app/Payment/components/toasterProvider";
 
 interface FormData {
   firstName: string;
@@ -151,6 +152,8 @@ type FortisOnboardingResponse = {
   };
 };
 const MerchantOnboarding: React.FC = () => {
+  const { showToast } = useToast();
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -166,6 +169,22 @@ const MerchantOnboarding: React.FC = () => {
     accountNumber: "",
     accountHolderName: "",
   });
+
+  const usedClientAppIds = new Set<string>();
+  function generateUniqueClientAppId(): string {
+    const specialChars = ["@", "#", "$", "%", "&", "*"];
+    const random5DigitNumber = Math.floor(10000 + Math.random() * 90000);
+    const randomSpecialChar =
+      specialChars[Math.floor(Math.random() * specialChars.length)];
+    const randomSpecialChar2 =
+      specialChars[Math.floor(Math.random() * specialChars.length)];
+
+    let uniqueId = `MerchantRef${randomSpecialChar}${random5DigitNumber}${randomSpecialChar2}`;
+
+    usedClientAppIds.add(uniqueId);
+
+    return uniqueId;
+  }
   // Construct the request data
   const requestData = {
     parent_id: "11ee3d1876fce656870ba956",
@@ -226,7 +245,7 @@ const MerchantOnboarding: React.FC = () => {
       email: "geoffrey@hubspark.com",
       phone_number: "7165722802",
     },
-    client_app_id: "MerchantRef6322395",
+    client_app_id: generateUniqueClientAppId(),
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -243,7 +262,9 @@ const MerchantOnboarding: React.FC = () => {
       });
       if (!response.ok) {
         // Handle HTTP errors here
+        showToast("Error creating MerchentOnboaring:", "error");
         console.error(`HTTP error! status: ${response.status}`);
+        setIsSubmitting(false);
         return;
       }
       const data = await response.json();
