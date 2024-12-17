@@ -162,7 +162,7 @@ const Index = () => {
           }
 
           showToast("Request submitted successfully", "success");
-          router.push("Payment/transactions/");
+          router.push("/transactions");
         } catch (error) {
           console.error("Error submitting request:", error);
           showToast(`Error submitting request: ${error}`, "error");
