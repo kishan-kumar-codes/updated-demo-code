@@ -19,11 +19,6 @@ import { cn } from "@/lib/utils";
 import Loader from "../components/Loader";
 import { DatePickerWithRange } from "@/components/CustomComponents/MiniDatePickerRange";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  faEye,
-  faPenToSquare,
-  faArrowLeft,
-} from "@fortawesome/free-solid-svg-icons";
 
 import {
   Select,
@@ -606,7 +601,7 @@ const Index = () => {
                                       disabled={accessType === "view"}>
                                       <CalendarIcon className="mr-2 h-4 w-4" />
                                       {formData.dueDate ? (
-                                        format(formData.dueDate, "PPP")
+                                        format(formData.dueDate, "yyyy-MM-dd")
                                       ) : (
                                         <span>Pick a date</span>
                                       )}
@@ -645,7 +640,7 @@ const Index = () => {
                                     disabled={accessType === "view"}>
                                     <CalendarIcon className="mr-2 h-4 w-4" />
                                     {formData.expireDate ? (
-                                      format(formData.expireDate, "PPP")
+                                      format(formData.expireDate, "yyyy-MM-dd")
                                     ) : (
                                       <span className="text-xs">
                                         Pick a date
@@ -881,7 +876,7 @@ const Index = () => {
                                         {formData.notificationDayB4DueDay ? (
                                           format(
                                             formData.notificationDayB4DueDay,
-                                            "PPP"
+                                            "yyyy-MM-dd"
                                           )
                                         ) : (
                                           <span>Pick a date</span>
@@ -926,7 +921,7 @@ const Index = () => {
                                         {formData.notificationDayAfterDueDay ? (
                                           format(
                                             formData.notificationDayAfterDueDay,
-                                            "PPP"
+                                            "yyyy-MM-dd"
                                           )
                                         ) : (
                                           <span>Pick a date</span>
