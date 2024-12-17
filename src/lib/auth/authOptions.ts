@@ -562,24 +562,24 @@ export const authOptions: AuthOptions = ({
         async signIn({ user, account, profile, email, credentials }) {
             // Define the allowed email addresses for each provider
             const allowedEmails: any = {
-                credentials: 'kishan2011@gmail.com',
+                // credentials: 'kishan2011@gmail.com',
                 // credentials: 'demoabc123@gmail.com',
                 // google: 'jay@hubspark.com',
-                google: 'kishan.excel2011@gmail.com',
-                facebook: 'uzgjdw@hi2.in',
+                // google: 'kishan.excel2011@gmail.com',
+                // facebook: 'uzgjdw@hi2.in',
             };
 
             // Ensure account and provider are defined
-            if (account && account.provider) {
-                // Check if the provider has an allowed email specified
-                if (allowedEmails.hasOwnProperty(account.provider)) {
-                    const allowedEmail = allowedEmails[account.provider];
-                    if (user.email !== allowedEmail) {
-                        console.log(`Access denied for email: ${user.email} with provider: ${account.provider}`);
-                        return false; // Redirects to the sign-in page
-                    }
-                }
-            }
+            // if (account && account.provider) {
+            //     // Check if the provider has an allowed email specified
+            //     if (allowedEmails.hasOwnProperty(account.provider)) {
+            //         const allowedEmail = allowedEmails[account.provider];
+            //         if (user.email !== allowedEmail) {
+            //             console.log(`Access denied for email: ${user.email} with provider: ${account.provider}`);
+            //             return false; // Redirects to the sign-in page
+            //         }
+            //     }
+            // }
 
             // Allow sign-in
             return true;
