@@ -2,13 +2,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GraphQLClient } from "graphql-request";
 import * as jwt from "jsonwebtoken";
-import getRawBody from "raw-body";
-
-export const config = {
-  api: {
-    bodyParser: false, // Disable Next.js default body parser
-  },
-};
 
 const client = new GraphQLClient(process.env.DGRAPH_GRAPHQL_ENDPOINT!, {
   headers: {
