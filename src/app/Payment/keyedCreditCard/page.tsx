@@ -138,8 +138,6 @@ const Index = () => {
       const handleDone = async (event) => {
         console.log(event, "done event");
         if (isSubmitting) return; // Prevent multiple submissions
-        setIsSubmitting(true);
-
         try {
           let response = await fetch("/api/fortis/ccKeyedSale", {
             method: "POST",
@@ -160,10 +158,7 @@ const Index = () => {
             showToast(`Error: ${responseData.error}`, "error");
             return;
           }
-
           showToast("Request submitted successfully", "success");
-          setIsSubmitting(true);
-          router.push("/Payment/transactions/");
         } catch (error) {
           console.error("Error submitting request:", error);
           showToast(`Error submitting request: ${error}`, "error");
@@ -259,7 +254,6 @@ const Index = () => {
         },
       });
 
-      // Cleanup function
       return () => {
         if (elementsRef.current) {
           elementsRef.current.off("ready", handleReady);
