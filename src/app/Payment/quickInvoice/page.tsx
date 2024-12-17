@@ -422,10 +422,10 @@ const Index = () => {
       [model]: e.target.value,
     });
   };
-  const dateHandler = (name: string, value: Date) => {
+  const dateHandler = (name: string, value: Date | null) => {
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value ? format(value, "yyyy-MM-dd") : null,
     }));
   };
 
