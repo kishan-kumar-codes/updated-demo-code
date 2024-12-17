@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 console.error(`Error from Fortis API: Status ${fortisResponse.status}, Details: ${errorDetails}`);
                 res.status(fortisResponse.status).json({ error: 'Failed to create merchant onboarding', details: errorDetails });
             } else {
-                const responseData = await fortisResponse.json();                
+                const responseData = await fortisResponse.json();
                 res.status(200).json(responseData);
             }
         } catch (error) {

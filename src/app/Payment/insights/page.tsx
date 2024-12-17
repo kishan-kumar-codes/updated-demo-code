@@ -75,7 +75,7 @@ function Index() {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "virtualTerminal/terminal",
+      tabUrl: "virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -116,7 +116,7 @@ function Index() {
     setLoader(true);
     try {
       const response = await fetch(
-        "/api/fortis/getInvoiceList?page[number]=1&page[size]=50",
+        "/api/fortis/getInvoiceList?page[number]=1&page[size]=500",
         {
           method: "GET",
           headers: {

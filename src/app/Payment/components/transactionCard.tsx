@@ -25,8 +25,12 @@ const TransactionCard: React.FC<transactionCardProps> = ({
   return (
     <div className="flex pb-[17px] border-b-[.5px] border-chinesWhite px-[15px] pt-[4px] ">
       <div className="flex-1">
-        <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">{name}</h5>
-        <h5 className="md:text-[24px] text-[19px] text-darkSilverColor">{invDate}</h5>
+        <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
+          {name}
+        </h5>
+        <h5 className="md:text-[24px] text-[19px] text-darkSilverColor">
+          {invDate}
+        </h5>
       </div>
       <div className="flex items-end flex-col">
         <h5 className="md:text-[20px] text-[15px] font-bold text-palatinatePurple">
@@ -35,18 +39,16 @@ const TransactionCard: React.FC<transactionCardProps> = ({
         <h5
           className={`md:text-[20px] text-[15px] font-bold ${
             status == "Paid" ? "text-limeGreen" : "text-[orange]"
-          } `}
-        >
+          } `}>
           {status}
         </h5>
         <Link
           href={{
-            pathname: "transaction/transactionView",
+            pathname: pathname,
             query: {
               id,
             },
-          }}
-        >
+          }}>
           <div className="md:text-[20px] text-[15px] font-bold inline-block mr-1 text-palatinatePurple">
             <FontAwesomeIcon icon={faEye} />
           </div>

@@ -15,6 +15,7 @@ import FilterCompanies from "./filterCompanies";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { StaticImageData } from "next/image";
+import { selectClasses } from "@mui/material";
 
 // interface Business {
 //   name: string;
@@ -55,6 +56,9 @@ const Companies: React.FC = () => {
   const [selectedBusinessType, setSelectedBusinessType] = useState<
     string | null
   >(null);
+
+  console.log("Selected size ", selectedSize);
+  console.log("Selected size ", selectedBusinessType);
 
   function setAddNewCompany() {
     // router.push("/crmDesktop/companies/addNewCompany");
@@ -133,13 +137,13 @@ const Companies: React.FC = () => {
         };
       });
 
-      console.log("enrichedCompanies", enrichedCompanies);
+      // console.log("enrichedCompanies", enrichedCompanies);
       // Set the enriched company list
       setCompaniesList(enrichedCompanies);
-      console.log(
-        "Enriched Companies with Contact and Deal Counts:",
-        enrichedCompanies
-      );
+      // console.log(
+      //   "Enriched Companies with Contact and Deal Counts:",
+      //   enrichedCompanies
+      // );
       setloading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -147,7 +151,7 @@ const Companies: React.FC = () => {
   };
 
   const filteredCompanies = companiesList.filter((company) => {
-    console.log("This is matched businessType", company);
+    // console.log("This is matched businessType", company);
     const matchesSize =
       selectedSize === null ||
       (company.size &&
@@ -157,12 +161,9 @@ const Companies: React.FC = () => {
       (company.business &&
         company.business.toString().toLowerCase() ===
           selectedBusinessType.toLowerCase());
-    console.log("This is matched businessType 2", matchesBusinessType);
 
     return matchesSize && matchesBusinessType;
   });
-
-  console.log(">>>>>>SADSADASDSAD", filteredCompanies);
 
   const exportToCSV = () => {
     // Define CSV headers
@@ -226,6 +227,8 @@ const Companies: React.FC = () => {
               setShowFilterCard={setShowFilterCard}
               setSelectedSize={setSelectedSize}
               setSelectedBusinessType={setSelectedBusinessType}
+              selectedSize={selectedSize}
+              selectedBusinessType={selectedBusinessType}
             />
           )}
           <div className=" overflow-y-scroll h-[93%]">
@@ -272,6 +275,8 @@ const Companies: React.FC = () => {
                   setShowFilterCard={setShowFilterCard}
                   setSelectedSize={setSelectedSize}
                   setSelectedBusinessType={setSelectedBusinessType}
+                  selectedSize={selectedSize}
+                  selectedBusinessType={selectedBusinessType}
                 />
               </div>
               <div

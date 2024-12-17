@@ -160,21 +160,21 @@ export default async function handler(
       const data = JSON.parse(rawBody.toString());
       delete data.token;
       delete data.userId;
-    // Verify JWT token
-    
+      // Verify JWT token
 
-    // Send the request to the Fortis API
-    const fortisResponse = await fetch("https://api.sandbox.fortis.tech/v1/terminals", {
-      method: "POST",
-      headers: {
-        "user-id": process.env.USER_ID!,
-        "user-api-key": process.env.USER_API_KEY!,
-        "developer-id": process.env.DEVELOPER_ID!,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data), // Use terminalData excluding the token
-    });
+
+      // Send the request to the Fortis API
+      const fortisResponse = await fetch("https://api.sandbox.fortis.tech/v1/terminals", {
+        method: "POST",
+        headers: {
+          "user-id": process.env.USER_ID!,
+          "user-api-key": process.env.USER_API_KEY!,
+          "developer-id": process.env.DEVELOPER_ID!,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data), // Use terminalData excluding the token
+      });
 
       if (!fortisResponse.ok) {
         let errorDetails;
@@ -196,74 +196,74 @@ export default async function handler(
       } else {
         const responseData = await fortisResponse.json();
 
-        console.log("responseData",responseData);
+        console.log("responseData", responseData);
 
         const body = JSON.parse(rawBody.toString());
         const terminalTimeoutsVariables = {
-            card_entry_timeout: body.terminal_timeouts.card_entry_timeout,
-            device_terms_prompt_timeout: body.terminal_timeouts.device_terms_prompt_timeout,
-            overall_timeout: body.terminal_timeouts.overall_timeout,
-            pin_entry_timeout: body.terminal_timeouts.pin_entry_timeout,
-            signature_input_timeout: body.terminal_timeouts.signature_input_timeout,
-            signature_submit_timeout: body.terminal_timeouts.signature_submit_timeout,
-            status_display_time: body.terminal_timeouts.status_display_time,
-            tip_cashback_timeout: body.terminal_timeouts.tip_cashback_timeout,
-            transaction_timeout: body.terminal_timeouts.transaction_timeout,
-          };
-      
-          const terminalTimeoutsResponse = await client.request(
-            addTerminalTimeoutMutation,
-            terminalTimeoutsVariables
-          );
+          card_entry_timeout: body.terminal_timeouts.card_entry_timeout,
+          device_terms_prompt_timeout: body.terminal_timeouts.device_terms_prompt_timeout,
+          overall_timeout: body.terminal_timeouts.overall_timeout,
+          pin_entry_timeout: body.terminal_timeouts.pin_entry_timeout,
+          signature_input_timeout: body.terminal_timeouts.signature_input_timeout,
+          signature_submit_timeout: body.terminal_timeouts.signature_submit_timeout,
+          status_display_time: body.terminal_timeouts.status_display_time,
+          tip_cashback_timeout: body.terminal_timeouts.tip_cashback_timeout,
+          transaction_timeout: body.terminal_timeouts.transaction_timeout,
+        };
 
-          console.log("terminalTimeoutsResponse",terminalTimeoutsResponse);
-          console.log("terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout",terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout[0].id);
-          
-          const terminalTimeoutsId = terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout[0].id; // Extract the ID
-          
-      
-          // Now mutate TerminalConfiguration using the terminalTimeoutsId
-          const terminalConfigurationVariables = {
-            terminal_id:responseData.data.id,
-            terminal_application_id: body.terminal_application_id,
-            terminal_manufacturer_code: body.terminal_manufacturer_code,
-            title: body.title,
-            local_ip_address: body.local_ip_address,
-            port: body.port,
-            location_api_id: body.location_api_id,
-            debit: body.debit,
-            emv: body.emv,
-            cashback_enable: body.cashback_enable,
-            print_enable: body.print_enable,
-            sig_capture_enable: body.sig_capture_enable,
-            terminal_cvm_id: body.terminal_cvm_id,
-            terminal_timeouts: terminalTimeoutsId,
-            header_line_1: body.header_line_1,
-            header_line_2: body.header_line_2,
-            header_line_3: body.header_line_3,
-            header_line_4: body.header_line_4,
-            header_line_5: body.header_line_5,
-            trailer_line_1: body.trailer_line_1,
-            trailer_line_2: body.trailer_line_2,
-            trailer_line_3: body.trailer_line_3,
-            trailer_line_4: body.trailer_line_4,
-            trailer_line_5: body.trailer_line_5,
-            default_checkin: body.default_checkin,
-            default_checkout: body.default_checkout,
-            default_room_rate: body.default_room_rate,
-            default_room_number: body.default_room_number,
-            is_provisioned: body.is_provisioned,
-            tip_enable: body.tip_enable,
-            validated_decryption: body.validated_decryption,
-            communication_type: body.communication_type,
-            active: body.active,
-            userId:body.userId
-          };
-      
-          const terminalConfigResponse = await client.request(
-            addTerminalConfigurationMutation,
-            terminalConfigurationVariables
-          );
+        const terminalTimeoutsResponse = await client.request(
+          addTerminalTimeoutMutation,
+          terminalTimeoutsVariables
+        );
+
+        console.log("terminalTimeoutsResponse", terminalTimeoutsResponse);
+        console.log("terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout", terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout[0].id);
+
+        const terminalTimeoutsId = terminalTimeoutsResponse.addTerminalTimeout.terminalTimeout[0].id; // Extract the ID
+
+
+        // Now mutate TerminalConfiguration using the terminalTimeoutsId
+        const terminalConfigurationVariables = {
+          terminal_id: responseData.data.id,
+          terminal_application_id: body.terminal_application_id,
+          terminal_manufacturer_code: body.terminal_manufacturer_code,
+          title: body.title,
+          local_ip_address: body.local_ip_address,
+          port: body.port,
+          location_api_id: body.location_api_id,
+          debit: body.debit,
+          emv: body.emv,
+          cashback_enable: body.cashback_enable,
+          print_enable: body.print_enable,
+          sig_capture_enable: body.sig_capture_enable,
+          terminal_cvm_id: body.terminal_cvm_id,
+          terminal_timeouts: terminalTimeoutsId,
+          header_line_1: body.header_line_1,
+          header_line_2: body.header_line_2,
+          header_line_3: body.header_line_3,
+          header_line_4: body.header_line_4,
+          header_line_5: body.header_line_5,
+          trailer_line_1: body.trailer_line_1,
+          trailer_line_2: body.trailer_line_2,
+          trailer_line_3: body.trailer_line_3,
+          trailer_line_4: body.trailer_line_4,
+          trailer_line_5: body.trailer_line_5,
+          default_checkin: body.default_checkin,
+          default_checkout: body.default_checkout,
+          default_room_rate: body.default_room_rate,
+          default_room_number: body.default_room_number,
+          is_provisioned: body.is_provisioned,
+          tip_enable: body.tip_enable,
+          validated_decryption: body.validated_decryption,
+          communication_type: body.communication_type,
+          active: body.active,
+          userId: body.userId
+        };
+
+        const terminalConfigResponse = await client.request(
+          addTerminalConfigurationMutation,
+          terminalConfigurationVariables
+        );
 
         res.status(200).json(terminalConfigResponse);
       }

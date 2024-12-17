@@ -10,6 +10,10 @@ import SearchBox from "../components/searchBOx";
 import Link from "next/link";
 import TabNavigationMobile from "../components/tabNavigationMobile";
 import { useSession } from "next-auth/react";
+import { useToast } from "../components/toasterProvider";
+import Loader from "../components/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 interface ListInterface {
   created_ts: number;
@@ -27,6 +31,7 @@ function Index() {
   const [filteredData, setFilteredData] = useState<ListInterface[]>([]);
   const [loader, setLoader] = useState(false);
   const { data: session, status } = useSession();
+  const { showToast } = useToast();
   const tabData = [
     {
       tabName: "Payment",
@@ -42,7 +47,7 @@ function Index() {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -64,7 +69,7 @@ function Index() {
     setLoader(true);
     try {
       const response = await fetch(
-        "/api/fortis/getTransactionList?page[number]=1&page[size]=50",
+        "/api/fortis/getTransactionList?page[number]=1&page[size]=500",
         {
           method: "GET",
           headers: {
@@ -77,6 +82,8 @@ function Index() {
       if (!response.ok) {
         // Handle HTTP errors here
         console.error(`HTTP error! status: ${response.status}`);
+        setLoader(false);
+        showToast(`HTTP error! status: ${response.status}`, "error");
         return;
       }
 
@@ -95,10 +102,15 @@ function Index() {
           body: JSON.stringify({ userId: session?.user?.id }),
         }
       );
-
+      console.log("CCSaleTransactionResponse", CCSaleTransactionResponse);
       if (!CCSaleTransactionResponse.ok) {
         console.error(
           `HTTP error! status: ${CCSaleTransactionResponse.status}`
+        );
+        setLoader(false);
+        showToast(
+          `HTTP error! status: ${CCSaleTransactionResponse.status}`,
+          "error"
         );
         return;
       }
@@ -112,11 +124,19 @@ function Index() {
             quickInvoice.sale_transaction_Id === fortisInvoice.id
         )
       );
+      if (matchingInvoices.length === 0) {
+        setLoader(false);
+        showToast("No transaction Found", "error");
+        return;
+      }
 
       setListData(matchingInvoices);
       setFilteredData(matchingInvoices);
+      setLoader(false);
     } catch (error) {
+      setLoader(false);
       console.error("Error submitting request:", error);
+      showToast(`Error submitting request: ${error}`, "error");
       // Handle other types of errors (e.g., network errors)
     }
     setLoader(false);
@@ -156,49 +176,80 @@ function Index() {
             </div>
           </div>
 
-          <div className="flex justify-end px-[15px] mt-[15px] container mx-auto">
-            <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
-              Add Contact
-            </button>
-            <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
-              Add Account Vault
-            </button>
-            <Link
-              href={{
-                pathname: "quickInvoice",
-                query: {
-                  tabName: "Quick Invoice",
-                },
-              }}>
-              <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
-                Add Quick Invoice
+          <div className="flex justify-between px-[15px] mt-[15px]  ">
+            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
+              {/* <Link
+                href={{
+                  pathname: "transactions/transactionView",
+                  query: {
+                    tabName: "Invoice ID",
+                  },
+                }}>
+                {" "}
+                <FontAwesomeIcon
+                  className="hover:cursor-pointer"
+                  icon={faArrowLeft}
+                />{" "}
+              </Link> */}
+            </div>
+            <div>
+              <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+                Add Contact
               </button>
-            </Link>
-          </div>
-
-          <div>
-            <div className="px-[15px] mt-[15px] container mx-auto">
-              <SearchBox Component="Transactions" onSearch={handleSearch} />
+              <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+                Add Account Vault
+              </button>
+              <Link
+                href={{
+                  pathname: "quickInvoice",
+                  query: {
+                    tabName: "Quick Invoice",
+                  },
+                }}>
+                <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
+                  Add Quick Invoice
+                </button>
+              </Link>
             </div>
           </div>
 
-          <div className="section flex-1 pt-[18px] overflow-y-auto container mx-auto">
-            {filteredData &&
-              filteredData.map((transaction) => (
-                <TransactionCard
-                  key={transaction.id}
-                  id={transaction.id}
-                  name={transaction.account_holder_name}
-                  invDate={new Date(
-                    transaction.created_ts * 1000
-                  ).toLocaleDateString()}
-                  amount={`$${transaction.transaction_amount / 100}`}
-                  status={transaction.status_code === 101 ? "Paid" : "Pending"}
-                  pathname="/Payment/transactions/transactionView"
-                  query={{ id: transaction.id }}
-                />
-              ))}
+          <div>
+            <div className="px-[15px] mt-[15px] w-full md:w-96 container">
+              <SearchBox Component="Transactions" onSearch={handleSearch} />
+            </div>
           </div>
+          {loader ? (
+            <div className="h-screen">
+              <Loader message="Loading Transactions..." />
+            </div>
+          ) : (
+            <div className="section flex-1 pt-[18px] overflow-y-auto container mx-auto">
+              {filteredData && filteredData.length > 0 ? (
+                filteredData.map((transaction) => (
+                  <TransactionCard
+                    key={transaction.id}
+                    id={transaction.id}
+                    name={transaction.account_holder_name}
+                    invDate={new Date(
+                      transaction.created_ts * 1000
+                    ).toLocaleDateString()}
+                    amount={`$${transaction.transaction_amount / 100}`}
+                    status={
+                      transaction.status_code === 101 ? "Paid" : "Pending"
+                    }
+                    pathname="/Payment/transactions/transactionView"
+                    query={{ id: transaction.id }}
+                  />
+                ))
+              ) : (
+                <div className="h-screen flex justify-center items-center">
+                  <p className="text-palatinatePurple text-[24px] font-bold">
+                    No Transactions Available
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       }
     />

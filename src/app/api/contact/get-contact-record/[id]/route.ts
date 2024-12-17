@@ -17,6 +17,7 @@ const getAllContactsQuery = `
       id
       firstName
       lastName
+      logo
       company {
         name
       }

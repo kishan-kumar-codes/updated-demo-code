@@ -1,12 +1,14 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import Layout from "../layout/page";
-import TabNavigation from "../components/tabNavigation";
-import CustomInput from "../components/customInput";
-import CustomSelect from "../components/customSelect";
-import ToggleSwitch from "../components/toggleSwitch";
+import Layout from "../../layout/page";
+import TabNavigation from "../../components/tabNavigation";
+import CustomInput from "../../components/customInput";
+import CustomSelect from "../../components/customSelect";
+import ToggleSwitch from "../../components/toggleSwitch";
 import CreditCard from "../../../assets/images/P-credit-card.svg";
 import Image from "next/image";
-import TabNavigationMobile from "../components/tabNavigationMobile";
+import TabNavigationMobile from "../../components/tabNavigationMobile";
 
 const Index = () => {
   const [showDiscountCard, setShowDiscountCord] = useState(false);
@@ -27,7 +29,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,

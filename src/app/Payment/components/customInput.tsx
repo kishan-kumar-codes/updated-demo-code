@@ -6,9 +6,9 @@ interface CustomInputProps {
   className?: string;
   id?: string;
   readOnly?: boolean;
-  onChange?: void | any;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>, model: string) => void;
   value?: any;
-  model?: any;
+  model?: string;
   disabled?: boolean;
 }
 
@@ -31,7 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
       readOnly={readOnly}
       placeholder={placeholder}
       className={className}
-      onInput={(e) => onChange(e, model)}
+      onChange={(e) => onChange?.(e, model as string)}
       disabled={disabled}
     />
   );

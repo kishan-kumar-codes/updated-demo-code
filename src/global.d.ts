@@ -31,6 +31,7 @@ declare module "next-auth" {
       accessToken?: string;
     };
     provider: string | null;
+    accessToken?: string;
   }
 }
 

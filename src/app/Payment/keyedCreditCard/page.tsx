@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Layout from "../layout/page";
 import TabNavigation from "../components/tabNavigation";
 import CustomInput from "../components/customInput";
@@ -30,6 +30,8 @@ const Index = () => {
   const [clientToken, setClientToken] = useState(null);
   const [elementsLoading, setelementsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const elementsRef = useRef(null);
 
   const tabData = [
     {
@@ -46,7 +48,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -126,10 +128,51 @@ const Index = () => {
     if (typeof window !== "undefined" && clientToken) {
       // Initialize Fortis elements with the client token
       const elements = new Commerce.elements(clientToken);
-      elements.on("ready", function (event) {
+      elementsRef.current = elements;
+
+      const handleReady = (event) => {
         console.log(event, "ready event");
         setelementsLoading(true);
-      });
+      };
+
+      const handleDone = async (event) => {
+        console.log(event, "done event");
+        if (isSubmitting) return; // Prevent multiple submissions
+        setIsSubmitting(true);
+
+        try {
+          let response = await fetch("/api/fortis/ccKeyedSale", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              accept: "application/json",
+            },
+            body: JSON.stringify({
+              ...event.data,
+              userId: session?.user?.id,
+            }),
+          });
+
+          const responseData = await response.json();
+          if (!response.ok) {
+            setSavingLoader(false);
+            console.error(`HTTP error! status: ${response.status}`);
+            showToast(`Error: ${responseData.error}`, "error");
+            return;
+          }
+
+          showToast("Request submitted successfully", "success");
+          router.push("Payment/transactions/");
+        } catch (error) {
+          console.error("Error submitting request:", error);
+          showToast(`Error submitting request: ${error}`, "error");
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+
+      elements.on("ready", handleReady);
+      elements.on("done", handleDone);
 
       elements.create({
         container: "#payment",
@@ -214,8 +257,16 @@ const Index = () => {
           ],
         },
       });
+
+      // Cleanup function
+      return () => {
+        if (elementsRef.current) {
+          elementsRef.current.off("ready", handleReady);
+          elementsRef.current.off("done", handleDone);
+        }
+      };
     }
-  }, [clientToken]);
+  }, [clientToken, session?.user?.id, isSubmitting]);
   return (
     <Layout
       hHeading="Payments"

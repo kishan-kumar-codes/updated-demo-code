@@ -8,23 +8,41 @@ import { useSession } from "next-auth/react";
 import { useToast } from "@/components/ui/use-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { X } from "lucide-react";
 
 interface FilterMenuProps {
   text: string;
   onClick?: () => void;
+  textColor?: boolean;
+  onClear?: () => void;
 }
 
-const FilterMenu: React.FC<FilterMenuProps> = ({ text, onClick }) => {
+const FilterMenu: React.FC<FilterMenuProps> = ({
+  text,
+  onClick,
+  textColor,
+  onClear,
+}) => {
   return (
-    <h5
-      onClick={onClick}
-      className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px]">
-      {text}
-    </h5>
+    <div className="flex justify-between items-center my-[12px] pr-2 md:pr-4">
+      <h5
+        onClick={onClick}
+        className={` ${textColor ? "text-palatinatePurple" : "text-darkSilverColor"} text-[10px] font-bold  cursor-pointer hover:text-palatinatePurple md:text-[20px]`}>
+        {text}
+      </h5>
+      {textColor && (
+        <X
+          className=" font-bold  cursor-pointer text-palatinatePurple w-[10px] h-[10px] md:h-[20px] md:w-[20px] "
+          onClick={onClear}
+        />
+      )}
+    </div>
   );
 };
 
 interface FilterCompaniesProps {
+  selectedSize: string | null;
+  selectedBusinessType: string | null;
   setShowFilterCard: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedSize: (size: string | null) => void;
   setSelectedBusinessType: (type: string | null) => void;
@@ -36,6 +54,8 @@ interface FilterData {
 
 const FilterCompanies: React.FC<FilterCompaniesProps> = ({
   setSelectedSize,
+  selectedBusinessType,
+  selectedSize,
   setSelectedBusinessType,
   setShowFilterCard,
 }) => {
@@ -54,6 +74,12 @@ const FilterCompanies: React.FC<FilterCompaniesProps> = ({
   });
   const [showPopup, setShowPopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // useEffect(()=>{
+  //   console.log("selectedBusinessType:",selectedBusinessType);
+  //   console.log("selectedSize:",selectedSize);
+
+  // },[selectedSize , selectedBusinessType])
 
   const employeeSizes = [
     "1 Employee",
@@ -180,8 +206,8 @@ const FilterCompanies: React.FC<FilterCompaniesProps> = ({
           />
         </div>
       </div>
-      <div className="2xl:ml-[50px]  lg:flex ml-[0px]">
-        <div className=" w-full h-8 hidden lg:flex lg:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
+      <div className="lg:flex w-full justify-center ">
+        <div className=" w-full h-8 hidden md:w-[80%] 2xl:w-[322px] lg:flex lg:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
           <label
             htmlFor="searchQuery"
             className="text-PhilippineGray relative px-17px w-full h-full flex items-center">
@@ -243,17 +269,19 @@ const FilterCompanies: React.FC<FilterCompaniesProps> = ({
             <FilterMenu
               key={size}
               text={size}
+              textColor={selectedSize === size}
               onClick={() => handleSizeClick(size)}
+              onClear={clearSizeFilter}
             />
           ))
         ) : (
           <FilterMenu text="No Business Size" />
         )}
-        <button
+        {/* <button
           onClick={clearSizeFilter}
           className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px]">
           Clear
-        </button>
+        </button> */}
       </div>
 
       <div className="h-[36.8px] w-full bg-palatinatePurple mt-[22px] mr-[10px] flex items-center justify-between md:mt-5 md:h-[64px] md:rounded-br-3xl">
@@ -277,7 +305,7 @@ const FilterCompanies: React.FC<FilterCompaniesProps> = ({
           + ADD BUSINESS TYPE
         </div>
         <div className="w-full flex justify-center">
-          <div className="w-[180px] md:w-[80%] lg:w-full h-8 md:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
+          <div className="w-[180px] md:w-[80%]  2xl:w-[322px] h-8 md:h-[43px] px-[17px] border-2 border-[#F4F4F4] bg-white rounded-3xl">
             <label
               htmlFor="searchQuery"
               className="text-PhilippineGray relative px-17px w-full h-full flex items-center">
@@ -305,17 +333,19 @@ const FilterCompanies: React.FC<FilterCompaniesProps> = ({
             <FilterMenu
               key={key}
               text={type.name}
+              textColor={selectedBusinessType === type.name}
               onClick={() => handleBusinessTypeClick(type.name)}
+              onClear={clearBusinessTypeFilter}
             />
           ))
         ) : (
           <FilterMenu text="No Business Type" />
         )}
-        <button
+        {/* <button
           onClick={clearBusinessTypeFilter}
           className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple md:text-[20px]">
           Clear
-        </button>
+        </button> */}
       </div>
       {showPopup && (
         <div className="popup fixed left-0 top-0 h-full w-full bg-black-transparet z-10">

@@ -108,7 +108,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -126,6 +126,10 @@ const Index = () => {
     const invoice = listData.find((inv) => inv.id === selectedInvoiceId);
 
     setSelectedInvoice(invoice);
+  };
+
+  const getTransectionSet = async () => {
+    const response = await fetch("");
   };
 
   const handleSubmit = async () => {
@@ -191,10 +195,68 @@ const Index = () => {
     }
   };
 
+  console.log("Client Token", clientToken);
+
+  const handleSucess = async (data: any) => {
+    const payload = {
+      attempt_interval: 300,
+      basic_auth_username: "tester",
+      basic_auth_password: "Test@522",
+      expands: "changelogs,tags",
+      format: "api-default",
+      is_active: true,
+      location_id: "11e95f8ec39de8fbdb0a4f1a",
+      on_create: true,
+      on_update: true,
+      on_delete: true,
+      legacy: true,
+      postback_config_id: "11e95f8ec39de8fbdb0a4f1a",
+      product_transaction_id: "11e95f8ec39de8fbdb0a4f1a",
+      resource: "contact",
+      number_of_attempts: 1,
+      url: "https://127.0.0.1/receiver",
+    };
+    try {
+      const response = await fetch("/api/fortis/webhook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      console.log("response at frontend", response);
+    } catch (error) {
+      console.log("Error in the handleSucess", error);
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined" && clientToken) {
       // Initialize Fortis elements with the client token
       const elements = new Commerce.elements(clientToken);
+
+      elements.on("done", function (event: any) {
+        const data = {
+          attempt_interval: 300,
+          basic_auth_username: "tester",
+          basic_auth_password: "Test@522",
+          expands: "changelogs",
+          format: "api-default",
+          is_active: true,
+          location_id: event.data.location_id,
+          on_create: true,
+          on_update: true,
+          on_delete: true,
+          legacy: true,
+          postback_config_id: event.data.modified_user_id,
+          product_transaction_id: event.data.product_transaction_id,
+          resource: "contact",
+          number_of_attempts: 5,
+          url: "//your webhook url",
+        };
+        console.log(event, "Done event");
+        handleSucess(data);
+      });
 
       elements.create({
         container: "#payment",
@@ -203,125 +265,80 @@ const Index = () => {
         view: "default",
         language: "en-us",
         defaultCountry: "US",
-        floatingLabels: true,
+        floatingLabels: false,
         showReceipt: true,
         showSubmitButton: true,
         showValidationAnimation: true,
         hideAgreementCheckbox: false,
         hideTotal: false,
-        digitalWallets: ["ApplePay", "GooglePay"],
+        // digitalWallets: ["ApplePay", "GooglePay"],
         appearance: {
           colorButtonSelectedBackground: "#363636",
           colorButtonSelectedText: "#ffffff",
-          colorButtonActionBackground: "#00d1b2",
+          colorButtonActionBackground: "#40F440",
           colorButtonActionText: "#ffffff",
           colorButtonBackground: "#ffffff",
           colorButtonText: "#363636",
-          colorFieldBackground: "#ffffff",
+          colorFieldBackground: "#F4F4F4",
           colorFieldBorder: "#dbdbdb",
           colorText: "#4a4a4a",
           colorLink: "#485fc7",
           fontSize: "16px",
           marginSpacing: "0.5rem",
-          borderRadius: "4px",
+          borderRadius: "14px",
           trimWhitespace: "false",
           rowMarginSpacing: "0.5rem",
         },
         fields: {
-          billing: [
-            {
-              type: "text",
-              name: "contact",
-              label: "Contact",
-              required: true,
-            },
-            {
-              type: "select",
-              name: "accountType",
-              label: "Account Type",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "title",
-              label: "Title",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "accountHolderName",
-              label: "Account Holder Name",
-              required: true,
-            },
-            {
-              type: "cardNumber",
-              name: "cardNumber",
-              label: "Card Number",
-              required: true,
-            },
-            {
-              type: "expiryMonth",
-              name: "expiryMonth",
-              label: "Expiration Month",
-              required: true,
-            },
-            {
-              type: "expiryYear",
-              name: "expiryYear",
-              label: "Expiration Year",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "billingStreet",
-              label: "Billing Street",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "billingCity",
-              label: "Billing City",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "billingState",
-              label: "Billing State",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "billingZip",
-              label: "Billing Zip",
-              required: true,
-            },
-            {
-              type: "text",
-              name: "billingCountry",
-              label: "Billing Country",
-              required: true,
-            },
-            {
-              type: "tel",
-              name: "billingPhone",
-              label: "Billing Phone",
-              required: true,
-            },
-          ],
+          billing: false,
           additional: [
             {
-              type: "text",
-              name: "accountApiId",
-              label: "Account API Id",
-              required: true,
+              name: "phone_number",
+              required: false,
             },
           ],
           custom: [
             {
-              type: "boolean",
-              name: "runAwsTransaction",
-              label: "Run AWS Transaction?",
+              type: "date",
+              format: "MM/DD/YYYY",
+              name: "checkin_date",
+              label: "Checkout Date",
+            },
+            {
+              type: "date",
+              format: "MM/DD/YYYY",
+              name: "checkout_date",
+              label: "Checkin Date",
+            },
+            {
+              type: "text",
+              name: "clerk_number",
+              label: "Clerk Number",
+              value: "",
               required: false,
+              pattern: /\w{1,9}/,
+            },
+            {
+              type: "select",
+              name: "account_type",
+              label: "Account Type*",
+              required: false,
+              value: "1",
+              options: [
+                { value: "1", text: "Secured credit cards" },
+                { value: "2", text: "Business credit cards" },
+              ],
+            },
+            {
+              type: "select",
+              name: "avs_transactions",
+              label: "Run Avs Transactions",
+              required: false,
+              value: "1",
+              options: [
+                { value: "yes", text: "Yes" },
+                { value: "no", text: "No" },
+              ],
             },
           ],
         },
@@ -418,7 +435,7 @@ const Index = () => {
                     <div className="bg-chinesWhite pb-[27px]  rounded-lg">
                       <div className="w-full md:py-[18px] py-[9px] pl-[32px] md:pl-[16px] bg-palatinatePurple rounded-lg mt-[16px] text-white mb-5">
                         <h5 className="md:text-[26px] text-[16px] font-bold  md:pl-[15px] ">
-                          Pay Form
+                          Information
                         </h5>
                       </div>
                       <div className="px-5">

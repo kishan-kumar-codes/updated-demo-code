@@ -1,3 +1,5 @@
+"use client";
+
 import TabNavigation from "../components/tabNavigation";
 import React, { useEffect, useState } from "react";
 import Layout from "../layout/page";
@@ -6,11 +8,16 @@ import Image from "next/image";
 import TransactionCard from "../components/transactionCard";
 import SearchBox from "../components/searchBOx";
 import Link from "next/link";
-import { faEye, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEye,
+  faPenToSquare,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useToast } from "../../Payment/components/toasterProvider";
+import { useToast } from "../components/toasterProvider";
 import TabNavigationMobile from "../components/tabNavigationMobile";
 import { useSession } from "next-auth/react";
+import Loader from "../components/Loader";
 
 interface ListInterface {
   title: string;
@@ -41,7 +48,7 @@ function Terminal() {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "virtualTerminal/terminal",
+      tabUrl: "virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -74,6 +81,7 @@ function Terminal() {
       );
 
       if (!response.ok) {
+        setLoader(false);
         console.error(`HTTP error! status: ${response.status}`);
         showToast(`HTTP error! status: ${response.status}`, "error");
         return;
@@ -93,6 +101,8 @@ function Terminal() {
       });
 
       if (!terminalResponse.ok) {
+        setLoader(false);
+        showToast(`HTTP error! status: ${terminalResponse.status}`, "error");
         console.error(`HTTP error! status: ${terminalResponse.status}`);
         return;
       }
@@ -114,10 +124,16 @@ function Terminal() {
           return null;
         })
         .filter(Boolean); // Filter out any null values if no match was found
+      if (matchingInvoices.length === 0) {
+        setLoader(false);
+        showToast("No terminal found", "error");
+        return;
+      }
 
       setListData(matchingInvoices);
       setFilteredData(matchingInvoices);
     } catch (error) {
+      setLoader(false);
       console.error("Error submitting request:", error);
       showToast(`Error submitting request: ${error}`, "error");
     } finally {
@@ -150,89 +166,116 @@ function Terminal() {
     <Layout
       Childrens={
         <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured ">
-          <div className="block px-[15px] md:hidden">
+          <div className="hidden md:block">
+            <TabNavigation tabData={tabData} />
+          </div>
+          <div className="block md:hidden">
             <TabNavigationMobile tabsData={mobileTab} />
           </div>
-          {/* <div className="px-[15px]">
-
-                    <TabNavigation tabsData={tabData} />
-                </div> */}
-
-          <div className="flex justify-end px-[15px] mt-[15px]">
-            <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
-              Add Contact
-            </button>
-            <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
-              Add Account Vault
-            </button>
-            <Link
-              href={{
-                pathname: "virtualTerminal/terminal",
-                query: {
-                  tabName: "Quick Invoice",
-                },
-              }}>
-              <button className="px-[25px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
-                Add Terminal
+          <div className="flex justify-between px-[15px] mt-[15px]">
+            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
+              {/* <Link
+                href={{
+                  pathname: "virtualTerminal/terminal",
+                  query: {
+                    tabName: "Virtual Terminal",
+                  },
+                }}>
+                {" "}
+                <FontAwesomeIcon
+                  className="hover:cursor-pointer"
+                  icon={faArrowLeft}
+                />{" "}
+              </Link> */}
+            </div>
+            <div>
+              <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+                Add Contact
               </button>
-            </Link>
+              <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+                Add Account Vault
+              </button>
+              <Link
+                href={{
+                  pathname: "virtualTerminal/createTerminal",
+                  query: {
+                    tabName: "Virtual Terminal",
+                  },
+                }}>
+                <button className="px-[25px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
+                  Add Terminal
+                </button>
+              </Link>
+            </div>
           </div>
 
           <div>
-            <div className="px-[15px] mt-[15px]">
+            <div className="px-[15px] mt-[15px] w-full md:w-96">
               <SearchBox onSearch={handleSearch} Component="Terminal" />
             </div>
           </div>
 
           <div className="section shadow flex-1 pt-[18px] container mx-auto overflow-y-auto">
             {!loader ? (
-              filteredData.map((data, index) => (
-                <div
-                  key={index}
-                  className="flex pb-[17px] border-b-[.5px]  border-chinesWhite px-[15px] pt-[4px] ">
-                  <div className="flex-1">
-                    <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
-                      {data.title}
-                    </h5>
-                    <h5 className="md:text-[24px] text-[19px]  text-darkSilverColor">
-                      {data.default_checkout}
-                    </h5>
-                  </div>
-                  <div className="flex items-end ">
-                    <h5 className="text-[15px] font-bold text-palatinatePurple"></h5>
-                    {/* <h5 className='text-[14px] font-bold text-limeGreen '>{status}</h5> */}
-
-                    <div className="md:text-[24px] text-[19px] font-bold inline-block mr-1 text-palatinatePurple">
-                      <Link
-                        href={{
-                          pathname: "virtualTerminal/terminal",
-                          query: {
-                            mode: "view",
-                            id: data.id,
-                          },
-                        }}>
-                        <FontAwesomeIcon icon={faEye} />
-                      </Link>
+              filteredData.length > 0 ? (
+                filteredData.map((data, index) => (
+                  <div
+                    key={index}
+                    className="flex pb-[17px] border-b-[.5px]  border-chinesWhite px-[15px] pt-[4px] ">
+                    <div className="flex-1">
+                      <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
+                        {data.title}
+                      </h5>
+                      <h5 className="md:text-[24px] text-[19px]  text-darkSilverColor">
+                        {data.default_checkout}
+                      </h5>
                     </div>
+                    <div className="flex items-end ">
+                      <h5 className="text-[15px] font-bold text-palatinatePurple"></h5>
+                      {/* <h5 className='text-[14px] font-bold text-limeGreen '>{status}</h5> */}
 
-                    <div className="md:text-[24px] text-[19px] font-bold inline-block text-palatinatePurple">
-                      <Link
-                        href={{
-                          pathname: "virtualTerminal/terminal",
-                          query: {
-                            mode: "update",
-                            id: data.id,
-                            db_id: data.terminal_db_id,
-                          },
-                        }}>
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                      </Link>
+                      <div className="md:text-[24px] text-[19px] font-bold inline-block mr-1 text-palatinatePurple">
+                        <Link
+                          href={{
+                            pathname: "virtualTerminal/terminal",
+                            query: {
+                              mode: "view",
+                              id: data.id,
+                              tabName: "Virtual Terminal",
+                            },
+                          }}>
+                          <FontAwesomeIcon icon={faEye} />
+                        </Link>
+                      </div>
+
+                      <div className="md:text-[24px] text-[19px] font-bold inline-block text-palatinatePurple">
+                        <Link
+                          href={{
+                            pathname: "virtualTerminal/terminal",
+                            query: {
+                              mode: "update",
+                              id: data.id,
+                              db_id: data.terminal_db_id,
+                              tabName: "Virtual Terminal",
+                            },
+                          }}>
+                          <FontAwesomeIcon icon={faPenToSquare} />
+                        </Link>
+                      </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="h-screen flex justify-center items-center">
+                  <p className="text-palatinatePurple text-[24px] font-bold">
+                    No Terminal Available
+                  </p>
                 </div>
-              ))
+              )
             ) : (
-              <div className="text-center">Loading...</div>
+              <div className="h-screen">
+                <Loader message="Loading Terminal..." />
+              </div>
             )}
             {/* <TransactionCard pathname="" query={{}} name="Alexis Mcconnell" invDate="04/02/17 Invoice ID Number" amount="$2,450.00" status="Paid" /> */}
           </div>

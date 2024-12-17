@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import CloseIcon from "../../../assets/images/close-icon.svg";
 import FilterIcon from "../../../assets/images/filter-icon.svg";
@@ -7,11 +8,27 @@ import TagIcon from "../../../assets/images/tag-icon.svg";
 import DualUser from "../../../assets/images/dual-user.svg";
 import StatusIcon from "../../../assets/images/status-icon.svg";
 
-interface FilterContactProps {
+interface FilterContactsProps {
   setShowFilterCard: React.Dispatch<React.SetStateAction<boolean>>;
+  tags?: string[];
+  onTagSelect: (tags: string[]) => void;
+  selectedTags: string[];
 }
 
-const FilterContact: React.FC<FilterContactProps> = ({ setShowFilterCard }) => {
+const FilterContacts: React.FC<FilterContactsProps> = ({
+  setShowFilterCard,
+  tags,
+  onTagSelect,
+  selectedTags,
+}) => {
+  const handleTagClick = (tag: string) => {
+    const newSelectedTags = selectedTags.includes(tag)
+      ? selectedTags.filter((t) => t !== tag)
+      : [...selectedTags, tag];
+
+    onTagSelect(newSelectedTags);
+  };
+
   return (
     <div className="absolute h-[514px] z-50 bottom-0 left-0 w-[220px] bg-[#F4F4F4] overflow-y-scroll overflow-x-hidden rounded-r-2xl border-palatinatePurple border-2 md:static md:w-full md:h-full md:flex md:flex-col md:border-none md:pl-7">
       <div className="flex justify-between pl-[14px] pr-[22px] mt-[16px] w-full md:hidden">
@@ -47,15 +64,26 @@ const FilterContact: React.FC<FilterContactProps> = ({ setShowFilterCard }) => {
       </FilterSection>
 
       <FilterSection icon={TagIcon} title="TAGS">
-        <button className="bg-darkSilverColor rounded-xl block text-white font-bold mb-[6px] text-[8px] px-[6px] py-[5px] md:text-[15px] md:px-3 md:py-2 md:mb-4">
-          football-fun
-        </button>
-        <button className="bg-palatinatePurple rounded-xl block text-white font-bold mb-[6px] text-[8px] px-[6px] py-[5px] md:text-[15px] md:px-3 md:py-2 md:mb-4">
-          musician
-        </button>
-        <button className="bg-darkSilverColor rounded-xl block text-white font-bold mb-[6px] text-[8px] px-[6px] py-[5px] md:text-[15px] md:px-3 md:py-2 md:mb-4">
-          football-fun
-        </button>
+        {tags && tags.length > 0 ? (
+          tags.map((tag, index) => (
+            <button
+              key={index}
+              onClick={() => handleTagClick(tag.trim())}
+              className={`
+                ${index % 2 === 0 ? "bg-darkSilverColor" : "bg-palatinatePurple"}
+                ${selectedTags.includes(tag.trim()) ? "ring-2 ring-white" : ""}
+                rounded-xl block text-white font-bold mb-[6px] text-[8px] 
+                px-[6px] py-[5px] md:text-[15px] md:px-3 md:py-2 md:mb-4
+                transition-all duration-200 hover:opacity-90
+              `}>
+              {tag.trim()}
+            </button>
+          ))
+        ) : (
+          <p className="text-darkSilverColor text-[10px] font-bold my-[12px] cursor-pointer hover:text-palatinatePurple relative flex items-center md:text-[20px]">
+            No Tags Available
+          </p>
+        )}
       </FilterSection>
 
       <FilterSection icon={DualUser} title="ACCOUNT MANAGER">
@@ -106,4 +134,4 @@ const FilterMenu: React.FC<FilterMenuProps> = ({ text, color }) => {
   );
 };
 
-export default FilterContact;
+export default FilterContacts;

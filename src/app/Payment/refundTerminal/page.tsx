@@ -38,7 +38,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,

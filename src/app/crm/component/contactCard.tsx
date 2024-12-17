@@ -5,8 +5,9 @@ interface ContactCardProps {
   name: string;
   role: string;
   notes: number;
-  tags: string[];
+  tags: string;
   daysAgo: string;
+  logo?: string;
 }
 
 const ContactCard: React.FC<ContactCardProps> = ({
@@ -63,11 +64,11 @@ const ContactCard: React.FC<ContactCardProps> = ({
             </h5>
             <div>
               {tags &&
-                tags.map((tag, index) => (
+                tags.split(",").map((tag, index) => (
                   <button
                     key={index}
                     className={`${index % 2 == 0 ? "bg-[#6D6D6D]" : "bg-[#5F1762]"} rounded-xl text-white font-bold text-[8px] md:text-[13px] px-[6px] py-[5px] ml-[4px] md:rounded-lg`}>
-                    {tag}
+                    {tag.trim()}
                   </button>
                 ))}
             </div>

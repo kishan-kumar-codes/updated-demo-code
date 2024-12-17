@@ -29,7 +29,7 @@ function Invoice() {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,

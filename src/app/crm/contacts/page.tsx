@@ -49,10 +49,9 @@ const Contacts: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const router = useRouter();
-
-  console.log(" filteredContacts", filteredContacts);
 
   function navigation() {
     router.push("/crm/contacts/addNewContact");
@@ -60,7 +59,6 @@ const Contacts: React.FC = () => {
 
   useEffect(() => {
     if (session?.user?.id) {
-      console.log("Session object:", session);
       getAllContacts(); // Call only when session.user.id is available
     }
   }, [session?.user?.id]);
@@ -76,9 +74,7 @@ const Contacts: React.FC = () => {
       },
       body: JSON.stringify({ userId }), // Pass the userId in the request body
     });
-    console.log("contacts", response);
     const contacts = await response.json();
-    console.log("contacts:::::------", contacts);
     setContactsData(contacts);
     setFilteredContacts(contacts);
     extractUniqueTags(contacts);
@@ -88,7 +84,7 @@ const Contacts: React.FC = () => {
   const extractUniqueTags = (contacts: any) => {
     const allTags = contacts.reduce((acc: any, contact: any) => {
       if (contact.tag) {
-        acc.push(contact.tag); // Push the tag string into the array
+        acc.push(...contact.tag.split(",")); // Push the tag string into the array
       }
       return acc;
     }, []);
@@ -162,6 +158,22 @@ const Contacts: React.FC = () => {
   };
   // function setShowSorting(){}
 
+  const handleTagFilter = (tags: string[]) => {
+    setSelectedTags(tags);
+    if (tags.length === 0) {
+      // If no tags selected, show all contacts
+      setFilteredContacts(contactsData);
+    } else {
+      // Filter contacts based on selected tags
+      const filtered = contactsData.filter((contact) => {
+        if (!contact.tag) return false;
+        const contactTags = contact.tag.split(",").map((tag) => tag.trim());
+        return tags.some((selectedTag) => contactTags.includes(selectedTag));
+      });
+      setFilteredContacts(filtered);
+    }
+  };
+
   // return addNewCompany ? (
   //   <AddNewContacts />
   // ) : (
@@ -169,9 +181,16 @@ const Contacts: React.FC = () => {
     <LayoutView
       Childrens={
         <div className="relative h-full w-full bg-[#F4F4F4]">
-          {showFilterCard && (
-            <FilterContacts setShowFilterCard={setShowFilterCard} />
-          )}
+          {showFilterCard &&
+            (console.log("tags in contacts page", tags),
+            (
+              <FilterContacts
+                setShowFilterCard={setShowFilterCard}
+                tags={tags}
+                onTagSelect={handleTagFilter}
+                selectedTags={selectedTags}
+              />
+            ))}
           <div className=" h-[65%]">
             <div className="w-full lg:hidden mt-4 flex px-[20px]">
               <TabNavigation />
@@ -247,7 +266,12 @@ const Contacts: React.FC = () => {
                 <span className="w-full mx-auto pl-[30px]">
                   <SearchBox Component={""} />
                 </span>
-                <FilterContacts setShowFilterCard={setShowFilterCard} />
+                <FilterContacts
+                  setShowFilterCard={setShowFilterCard}
+                  tags={tags}
+                  onTagSelect={handleTagFilter}
+                  selectedTags={selectedTags}
+                />
               </div>
               <div className="mt-[35px] h-full overflow-y-auto w-full flex-1 md:pl-3 2xl:pr-32 ">
                 {loading ? (
@@ -264,7 +288,8 @@ const Contacts: React.FC = () => {
                         name={`${contact.firstName || "Unknown"} ${contact.lastName || ""}`}
                         role={contact.title || "No Title"}
                         notes={contact.notes || 0} // Assuming `notes` might be part of the data
-                        tags={contact.tag ? [contact.tag] : []} // Wrapping single tag in an array
+                        // tags={contact.tag ? [contact.tag] : []} // Wrapping single tag in an array
+                        tags={contact.tag ? contact.tag : ""} // Wrapping single tag in an array
                         daysAgo={contact.daysAgo || "2"} // Adjust with actual field if available
                         logo={contact.logo?.[0] || contact.company?.logo || ""}
                       />

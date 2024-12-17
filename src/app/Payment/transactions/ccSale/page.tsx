@@ -1,32 +1,35 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
-import Layout from "../layout/page";
-import TabNavigation from "../components/tabNavigation";
-import CustomInput from "../components/customInput";
-import CustomSelect from "../components/customSelect";
-import ToggleSwitch from "../components/toggleSwitch";
+import Layout from "../../layout/page";
+import TabNavigation from "../../components/tabNavigation";
+import CustomInput from "../../components/customInput";
+import CustomSelect from "../../components/customSelect";
+import ToggleSwitch from "../../components/toggleSwitch";
 import CreditCard from "../../../assets/images/P-credit-card.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useToast } from "../components/toasterProvider";
-import TabNavigationMobile from "../components/tabNavigationMobile";
+import { useToast } from "../../components/toasterProvider";
+import TabNavigationMobile from "../../components/tabNavigationMobile";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 const Index = () => {
   const [showDiscountCard, setShowDiscountCord] = useState(false);
   const [initialLoader, setInitialLoader] = useState(false);
   const [saving, setSaving] = useState(false);
   const [throwError, setError] = useState(false);
-  const { showToast } = useToast();
   const router = useRouter();
+  const { showToast } = useToast();
   const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (session) {
-      console.log("Session object:", session);
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: session?.user?.accessToken, // Make sure this path is correct
+        token: session?.accessToken, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -46,7 +49,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "/Payment/virtualTerminal/terminal",
+      tabUrl: "/Payment/virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -61,7 +64,7 @@ const Index = () => {
     },
     {
       tabName: `Virtual Terminal`,
-      tabUrl: "virtualTerminal/terminal",
+      tabUrl: "virtualTerminal",
     },
     {
       tabName: `Keyed Credit Card`,
@@ -70,6 +73,9 @@ const Index = () => {
   ];
 
   const [accessType, setAccessType] = useState<any>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [loader, setLoader] = useState(false);
+  const [listData, setListData] = useState([]);
   const [formData, setFormData] = useState({
     checkin_date: "2021-12-01",
     checkout_date: "2021-12-01",
@@ -82,13 +88,13 @@ const Index = () => {
     installment: true,
     installment_number: 1,
     installment_count: 1,
-    product_transaction_id: "31ef2344e2764888aaf17782",
+    product_transaction_id: "",
     advance_deposit: false,
     no_show: false,
-    notification_email_address: "johnsmith@smiths.com",
+    notification_email_address: "",
     order_number: "433659378839",
     po_number: "555555553123",
-    quick_invoice_id: "31ef8bb9510646c28411c642",
+    quick_invoice_id: "",
     recurring: false,
     recurring_number: 1,
     room_num: "303",
@@ -121,39 +127,107 @@ const Index = () => {
     entry_mode_id: "K",
     exp_date: "0722",
     wallet_type: "000",
-    previous_transaction_id: "31ef2e8eaf2bcb109f4e6f86",
-    token: session?.user?.accessToken,
+    token: session?.accessToken,
     userId: session?.user?.id,
   });
 
   useEffect(() => {
-    setInitialLoader(true);
-    const { query } = router;
-    setAccessType(query.mode);
+    if (session?.user?.id) {
+      getInvoiceList(); // Call only when session.user.id is available
+    }
+  }, [session?.user?.id]);
 
-    if (query.mode === "view" || query.mode === "update") {
-      getccRefundRecord();
-    } else setInitialLoader(false);
-  }, []);
+  const getInvoiceList = async () => {
+    setLoader(true);
+    try {
+      const response = await fetch(
+        "/api/fortis/getInvoiceList?page[number]=1&page[size]=50",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
-  const convertFileToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
+      if (!response.ok) {
+        console.error(`HTTP error! status: ${response.status}`);
+        return;
+      }
+
+      const fortisData = await response.json();
+
+      // Fetch get-invoice-list data
+      const quickInvoiceResponse = await fetch(
+        "/api/invoice/get-Invoice-list",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Cache-Control": "no-cache",
+          },
+          body: JSON.stringify({ userId: session?.user?.id }),
+        }
+      );
+
+      if (!quickInvoiceResponse.ok) {
+        console.error(`HTTP error! status: ${quickInvoiceResponse.status}`);
+        return;
+      }
+
+      const quickInvoiceData = await quickInvoiceResponse.json();
+
+      // Compare the invoices by `invoice_id` and `id`
+      const matchingInvoices = fortisData.list.filter((fortisInvoice: any) =>
+        quickInvoiceData.some(
+          (quickInvoice: any) => quickInvoice.invoice_id === fortisInvoice.id
+        )
+      );
+
+      // Calculate amount for matching invoices
+      matchingInvoices.forEach((inv: any) => {
+        let amount = 0;
+        inv.item_list.forEach((item: any) => (amount += item.amount));
+        inv.invAmount = amount;
+      });
+
+      setListData(matchingInvoices);
+    } catch (error) {
+      showToast("Error submitting request:", "error");
+    }
+    setLoader(false);
   };
 
-  function stripBase64Metadata(base64String) {
-    return base64String.replace(/^data:image\/[a-zA-Z]+;base64,/, "");
-  }
+  // useEffect(() => {
+  //   setInitialLoader(true);
+  //   const { query } = router;
 
+  //   setAccessType(query.mode);
+
+  //   if (query.mode === "view" || query.mode === "update") {
+  //     getccRefundRecord();
+  //   } else setInitialLoader(false);
+  // }, []);
+
+  useEffect(() => {
+    setInitialLoader(true);
+    const mode = searchParams?.get("mode");
+    setAccessType(mode);
+
+    if (mode === "view" || mode === "update") {
+      getccRefundRecord();
+    } else {
+      setInitialLoader(false);
+    }
+  }, [searchParams]);
   const getccRefundRecord = async () => {
-    const { query } = router;
+    // const { query } = router;
     try {
-      const id = query.id;
-      const url = `/api/fortis/getRefundRecord?id=${id}`;
+      const id = searchParams?.get("id");
+      // const id = query.id;
+      const url = `/api/fortis/getCCSaleRecord?id=${id}`;
       const response = await fetch(url);
       if (!response.ok) {
         // Handle HTTP errors here
@@ -172,14 +246,34 @@ const Index = () => {
     }
     setInitialLoader(false);
   };
+
+  const convertFileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  function stripBase64Metadata(base64String) {
+    return base64String.replace(/^data:image\/[a-zA-Z]+;base64,/, "");
+  }
+
+  const handleSelectInvoice = (e) => {
+    const selectedInvoiceId = e.target.value;
+    const invoice = listData.find((inv) => inv.id === selectedInvoiceId);
+    setSelectedInvoice(invoice); // Update state with selected invoice details
+  };
+
   const creatCCSalesTerminal = async () => {
     setSaving(true);
-    setError(false);
+
     const bodyData = formData;
 
     if (
       !bodyData.transaction_amount ||
-      Number(bodyData.transaction_amount) == 0
+      Number(bodyData.transaction_amount) === 0
     ) {
       setSaving(false);
       setError(true);
@@ -188,43 +282,46 @@ const Index = () => {
 
     try {
       let response = null;
-      const { query } = router;
+      // const { query } = router;
+      const id = searchParams?.get("id");
 
+      // Prepare the body data to send
       const formDataToSend = {
         ...bodyData,
+        notification_email_address: selectedInvoice.email,
+        quick_invoice_id: selectedInvoice.id,
+        product_transaction_id: selectedInvoice.cc_product_transaction_id
+          ? selectedInvoice.cc_product_transaction_id
+          : selectedInvoice.ach_product_transaction_id,
         image_front: stripBase64Metadata(bodyData.image_front),
         image_back: stripBase64Metadata(bodyData.image_back),
       };
 
-      console.log("formDataToSend", formDataToSend);
-
       if (accessType === "update") {
-        const id = query.id;
-        response = await fetch(`/api/fortis/createCCRefund?id=${id}`, {
+        // const id = query.id;
+        response = await fetch(`/api/fortis/createCCSale/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(formDataToSend),
+          body: JSON.stringify(formDataToSend), // Send JSON data
         });
       } else {
-        response = await fetch("/api/fortis/createCCRefund", {
+        response = await fetch("/api/fortis/createCCSale", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify(formDataToSend),
+          body: JSON.stringify(formDataToSend), // Send JSON data
         });
       }
 
-      // setSavingoader(false)
-
       if (!response.ok) {
-        // Handle HTTP errors here
         console.error(`HTTP error! status: ${response.status}`);
         showToast(`HTTP error! status: ${response.status}`, "error");
+
         setSaving(false);
         return;
       }
@@ -234,12 +331,12 @@ const Index = () => {
         setAccessType("view");
       }
 
-      setAccessType("view");
+      // setAccessType("view");
+
       showToast(`Request submitted successfully`, "success");
     } catch (error) {
       console.error("Error submitting request:", error);
-      showToast(`Error submitting request: ${error}`, "error");
-      // Handle other types of errors (e.g., network errors)
+      showToast("Error submitting request", "error");
     }
 
     setSaving(false);
@@ -299,11 +396,31 @@ const Index = () => {
               <div className="bg-chinesWhite rounded-lg mb-4">
                 <div className="w-full  bg-palatinatePurple rounded-lg mt-[16px] text-white">
                   <h5 className="md:text-[24px] text-[16px] font-bold  md:pl-[32px] pl-[16px] py-[10px]">
-                    CC Refund
+                    CC Sales
                   </h5>
                 </div>
-                <div className=" px-[16px] py-[27px] ">
+                <div className="px-[16px] py-[27px]">
                   <div className="md:grid grid-cols-3 gap-4">
+                    <div className="mt-[6px]">
+                      <label
+                        htmlFor="location"
+                        className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
+                        Select Invoice
+                      </label>
+                      <div className="w-full md:h-[55px] h-[27px]  rounded-lg px-2 bg-[#F4F4F4]">
+                        <select
+                          className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
+                          id="location"
+                          name=""
+                          onChange={handleSelectInvoice}>
+                          {listData.map((invoice) => (
+                            <option key={invoice.id} value={invoice.id}>
+                              {invoice.title}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
                     <div className="mt-[6px]">
                       <label
                         htmlFor="invtitle"
@@ -421,6 +538,7 @@ const Index = () => {
                           disabled={accessType === "view"}
                           className="opacity-0 z-10 w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
                         />
+
                         <button className="absolute left-2 bg-chinesWhite h-[70%]  md:text-[20px] text-[12px] rounded-lg px-2">
                           Choose Image
                         </button>
@@ -439,12 +557,12 @@ const Index = () => {
                           disabled={accessType === "view"}
                           className="opacity-0 z-10 w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
                         />
+
                         <button className="absolute left-2 bg-chinesWhite h-[70%]  md:text-[20px] text-[12px] rounded-lg px-2">
                           Choose Image
                         </button>
                       </div>
                     </div>
-
                     <div className="mt-[6px]">
                       <label
                         htmlFor="invtitle"
@@ -595,8 +713,8 @@ const Index = () => {
                         className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
                         Subtotal Amount
                       </label>
-                      <div className="flex items-center md:text-[20px] text-[12px]  w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
-                        <span>$</span>
+                      <div className="flex items-center md:text-[20px] text-[12px] w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
+                        <span>$</span>{" "}
                         <CustomInput
                           disabled={accessType === "view"}
                           model="subtotal_amount"
@@ -610,12 +728,6 @@ const Index = () => {
                         />
                       </div>
                     </div>
-                    {/* <div className='mt-[6px]'>
-                                        <label htmlFor="invtitle" className='md:text-[20px] text-[12px] font-bold text-darkSilverColor'>Surcharge Amount</label>
-                                        <div className='w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]'>
-                                            <CustomInput disabled={accessType === 'view'} model="surcharge_amount" value={formData.surcharge_amount} onChange={handleInputs} className='w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none' id='invtitle' placeholder='' type='number' readOnly={false} />
-                                        </div>
-                                    </div> */}
 
                     <div className="mt-[6px]">
                       <label
@@ -623,8 +735,8 @@ const Index = () => {
                         className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
                         Tax
                       </label>
-                      <div className="flex items-center md:text-[20px] text-[12px]  w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
-                        <span>$</span>
+                      <div className="flex items-center md:text-[20px] text-[12px] w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
+                        <span>$</span>{" "}
                         <CustomInput
                           disabled={accessType === "view"}
                           model="tax"
@@ -704,7 +816,6 @@ const Index = () => {
                         />
                       </div>
                     </div>
-
                     <div className="mt-[6px]">
                       <label
                         htmlFor="invtitle"
@@ -748,7 +859,7 @@ const Index = () => {
                           className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
                           id="invtitle"
                           placeholder=""
-                          type=""
+                          type="number"
                           readOnly={false}
                         />
                       </div>
@@ -760,7 +871,7 @@ const Index = () => {
                         Transaction 2
                       </label>
                       <div className="flex items-center md:text-[20px] text-[12px] w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
-                        <span>$</span>
+                        <span>$</span>{" "}
                         <CustomInput
                           disabled={accessType === "view"}
                           model="transaction_c2"
@@ -769,7 +880,7 @@ const Index = () => {
                           className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
                           id="invtitle"
                           placeholder=""
-                          type="number"
+                          type="nember"
                           readOnly={false}
                         />
                       </div>
@@ -801,7 +912,7 @@ const Index = () => {
                         className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
                         Wallet Type
                       </label>
-                      <div className="flex items-center md:text-[20px] text-[12px] w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
+                      <div className="w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
                         <CustomInput
                           disabled={accessType === "view"}
                           model="wallet_type"
@@ -810,94 +921,12 @@ const Index = () => {
                           className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
                           id="invtitle"
                           placeholder=""
-                          type="number"
+                          type=""
                           readOnly={false}
                         />
                       </div>
                     </div>
                   </div>
-                  {/* <div className="pt-[16px]  grid grid-cols-10 gap-2">
-                                        <div className="col-span-12">
-                                            <div className="">
-                                                {formData.additional_amounts.map((item, index) => (
-                                                    <div
-                                                        className="flex justify-between "
-                                                        key={index}
-                                                    >
-                                                        <div className="mx-1">
-                                                            <label className="md:text-[20px] text-[12px]">
-                                                                Type:
-                                                            </label>
-
-                                                            <input
-                                                                className="w-full md:h-[56px] h-[27px] bg-[#F4F4F4] px-2 outline-none md:text-[20px] text-[12px] rounded-lg"
-                                                                type="text"
-                                                                name="type"
-                                                                value={item.type}
-                                                                disabled={accessType === 'view'}
-                                                                onChange={(e) => handleChange(e, index)}
-                                                            />
-
-                                                        </div>
-                                                        <div className="mx-1">
-                                                            <label className="md:text-[20px] text-[12px]">
-                                                                amount:
-                                                            </label>
-                                                            <input
-                                                                className="w-full md:h-[56px] h-[27px] bg-[#F4F4F4] px-2 outline-none mx-1 md:text-[20px] text-[12px] rounded-lg"
-
-                                                                type="number"
-                                                                name="amount"
-                                                                value={item.amount}
-                                                                disabled={accessType === 'view'}
-                                                                onChange={(e) => handleChange(e, index)}
-                                                            />
-
-                                                        </div>
-                                                        <div className="mx-1">
-                                                            <label className="md:text-[20px] text-[12px]">
-                                                                Account Type:
-                                                            </label>
-                                                            <input
-                                                                className="w-full md:h-[56px] h-[27px] bg-[#F4F4F4] px-2 outline-none mx-1 md:text-[20px] text-[12px] rounded-lg"
-                                                                type=""
-                                                                name="account_type"
-                                                                disabled={accessType === 'view'}
-                                                                value={item.account_type}
-                                                                onChange={(e) => handleChange(e, index)}
-                                                            />
-
-                                                        </div>
-                                                        <div className="mx-1">
-                                                            <label className="md:text-[20px] text-[12px]">
-                                                                Currency:
-                                                            </label>
-                                                            <input
-                                                                className="w-full md:h-[56px] h-[27px] bg-[#F4F4F4] px-2 outline-none mx-1 md:text-[20px] text-[12px] rounded-lg"
-                                                                type="number"
-                                                                name="currency"
-                                                                disabled={accessType === 'view'}
-                                                                value={item.account_type}
-                                                                onChange={(e) => handleChange(e, index)}
-                                                            />
-
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="mt-[12px] flex justify-end col-span-10 relative">
-                                                <button
-                                                    disabled={accessType === 'view'}
-                                                    onClick={handleAddItem}
-                                                    className="text-[10px] font-bold py-[6px] rounded-lg px-[8px] bg-limeGreen text-btnBlack"
-                                                >
-                                                    + Add Item
-                                                </button>
-
-                                            </div>
-                                        </div>
-
-                                    </div> */}
 
                   <div className="flex items-center mt-[6px]">
                     <input
@@ -985,6 +1014,19 @@ const Index = () => {
                       Threed Secure
                     </h5>
                   </div>
+
+                  <div className="flex items-center mt-[6px]">
+                    <input
+                      disabled={accessType === "view"}
+                      onChange={(e) => handleCheckBox("installment", e)}
+                      type="checkbox"
+                      checked={formData.installment}
+                      className="bg-limeGreen custom-checkbox"
+                    />
+                    <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
+                      Installment
+                    </h5>
+                  </div>
                   <div className="flex items-center mt-[6px]">
                     <input
                       disabled={accessType === "view"}
@@ -1031,17 +1073,6 @@ const Index = () => {
                     />
                     <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                       No Show
-                    </h5>
-                  </div>
-                  <div className="flex items-center mt-[6px]">
-                    <input
-                      onChange={(e) => handleCheckBox("installment", e)}
-                      type="checkbox"
-                      checked={formData.installment}
-                      className="bg-limeGreen custom-checkbox"
-                    />
-                    <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                      Installment
                     </h5>
                   </div>
 
