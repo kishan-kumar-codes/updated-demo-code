@@ -125,9 +125,9 @@ export async function POST(request: NextRequest) {
 
     console.log("this is the data from",)
 
-    if (!token) {
-      return NextResponse.json({ error: 'Authentication token must be provided' }, { status: 401 });
-    }
+    // if (!token) {
+    //   return NextResponse.json({ error: 'Authentication token must be provided' }, { status: 401 });
+    // }
     // Forward the request to the Fortis API
     const fortisResponse = await fetch(
       'https://api.sandbox.fortis.tech/v1/quick-invoices',
