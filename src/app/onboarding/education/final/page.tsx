@@ -13,7 +13,9 @@ import Link from "next/link";
 const Final: React.FC = () => {
   const router = useRouter();
   const context = useContext(MyContext);
+  //console.log(context);
   const { data: session, status } = useSession();
+  //console.log("session user email:", session?.user?.email);
 
   const handleContinueClick = async () => {
     try {
@@ -23,7 +25,6 @@ const Final: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: session?.user?.accessToken,
           email: session?.user?.email,
           firstName: context && context.contextData.firstName,
           lastName: context && context.contextData.lastName,

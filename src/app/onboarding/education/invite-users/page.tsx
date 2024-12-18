@@ -60,11 +60,11 @@ const TeamSetup: React.FC = () => {
         <div className="flex items-center flex-col px-[43px] overflow-y-auto overflow-x-hidden h-full">
           <ProgressBar count={10} />
 
-          <div className="text-center flex flex-col justify-center items-center">
+          <div className="text-center flex flex-col w-full justify-center items-center">
             <h1 className="text-[22px] lg:text-[40px] lg:leading-[42px] lg:w-[40%] leading-normal text-darkSilverColor font-bold mt-[27px]">
               Who else talks to your customers?
             </h1>
-            <p className="text-[14px] lg:text-[30px] mt-6 lg:mt-12 lg:w-[48%] lg:leading-8 text-center text-darkSilverColor">
+            <p className="text-[14px] lg:text-[30px] w-full mt-6 lg:mt-12 lg:w-[48%] lg:leading-8 text-center text-darkSilverColor">
               Make customer communication a breeze by adding your team. They
               will be invited as Team Leaders with the ability to invite others.
               You can always change this later.
@@ -102,7 +102,7 @@ const TeamSetup: React.FC = () => {
             </svg>
           </div>
 
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #1's mobile phone or email"
@@ -112,7 +112,7 @@ const TeamSetup: React.FC = () => {
             />
           </div>
 
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #2's mobile phone or email"
@@ -122,7 +122,7 @@ const TeamSetup: React.FC = () => {
             />
           </div>
 
-          <div className="w-full flex justify-center items-center">
+          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #3's mobile phone or email"

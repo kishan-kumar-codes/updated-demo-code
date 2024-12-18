@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, useState } from "react";
 import { MyContext, MyContextType } from "./MyContext";
 
@@ -23,9 +25,8 @@ const initialContextData = {
 };
 
 export const MyContextProvider = ({ children }: MyContextProviderProps) => {
-  const [contextData, setContextData] = useState<MyContextType["contextData"]>(
-    initialContextData
-  );
+  const [contextData, setContextData] =
+    useState<MyContextType["contextData"]>(initialContextData);
 
   const updateContextData = (
     newData: Partial<MyContextType["contextData"]>
