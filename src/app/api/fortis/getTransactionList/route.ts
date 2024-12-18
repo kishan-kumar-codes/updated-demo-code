@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
     try {
         // Forward the request to the Fortis API
-        const fortisResponse = await fetch('https://api.sandbox.fortis.tech/v1/transactions', {
+        const fortisResponse = await fetch('https://api.sandbox.fortis.tech/v1/transactions?page[number]=1&page[size]=4000', {
             method: 'GET',
             headers: {
                 'user-id': process.env.USER_ID!,
