@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+
+export const dynamic = 'force-dynamic';
 export async function GET(request: NextRequest) {
     try {
         // Forward the request to the Fortis API
@@ -11,6 +13,7 @@ export async function GET(request: NextRequest) {
                 'developer-id': process.env.DEVELOPER_ID,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
             }
         });
 
