@@ -23,25 +23,35 @@ export async function GET(req: NextRequest) {
                 errorDetails = 'Unable to parse error details from Fortis API';
             }
             console.error(`Error from Fortis API: Status ${fortisResponse.status}, Details: ${errorDetails}`);
-            return NextResponse.json({ error: 'Failed to create merchant onboarding', details: errorDetails }, { status: fortisResponse.status });
+            return new NextResponse(JSON.stringify({ error: 'Failed to fetch transactions', details: errorDetails }), {
+                status: fortisResponse.status,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-store, max-age=0'
+                }
+            });
         } else {
             const responseData = await fortisResponse.json();
-            return NextResponse.json(responseData, { status: 200 });
+            return new NextResponse(JSON.stringify(responseData), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-store, max-age=0'
+                }
+            });
         }
     } catch (error) {
         // Handle unexpected errors
-        if (error instanceof Error) {
-            console.error('Unexpected error:', error.message);
-            return NextResponse.json({
-                error: 'Internal Server Error',
-                message: error.message,
-            }, { status: 500 });
-        } else {
-            console.error('Unexpected error:', error);
-            return NextResponse.json({
-                error: 'Internal Server Error',
-                message: 'An unknown error occurred',
-            }, { status: 500 });
-        }
+        console.error('Unexpected error:', error);
+        return new NextResponse(JSON.stringify({
+            error: 'Internal Server Error',
+            message: error instanceof Error ? error.message : 'An unknown error occurred',
+        }), {
+            status: 500,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-store, max-age=0'
+            }
+        });
     }
 }
