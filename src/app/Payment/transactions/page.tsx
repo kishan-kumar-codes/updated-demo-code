@@ -70,6 +70,7 @@ function Index() {
     try {
       const response = await fetch("/api/fortis/getTransactionList", {
         method: "GET",
+        cache: "no-store",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
