@@ -221,7 +221,7 @@ function InvoiceList() {
   return (
     <Layout
       Childrens={
-        <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured  ">
+        <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured  min-h-screen">
           <div className="block md:hidden">
             <TabNavigationMobile tabsData={mobileTab} />
           </div>
@@ -288,9 +288,8 @@ function InvoiceList() {
               <div className="h-screen">
                 <Loader message="Resending Invoice..." />
               </div>
-            ) : (
+            ) : filteredData.length > 0 ? (
               filteredData.map((ls, index) => (
-                // <TransactionCard query={{mode:'view', id:ls.id}} pathname="/Payment/quickInvoice" name={ls.title} invDate={ls.invoice_number} amount={ls.invAmount} key={index} status="Paid" />
                 <div
                   key={index}
                   className="flex pb-[17px] border-b-[.5px] border-chinesWhite px-[15px] pt-[4px] ">
@@ -298,7 +297,7 @@ function InvoiceList() {
                     <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
                       {ls.title}
                     </h5>
-                    <h5 className="md:text-[24px] text-[19px]  text-darkSilverColor">
+                    <h5 className="md:text-[24px] text-[19px] text-darkSilverColor">
                       {ls.id}
                     </h5>
                   </div>
@@ -309,7 +308,6 @@ function InvoiceList() {
                     <h5 className="md:text-[24px] text-[19px] font-bold text-limeGreen ">
                       {"Paid"}
                     </h5>
-
                     <div className="flex items-center justify-around">
                       <div className="md:text-[24px] text-[19px] font-bold mr-1 flex text-palatinatePurple">
                         <TooltipProvider>
@@ -329,68 +327,15 @@ function InvoiceList() {
                           </Tooltip>
                         </TooltipProvider>
                       </div>
-                      <div className="md:text-[24px] text-[19px] font-bold mr-1 flex text-palatinatePurple">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Link
-                                href={{
-                                  pathname: "/Payment/quickInvoice",
-                                  query: { mode: "update", id: ls.id },
-                                }}>
-                                <div className="md:text-[24px] text-[19px] font-bold mr-1 inline-block text-palatinatePurple">
-                                  <FontAwesomeIcon icon={faPenToSquare} />
-                                </div>
-                              </Link>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-white">
-                              <p>Update</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <div className="md:text-[24px] text-[19px] font-bold mr-1 flex text-palatinatePurple">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => {
-                                  deleteInvoiceRecord(ls.id);
-                                }}>
-                                <div className="md:text-[24px] text-[19px] font-bold mr-1 inline-block text-palatinatePurple">
-                                  <FontAwesomeIcon icon={faRemove} />
-                                </div>
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-white">
-                              <p>Delete</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
-                      <div className="md:text-[24px] text-[19px] font-bold mr-1 flex text-palatinatePurple">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                onClick={() => {
-                                  resendInvoice(ls.id);
-                                }}>
-                                <div className="md:text-[24px] text-[19px] font-bold mr-1 inline-block text-palatinatePurple">
-                                  <FontAwesomeIcon icon={faReply} />
-                                </div>
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-white">
-                              <p>Resend</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </div>
+                      {/* Other action buttons here */}
                     </div>
                   </div>
                 </div>
               ))
+            ) : (
+              <div className="text-center md:text-[24px] text-[19px] h-full font-bold text-darkSilverColor pt-[20px]">
+                No QuickInvoice Available
+              </div>
             )}
           </div>
         </div>

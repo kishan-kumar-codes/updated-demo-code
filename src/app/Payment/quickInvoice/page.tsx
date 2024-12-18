@@ -600,11 +600,13 @@ const Index = () => {
                                       )}
                                       disabled={accessType === "view"}>
                                       <CalendarIcon className="mr-2 h-4 w-4" />
-                                      {formData.dueDate ? (
-                                        format(formData.dueDate, "yyyy-MM-dd")
-                                      ) : (
-                                        <span>Pick a date</span>
-                                      )}
+                                      <div className="text-sm font-semibold">
+                                        {formData.dueDate ? (
+                                          format(formData.dueDate, "yyyy-MM-dd")
+                                        ) : (
+                                          <span>Pick a date</span>
+                                        )}
+                                      </div>
                                     </Button>
                                   </PopoverTrigger>
                                   <PopoverContent className="w-auto p-0 bg-white">
@@ -639,13 +641,18 @@ const Index = () => {
                                     )}
                                     disabled={accessType === "view"}>
                                     <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {formData.expireDate ? (
-                                      format(formData.expireDate, "yyyy-MM-dd")
-                                    ) : (
-                                      <span className="text-xs">
-                                        Pick a date
-                                      </span>
-                                    )}
+                                    <div className="text-xs md:text-base font-semibold">
+                                      {formData.expireDate ? (
+                                        format(
+                                          formData.expireDate,
+                                          "yyyy-MM-dd"
+                                        )
+                                      ) : (
+                                        <span className="text-xs">
+                                          Pick a date
+                                        </span>
+                                      )}
+                                    </div>
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0 bg-white">
@@ -873,14 +880,16 @@ const Index = () => {
                                         )}
                                         disabled={accessType === "view"}>
                                         <CalendarIcon className="mr-2 h-4 w-4" />
-                                        {formData.notificationDayB4DueDay ? (
-                                          format(
-                                            formData.notificationDayB4DueDay,
-                                            "yyyy-MM-dd"
-                                          )
-                                        ) : (
-                                          <span>Pick a date</span>
-                                        )}
+                                        <div className="text-xs md:text-base font-semibold">
+                                          {formData.notificationDayB4DueDay ? (
+                                            format(
+                                              formData.notificationDayB4DueDay,
+                                              "yyyy-MM-dd"
+                                            )
+                                          ) : (
+                                            <span>Pick a date</span>
+                                          )}
+                                        </div>
                                       </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0 bg-white">
@@ -918,14 +927,16 @@ const Index = () => {
                                         )}
                                         disabled={accessType === "view"}>
                                         <CalendarIcon className="mr-2 h-4 w-4" />
-                                        {formData.notificationDayAfterDueDay ? (
-                                          format(
-                                            formData.notificationDayAfterDueDay,
-                                            "yyyy-MM-dd"
-                                          )
-                                        ) : (
-                                          <span>Pick a date</span>
-                                        )}
+                                        <div className="text-xs md:text-base font-semibold">
+                                          {formData.notificationDayAfterDueDay ? (
+                                            format(
+                                              formData.notificationDayAfterDueDay,
+                                              "yyyy-MM-dd"
+                                            )
+                                          ) : (
+                                            <span>Pick a date</span>
+                                          )}
+                                        </div>
                                       </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0 bg-white">
