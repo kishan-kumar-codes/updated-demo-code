@@ -67,15 +67,19 @@ function Index() {
 
   const getTransactionList = async () => {
     setLoader(true);
+    const timestamp = new Date().getTime();
     try {
-      const response = await fetch("/api/fortis/getTransactionList", {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/fortis/getTransactionList?_=${timestamp}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         // Handle HTTP errors here
