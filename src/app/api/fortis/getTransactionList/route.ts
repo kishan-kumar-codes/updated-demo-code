@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
                 'developer-id': process.env.DEVELOPER_ID!,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
             },
         });
 
