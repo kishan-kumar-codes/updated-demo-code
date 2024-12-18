@@ -1374,19 +1374,6 @@ const TransactionView = () => {
                         disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Advance Deposit
-                      </h5>
-                    </div>
-
-                    <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("no_show", e)}
-                        checked={formData.no_show}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         No Show
                       </h5>
                     </div>

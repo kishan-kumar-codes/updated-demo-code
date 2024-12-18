@@ -110,7 +110,7 @@ const Index = () => {
 
       if (response.status === 200) {
         setClientToken(response.data.data.client_token);
-        console.log("Client token response", response);
+        console.log("Client token response", response.data.data.client_token);
       } else {
         showToast("Failed to submit payment", "error");
       }
@@ -263,6 +263,7 @@ const Index = () => {
       };
     }
   }, [clientToken, session?.user?.id, isSubmitting]);
+
   const searchParams = useSearchParams();
   const name = searchParams?.get("name");
   return (
