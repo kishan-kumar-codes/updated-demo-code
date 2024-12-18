@@ -18,7 +18,7 @@ const SearchBox: FC<SearchBoxProps> = ({ Component, onSearch }) => {
   }, []);
 
   return (
-    <div className="w-full h-[56px]">
+    <div className="w-full h-[40px] md:h-[56px]">
       <label
         htmlFor="searchQuery"
         className="text-PhilippineGray relative w-100 flex items-center ">

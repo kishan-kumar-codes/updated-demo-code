@@ -181,7 +181,7 @@ const TransactionView = () => {
       tabUrl: "/Payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
@@ -193,7 +193,7 @@ const TransactionView = () => {
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];
@@ -555,7 +555,7 @@ const TransactionView = () => {
                       Monthly Reccuring Services
                     </h5>
                     <h5 className="md:text-[26px] ">
-                      ${transaction?.transaction_amount / 100} -
+                      ${transaction && transaction?.transaction_amount / 100} -
                     </h5>
                   </div>
                   <div className="mt-[12px]">
@@ -564,7 +564,8 @@ const TransactionView = () => {
                         Subtotal
                       </h5>
                       <h5 className="md:text-[26px] ">
-                        ${transaction?.transaction_amount / 100} -
+                        ${transaction && transaction?.transaction_amount / 100}{" "}
+                        -
                       </h5>
                     </div>
                     <div className="flex justify-between py-[12px] px-[13px] border-b-[.5] border-chinesWhite">
@@ -572,7 +573,8 @@ const TransactionView = () => {
                         Total
                       </h5>
                       <h5 className="md:text-[26px] ">
-                        ${transaction?.transaction_amount / 100} -
+                        ${transaction && transaction?.transaction_amount / 100}{" "}
+                        -
                       </h5>
                     </div>
                     <div className="flex justify-between py-[12px] px-[13px] border-b-[.5] border-chinesWhite">
@@ -580,7 +582,8 @@ const TransactionView = () => {
                         Amount Paid
                       </h5>
                       <h5 className="text-limeGreen font-semibold md:text-[26px] ">
-                        ${transaction?.transaction_amount / 100} -
+                        ${transaction && transaction?.transaction_amount / 100}{" "}
+                        -
                       </h5>
                     </div>
                   </div>
@@ -594,7 +597,7 @@ const TransactionView = () => {
 
                 <div className="card flex bg-white py-[10px] px-[42px] mt-[11px] rounded-lg">
                   <h5 className="md:text-[26px]  flex-1 font-bold text-darkSilverColor">
-                    {transaction?.account_holder_name}
+                    {transaction && transaction?.account_holder_name}
                   </h5>
                   <h5 className="md:text-[26px]  flex-1 text-darkSilverColor">
                     {transaction
@@ -615,7 +618,7 @@ const TransactionView = () => {
                   <div className="flex-1 flex justify-between items-center">
                     <div className="flex flex-col md:flex-row flex-1 justify-between">
                       <h5 className="md:text-[26px]  font-bold text-darkSilverColor">
-                        #{transaction?.invoice_number} -
+                        #{transaction && transaction?.invoice_number} -
                       </h5>
                       <div className="md:hidden flex-1">
                         <h5 className="md:text-[26px]  text-darkSilverColor">
@@ -640,7 +643,8 @@ const TransactionView = () => {
 
                     <div className="flex  flex-col justify-between">
                       <h5 className="md:text-[26px]  text-darkSilverColor">
-                        ${transaction?.transaction_amount / 100} -
+                        ${transaction && transaction?.transaction_amount / 100}{" "}
+                        -
                       </h5>
                       <h5 className="md:text-[26px]  text-darkSilverColor">
                         Posted
@@ -1207,141 +1211,173 @@ const TransactionView = () => {
                         Bank Funded Only Override
                       </h5>
                     </div>
+
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) =>
-                          handleCheckBox("bank_funded_only_override", e)
-                        }
-                        checked={formData.bank_funded_only_override}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Bank Funded Only Override
-                      </h5>
-                    </div>
-                    <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) =>
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
+                        checked={formData.allow_partial_authorization_override}
+                        onCheckedChange={(checked) =>
                           handleCheckBox(
                             "allow_partial_authorization_override",
-                            e
+                            {
+                              target: { checked },
+                            } as React.ChangeEvent<HTMLInputElement>
                           )
                         }
-                        checked={formData.allow_partial_authorization_override}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Allow Partial Authorization Override
                       </h5>
                     </div>
+
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) =>
-                          handleCheckBox("auto_decline_cvv_override", e)
-                        }
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.auto_decline_cvv_override}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("auto_decline_cvv_override", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Auto Decline CCV Override
                       </h5>
                     </div>
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) =>
-                          handleCheckBox("auto_decline_street_override", e)
-                        }
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.auto_decline_street_override}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("auto_decline_street_override", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Auto Decline Street Override
                       </h5>
                     </div>
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) =>
-                          handleCheckBox("auto_decline_zip_override", e)
-                        }
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.auto_decline_zip_override}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("auto_decline_zip_override", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Auto Decline Zip Override
                       </h5>
                     </div>
-
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("threedsecure", e)}
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.threedsecure}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("threedsecure", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Threed Secure
                       </h5>
                     </div>
-
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("installment", e)}
-                        type="checkbox"
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.installment}
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("installment", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Installment
                       </h5>
                     </div>
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("save_account", e)}
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.save_account}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("save_account", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Save Account
                       </h5>
                     </div>
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("recurring", e)}
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.recurring}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("recurring", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Recurring
                       </h5>
                     </div>
+
                     <div className="flex items-center mt-[6px]">
-                      <input
-                        disabled={accessType === "view"}
-                        onChange={(e) => handleCheckBox("advance_deposit", e)}
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
                         checked={formData.advance_deposit}
-                        type="checkbox"
-                        className="bg-limeGreen custom-checkbox"
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("advance_deposit", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
                       />
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         Advance Deposit
                       </h5>
                     </div>
+                    <div className="flex items-center mt-[6px]">
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
+                        checked={formData.no_show}
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("no_show", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
+                      />
+                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
+                        Advance Deposit
+                      </h5>
+                    </div>
+
                     <div className="flex items-center mt-[6px]">
                       <input
                         disabled={accessType === "view"}

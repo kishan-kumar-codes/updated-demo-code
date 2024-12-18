@@ -3,10 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
-    const timestamp = Date.now();
     try {
         // Forward the request to the Fortis API
-        const fortisResponse = await fetch('https://api.sandbox.fortis.tech/v1/transactions?page[number]=1&page[size]=4000', {
+        const fortisResponse = await fetch('https://api.sandbox.fortis.tech/v1/transactions', {
             method: 'GET',
             headers: {
                 'user-id': process.env.USER_ID!,

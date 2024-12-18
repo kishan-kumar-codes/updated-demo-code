@@ -18,6 +18,7 @@ import { useToast } from "../components/toasterProvider";
 import TabNavigationMobile from "../components/tabNavigationMobile";
 import { useSession } from "next-auth/react";
 import Loader from "../components/Loader";
+import { useSearchParams } from "next/navigation";
 
 interface ListInterface {
   title: string;
@@ -39,19 +40,19 @@ function Terminal() {
       tabUrl: "insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "quickInvoice",
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "quickInvoice",
+      tabUrl: "/Payment/quickInvoice/invoiceList",
     },
     {
       tabName: `Virtual Terminal`,
       tabUrl: "virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "keyedCreditCard",
     },
   ];
@@ -161,6 +162,8 @@ function Terminal() {
       setFilteredData(filtered);
     }
   };
+  const searchparams = useSearchParams();
+  const name = searchparams?.get("name");
 
   return (
     <Layout
@@ -170,7 +173,27 @@ function Terminal() {
             <TabNavigation tabData={tabData} />
           </div>
           <div className="block md:hidden">
-            <TabNavigationMobile tabsData={mobileTab} />
+            {/* <TabNavigationMobile tabData={mobileTab} /> */}
+            <div className="block md:hidden px-4">
+              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                <Link
+                  className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                  href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
+                  Quick <br />
+                  Invoice
+                </Link>
+                <Link
+                  className={`font-normal py-3 text-[16px] w-full text-center ${name === "Virtual Terminal" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
+                  href="/Payment/virtualTerminal?name=Virtual Terminal">
+                  Virtual <br /> Terminal
+                </Link>
+                <Link
+                  className={`font-normal py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                  href="/Payment/keyedCreditCard?name=Credit Card">
+                  Credit <br /> Card
+                </Link>
+              </div>
+            </div>
           </div>
           <div className="flex justify-between px-[15px] mt-[15px]">
             <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">

@@ -37,6 +37,7 @@ import { Label } from "@/components/ui/label";
 import { format, isBefore } from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
+import Link from "next/link";
 
 const Index = () => {
   const [showDiscountCard, setShowDiscountCord] = useState(false);
@@ -60,13 +61,13 @@ const Index = () => {
 
   const [formData, setFormData] = useState({
     // Your existing form data state
-    items: [{ name: "Website Hosting Plan", quantity: "1", unitPrice: "100" }],
-    title: "Monthly Subscription Invoice",
+    items: [{ name: "", quantity: "", unitPrice: "" }],
+    title: "",
     dueDate: "2025-01-01",
     locationId: "",
     allowOverPay: false,
     bankFundedOnlyOverride: true,
-    email: "testuser@example.com",
+    email: "",
     customerId: "",
     expireDate: "2025-01-01",
     allowPartialPar: false,
@@ -75,10 +76,10 @@ const Index = () => {
     itemHeader: "New Header",
     itemFooter: "New Footer",
     amountDue: 0,
-    notificationEmail: "testuser@example.com",
+    notificationEmail: "",
     statusId: 0,
     statusCode: 0,
-    note: "Please ensure payment is completed on time to avoid penalties.",
+    note: "",
     notificationDayB4DueDay: "2025-01-01",
     notificationDayAfterDueDay: "2025-01-01",
     notificationOnDueDate: false,
@@ -90,8 +91,6 @@ const Index = () => {
     token: session?.accessToken,
     userId: session?.user?.id,
   });
-
-  console.log("Due Date", daysBeforeDueDate, daysAfterDueDate);
 
   useEffect(() => {
     const mode = searchParams?.get("mode");
@@ -223,25 +222,25 @@ const Index = () => {
       tabUrl: "/Payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "/Payment/quickInvoice",
+      tabUrl: "/Payment/quickInvoice/invoiceList",
     },
     {
       tabName: `Virtual Terminal`,
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];
 
   const mobileTab = [
-    { tabName: "Keyed Credit Card", tabUrl: "/Payment/transaction" },
+    { tabName: "Credit Card", tabUrl: "/Payment/transaction" },
     { tabName: "Payment", tabUrl: "/Payment/insights" },
   ];
 
@@ -262,7 +261,8 @@ const Index = () => {
     formData.notificationDayAfterDueDay
   );
 
-  console.log("Due Date", daysBeforeDueDate, daysAfterDueDate);
+  const params = useSearchParams();
+  const name = params?.get("tabName");
 
   const createInvoice = async () => {
     console.log(
@@ -483,8 +483,25 @@ const Index = () => {
             <div className="hidden md:block">
               <TabNavigation tabData={tabData} />
             </div>
-            <div className="block md:hidden">
-              <TabNavigationMobile tabsData={mobileTab} />
+            <div className="block md:hidden px-4">
+              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                <Link
+                  className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                  href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
+                  Quick <br />
+                  Invoice
+                </Link>
+                <Link
+                  className={`font-normal py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
+                  href="/Payment/virtualTerminal?name=Virtual Terminal">
+                  Virtual <br /> Terminal
+                </Link>
+                <Link
+                  className={`font-normal py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                  href="/Payment/keyedCreditCard?name=Credit Card">
+                  Credit <br /> Card
+                </Link>
+              </div>
             </div>
 
             <div className="h-full overflow-y-auto ">
@@ -609,7 +626,7 @@ const Index = () => {
                                       )}
                                       disabled={accessType === "view"}>
                                       <CalendarIcon className="mr-2 h-4 w-4" />
-                                      <div className="text-sm font-semibold">
+                                      <div className="text-xs md:text-base font-semibold">
                                         {formData.dueDate ? (
                                           format(formData.dueDate, "yyyy-MM-dd")
                                         ) : (
@@ -1025,7 +1042,7 @@ const Index = () => {
                                       type="file"
                                       readOnly={false}
                                       placeholder=""
-                                      className=" w-full md:text-[20px] rounded-lg py-auto text-[12px] bg-[#F4F4F4] h-full outline-none  file:text-[9px] file:text-[#F4F4F4] file:bg-[#6D6D6D] file:rounded-md file:border-0 file:mt-[27px] file:ml-[14px] md:file:text-[16px] md:file:flex md:rounded-2xl md:file:mt-[38px] md:file:rounded-lg   "
+                                      className=" w-full pl-4 md:text-[20px] rounded-lg py-auto text-[12px] bg-[#F4F4F4] h-full outline-none  file:text-[9px] file:text-[#F4F4F4] file:bg-[#6D6D6D] file:rounded-md file:border-0 file:mt-[27px] file:ml-[14px] md:file:text-[16px] md:file:flex md:rounded-2xl md:file:mt-[38px] md:file:rounded-lg   "
                                       // onInput={(e) =>
                                       //   inputHandler('"NA"', e)
                                       // }
@@ -1057,13 +1074,13 @@ const Index = () => {
                             <div className="w-full flex justify-end mt-[39px] md:hidden">
                               <button
                                 disabled={savingLoader}
-                                onClick={handleAddItem}
+                                // onClick={handleAddItem}
                                 className="md:text-[24px] text-[12px] font-bold h-[27px] md:py-[21px] rounded-lg md:px-[24px] px-[19px]  bg-limeGreen text-btnBlack mr-[13px]">
                                 {savingLoader ? "Creating Invoice" : "Save"}
                               </button>
                               <button
                                 disabled={accessType === "view"}
-                                onClick={handleAddItem}
+                                // onClick={handleAddItem}
                                 className="md:text-[24px] text-[12px] font-bold h-[27px] md:py-[21px]    rounded-lg md:px-[24px] px-[19px]  bg-red text-white ">
                                 Cancel
                               </button>

@@ -10,11 +10,12 @@ import CreditCard from "../../../assets/images/P-credit-card.svg";
 import { useToast } from "../../Payment/components/toasterProvider";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 
 const Index = () => {
   const [showDiscountCard, setShowDiscountCord] = useState(false);
@@ -39,19 +40,19 @@ const Index = () => {
       tabUrl: "/Payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "/Payment/quickInvoice",
+      tabUrl: "/Payment/quickInvoice/invoiceList",
     },
     {
       tabName: `Virtual Terminal`,
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];
@@ -262,12 +263,36 @@ const Index = () => {
       };
     }
   }, [clientToken, session?.user?.id, isSubmitting]);
+  const searchParams = useSearchParams();
+  const name = searchParams?.get("name");
   return (
     <Layout
       hHeading="Payments"
       Childrens={
         <div className="px-[15px] pt-[18px] flex-1 flex flex-col h-full bg-cultured ">
-          <TabNavigation tabData={tabData} />
+          <div className="md:block hidden">
+            <TabNavigation tabData={tabData} />
+          </div>
+          <div className="block md:hidden px-4">
+            <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+              <Link
+                className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
+                Quick <br />
+                Invoice
+              </Link>
+              <Link
+                className={`font-normal py-3 text-[16px] w-full text-center ${name === "Virtual Terminal" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
+                href="/Payment/virtualTerminal?name=Virtual Terminal">
+                Virtual <br /> Terminal
+              </Link>
+              <Link
+                className={`font-normal py-3  text-[16px] w-full text-center ${name === "Credit Card" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                href="/Payment/keyedCreditCard?name=Credit Card">
+                Credit <br /> Card
+              </Link>
+            </div>
+          </div>
           <div className="h-full overflow-y-auto">
             <div>
               <Script src="https://js.sandbox.fortis.tech/commercejs-v1.0.0.min.js" />

@@ -13,7 +13,7 @@ function index() {
       tabUrl: "/Payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
@@ -25,7 +25,7 @@ function index() {
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];

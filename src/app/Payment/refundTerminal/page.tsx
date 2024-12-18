@@ -29,7 +29,7 @@ const Index = () => {
       tabUrl: "/payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/payment/quickInvoice",
     },
     {
@@ -41,7 +41,7 @@ const Index = () => {
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/payment/keyedCreditCard",
     },
   ];
@@ -56,7 +56,7 @@ const Index = () => {
       tabUrl: "virtualTerminal/terminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "keyedCreditCard",
     },
   ];

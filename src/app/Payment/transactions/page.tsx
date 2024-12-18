@@ -14,6 +14,7 @@ import { useToast } from "../components/toasterProvider";
 import Loader from "../components/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useSearchParams } from "next/navigation";
 
 interface ListInterface {
   created_ts: number;
@@ -38,22 +39,25 @@ function Index() {
       tabUrl: "insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "/Payment/quickInvoice",
+      tabUrl: "/Payment/quickInvoice/invoiceList",
     },
     {
       tabName: `Virtual Terminal`,
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];
+
+  const params = useSearchParams();
+  const name = params?.get("name");
 
   const mobileTab = [
     { tabName: "Insights", tabUrl: "insights" },
@@ -173,8 +177,19 @@ function Index() {
             <div className="hidden md:block">
               <TabNavigation tabData={tabData} />
             </div>
-            <div className="block md:hidden">
-              <TabNavigationMobile tabsData={mobileTab} />
+            <div className="block md:hidden px-4">
+              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                <Link
+                  className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : ""} rounded-l-3xl text-darkSilverColor`}
+                  href="/Payment/transactions?name=Payment">
+                  Insights
+                </Link>
+                <Link
+                  className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : ""} rounded-r-3xl text-darkSilverColor`}
+                  href="/Payment/transactions?name=Transactions">
+                  Transactions
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -195,10 +210,10 @@ function Index() {
               </Link> */}
             </div>
             <div>
-              <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+              <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
                 Add Contact
               </button>
-              <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+              <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
                 Add Account Vault
               </button>
               <Link
@@ -208,7 +223,7 @@ function Index() {
                     tabName: "Quick Invoice",
                   },
                 }}>
-                <button className="px-[25px] md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
+                <button className="px-3  md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
                   Add Quick Invoice
                 </button>
               </Link>
@@ -225,7 +240,7 @@ function Index() {
               <Loader message="Loading Transactions..." />
             </div>
           ) : (
-            <div className="section flex-1 pt-[18px] overflow-y-auto container mx-auto">
+            <div className="section pb-14 flex-1 pt-[18px] overflow-y-auto container mx-auto">
               {filteredData && filteredData.length > 0 ? (
                 filteredData.map((transaction) => (
                   <TransactionCard
@@ -235,6 +250,7 @@ function Index() {
                     invDate={new Date(
                       transaction.created_ts * 1000
                     ).toLocaleDateString()}
+                    tabName={"Transactions"}
                     amount={`$${transaction.transaction_amount / 100}`}
                     status={
                       transaction.status_code === 101 ? "Paid" : "Pending"

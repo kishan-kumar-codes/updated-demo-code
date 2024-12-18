@@ -29,6 +29,7 @@ import {
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 interface ListInterface {
   title: string;
@@ -53,7 +54,7 @@ function InvoiceList() {
       tabUrl: "/Payment/insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "/Payment/quickInvoice",
     },
     {
@@ -65,7 +66,7 @@ function InvoiceList() {
       tabUrl: "/Payment/virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "/Payment/keyedCreditCard",
     },
   ];
@@ -217,37 +218,39 @@ function InvoiceList() {
       setFilteredData(filtered);
     }
   };
+  const params = useSearchParams();
+  const name = params?.get("name");
 
   return (
     <Layout
       Childrens={
         <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured  min-h-screen">
-          <div className="block md:hidden">
-            <TabNavigationMobile tabsData={mobileTab} />
+          <div className="block md:hidden px-4">
+            <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+              <Link
+                className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
+                Quick <br />
+                Invoice
+              </Link>
+              <Link
+                className={`font-normal py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
+                href="/Payment/virtualTerminal?name=Virtual Terminal">
+                Virtual <br /> Terminal
+              </Link>
+              <Link
+                className={`font-normal py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                href="/Payment/keyedCreditCard?name=Credit Card">
+                Credit <br /> Card
+              </Link>
+            </div>
           </div>
-          <div className="px-[15px]">
-            {/* <TabNavigation tabData={tabData} /> */}
+          <div className="md:block hidden px-[15px]">
+            <TabNavigation tabData={tabData} />
           </div>
 
           <div className="flex justify-between px-[15px] mt-[15px]">
-            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
-              <Link
-                href={{
-                  pathname: "/Payment/quickInvoice/",
-                  query: {
-                    tabName: "Quick Invoice",
-                  },
-                }}>
-                {" "}
-                <button className="md:px-[24px] px-[8px] md:py-[15px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
-                  <FontAwesomeIcon
-                    className="hover:cursor-pointer"
-                    icon={faArrowLeft}
-                  />{" "}
-                  Go Back
-                </button>
-              </Link>
-            </div>
+            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer"></div>
             <div>
               <button className="md:px-[24px] px-[8px] md:py-[15px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
                 Add Contact

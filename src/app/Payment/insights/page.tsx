@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import TabNavigationMobile from "../components/tabNavigationMobile";
 import { useSession } from "next-auth/react";
 import { useToast } from "../../Payment/components/toasterProvider";
+import { useSearchParams } from "next/navigation";
 
 type Invoice = {
   email?: string;
@@ -60,31 +61,33 @@ function Index() {
   const [quickInvoiceData, setQuickInvoiceData] = useState<any>([]);
   const [loader, setLoader] = useState(false);
   const { showToast } = useToast();
+  const params = useSearchParams();
+  const name = params?.get("name");
   const tabData = [
     {
       tabName: "Payment",
       tabUrl: "insights",
     },
     {
-      tabName: "Invoice ID#",
+      tabName: `Transactions`,
       tabUrl: "quickInvoice",
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "quickInvoice",
+      tabUrl: "/Payment/quickInvoice/invoiceList",
     },
     {
       tabName: `Virtual Terminal`,
       tabUrl: "virtualTerminal",
     },
     {
-      tabName: `Keyed Credit Card`,
+      tabName: `Credit Card`,
       tabUrl: "keyedCreditCard",
     },
   ];
 
   const mobileTab = [
-    { tabName: "Keyed Credit Card", tabUrl: "transaction" },
+    { tabName: "Credit Card", tabUrl: "transaction" },
     { tabName: "Payment", tabUrl: "/Payment/insights" },
   ];
   const [animatedHeights, setAnimatedHeights] = useState<number[]>(
@@ -187,17 +190,28 @@ function Index() {
     <Layout
       // hHeading="Payments"
       Childrens={
-        <div className="px-[15px] pt-[18px] flex-1 flex mx-auto flex-col h-full bg-cultured ">
+        <div className="px-[15px] pt-[18px] flex-1 flex mx-auto flex-col h-full overflow-y-auto bg-cultured ">
           <div className="hidden md:block">
             <TabNavigation tabData={tabData} />
           </div>
-          <div className="block md:hidden">
-            <TabNavigationMobile tabsData={mobileTab} />
+          <div className="block md:hidden px-4">
+            <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+              <Link
+                className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                href="/Payment/transactions?name=Payment">
+                Insights
+              </Link>
+              <Link
+                className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                href="/Payment/transactions?name=Transactions">
+                Transactions
+              </Link>
+            </div>
           </div>
           <div className="hidden md:block cardHeader w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] lg:text-[22px] font-bold py-[10px] pl-[15px]">
             Insights
           </div>
-          <div className=" md:hidden flex-1 overflow-y-auto ">
+          <div className=" md:hidden pb-20 flex-1 overflow-y-auto ">
             <InsightsCard
               headerText="Amount Processed"
               Children={

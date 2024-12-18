@@ -27,7 +27,7 @@ export default function TabNavigation({ tabData = [] }: TabNavigationProps) {
               key={i}
               href={{
                 pathname:
-                  tab.tabName === "Invoice ID#"
+                  tab.tabName === `Transactions`
                     ? "/Payment/transactions"
                     : tab.tabUrl,
                 query: {

@@ -11,6 +11,7 @@ interface transactionCardProps {
   amount: string | number;
   query: any;
   pathname: string;
+  tabName: string;
 }
 
 const TransactionCard: React.FC<transactionCardProps> = ({
@@ -20,6 +21,7 @@ const TransactionCard: React.FC<transactionCardProps> = ({
   invDate,
   name,
   pathname,
+  tabName,
   query,
 }) => {
   return (
@@ -47,6 +49,7 @@ const TransactionCard: React.FC<transactionCardProps> = ({
             pathname: pathname,
             query: {
               id,
+              tabName,
             },
           }}>
           <div className="md:text-[20px] text-[15px] font-bold inline-block mr-1 text-palatinatePurple">
