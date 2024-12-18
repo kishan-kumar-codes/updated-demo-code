@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+
+export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
+    const timestamp = Date.now();
     try {
         // Forward the request to the Fortis API
         const fortisResponse = await fetch('https://api.sandbox.fortis.tech/v1/transactions?page[number]=1&page[size]=4000', {
@@ -28,11 +31,7 @@ export async function GET(req: NextRequest) {
                 status: fortisResponse.status,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    'ETag': `"${Date.now().toString()}"`,
-                    'x-vercel-cache-control': 'max-age=0, s-maxage=0'
+                    'Cache-Control': 'no-store, max-age=0'
                 }
             });
         } else {
@@ -41,11 +40,7 @@ export async function GET(req: NextRequest) {
                 status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    'ETag': `"${Date.now().toString()}"`,
-                    'x-vercel-cache-control': 'max-age=0, s-maxage=0'
+                    'Cache-Control': 'no-store, max-age=0'
                 }
             });
         }
@@ -59,11 +54,7 @@ export async function GET(req: NextRequest) {
             status: 500,
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-                'Pragma': 'no-cache',
-                'Expires': '0',
-                'ETag': `"${Date.now().toString()}"`,
-                'x-vercel-cache-control': 'max-age=0, s-maxage=0'
+                'Cache-Control': 'no-store, max-age=0'
             }
         });
     }

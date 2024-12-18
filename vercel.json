@@ -1,5 +1,14 @@
 {
   "buildCommand": "yarn vercel-build",
   "outputDirectory": ".next",
-  "framework": "nextjs"
+  "framework": "nextjs" ,
+  "routes": [
+    {
+      "src": "/api/fortis/getTransactionList",
+      "dest": "/api/fortis/getTransactionList",
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    }
+  ]
 }
