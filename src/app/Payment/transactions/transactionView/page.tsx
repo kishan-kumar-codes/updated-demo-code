@@ -22,6 +22,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const TransactionView = () => {
   const router = useRouter();
@@ -1190,6 +1191,22 @@ const TransactionView = () => {
                       </div>
                     </div>
 
+                    <div className="flex items-center mt-[6px]">
+                      <Checkbox
+                        id={"Provisioned"}
+                        className="border border-black rounded-sm"
+                        checked={formData.bank_funded_only_override}
+                        onCheckedChange={(checked) =>
+                          handleCheckBox("bank_funded_only_override", {
+                            target: { checked },
+                          } as React.ChangeEvent<HTMLInputElement>)
+                        }
+                        disabled={accessType === "view"}
+                      />
+                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
+                        Bank Funded Only Override
+                      </h5>
+                    </div>
                     <div className="flex items-center mt-[6px]">
                       <input
                         disabled={accessType === "view"}

@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import Loader from "../components/Loader";
 import { DatePickerWithRange } from "@/components/CustomComponents/MiniDatePickerRange";
 import { Calendar } from "@/components/ui/calendar";
+import { useDateCalculations } from "./useDateCalculations";
 
 import {
   Select,
@@ -33,7 +34,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Label } from "@/components/ui/label";
-import { format } from "date-fns";
+import { format, isBefore } from "date-fns";
 
 import { CalendarIcon } from "lucide-react";
 
@@ -89,6 +90,8 @@ const Index = () => {
     token: session?.accessToken,
     userId: session?.user?.id,
   });
+
+  console.log("Due Date", daysBeforeDueDate, daysAfterDueDate);
 
   useEffect(() => {
     const mode = searchParams?.get("mode");
@@ -253,6 +256,14 @@ const Index = () => {
     return result;
   }
 
+  const { daysBeforeDueDate, daysAfterDueDate } = useDateCalculations(
+    formData.dueDate,
+    formData.notificationDayB4DueDay,
+    formData.notificationDayAfterDueDay
+  );
+
+  console.log("Due Date", daysBeforeDueDate, daysAfterDueDate);
+
   const createInvoice = async () => {
     console.log(
       "locationObject[formData.locationId],",
@@ -294,10 +305,8 @@ const Index = () => {
         status_id: 1, //from background
         status_code: 1, //from background
         note: formData.note,
-        notification_days_before_due_date:
-          Number(formData.notificationDayB4DueDay) || 0,
-        notification_days_after_due_date:
-          Number(formData.notificationDayAfterDueDay) || 0,
+        notification_days_before_due_date: Number(daysBeforeDueDate) || 0,
+        notification_days_after_due_date: Number(daysAfterDueDate) || 0,
         notification_on_due_date: formData.notificationOnDueDate,
         send_text_to_pay: false, //from background
         remaining_balance: Number(formData.remainingBalance) || 0,
@@ -612,6 +621,9 @@ const Index = () => {
                                   <PopoverContent className="w-auto p-0 bg-white">
                                     <Calendar
                                       mode="single"
+                                      disabled={(date) =>
+                                        isBefore(new Date(date), new Date())
+                                      }
                                       selected={formData.dueDate}
                                       onSelect={(date) =>
                                         dateHandler("dueDate", date)
@@ -632,7 +644,7 @@ const Index = () => {
                               <Popover>
                                 <PopoverTrigger asChild>
                                   <Button
-                                    id="dueDate"
+                                    id="expireDate"
                                     variant={"outline"}
                                     className={cn(
                                       "w-full md:h-[55px] h-[27px] mt-1 md:mt-3 rounded-lg md:rounded-2xl bg-[#F4F4F4] md:max-w-[641px] justify-start text-left font-normal",
@@ -658,6 +670,9 @@ const Index = () => {
                                 <PopoverContent className="w-auto p-0 bg-white">
                                   <Calendar
                                     mode="single"
+                                    disabled={(date) =>
+                                      isBefore(new Date(date), new Date())
+                                    }
                                     selected={formData.expireDate}
                                     onSelect={(date) =>
                                       dateHandler("expireDate", date)
@@ -895,6 +910,9 @@ const Index = () => {
                                     <PopoverContent className="w-auto p-0 bg-white">
                                       <Calendar
                                         mode="single"
+                                        disabled={(date) =>
+                                          isBefore(new Date(date), new Date())
+                                        }
                                         selected={
                                           formData.notificationDayB4DueDay
                                         }
@@ -944,6 +962,9 @@ const Index = () => {
                                         mode="single"
                                         selected={
                                           formData.notificationDayAfterDueDay
+                                        }
+                                        disabled={(date) =>
+                                          isBefore(new Date(date), new Date())
                                         }
                                         onSelect={(date) =>
                                           dateHandler(

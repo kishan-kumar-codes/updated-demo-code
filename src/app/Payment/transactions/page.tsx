@@ -68,16 +68,13 @@ function Index() {
   const getTransactionList = async () => {
     setLoader(true);
     try {
-      const response = await fetch(
-        "/api/fortis/getTransactionList?page[number]=1&page[size]=500",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
+      const response = await fetch("/api/fortis/getTransactionList", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         // Handle HTTP errors here
