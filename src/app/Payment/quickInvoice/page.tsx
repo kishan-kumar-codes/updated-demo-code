@@ -405,7 +405,7 @@ const Index = () => {
         if (accessType === "update") {
           setAccessType("view");
         }
-        router.push("/Payment/quickInvoice/invoiceList");
+        router.push("/Payment/quickInvoice/invoiceList?name=Quick Invoice");
 
         setAccessType("view");
 

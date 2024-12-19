@@ -59,7 +59,7 @@ function InvoiceList() {
     },
     {
       tabName: `Quick Invoice`,
-      tabUrl: "/Payment/QuickInvoice",
+      tabUrl: "/Payment/quickInvoice",
     },
     {
       tabName: `Virtual Terminal`,

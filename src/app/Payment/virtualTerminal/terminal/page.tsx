@@ -295,7 +295,7 @@ const Index = () => {
         setAccessType("view");
       }
 
-      router.push("/Payment/virtualTerminal?tabName=Virtual+Terminal");
+      router.push("/Payment/virtualTerminal?tabName=Virtual Terminal");
 
       setAccessType("view");
 
