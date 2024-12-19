@@ -51,6 +51,10 @@ const TransactionView = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [loader, setLoader] = useState(false);
   const [listData, setListData] = useState([]);
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   const [formData, setFormData] = useState({
     checkin_date: null,
     checkout_date: null,
@@ -102,7 +106,7 @@ const TransactionView = () => {
     entry_mode_id: "K",
     exp_date: "0722",
     wallet_type: "000",
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 
@@ -177,7 +181,7 @@ const TransactionView = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: session?.accessToken, // Make sure this path is correct
+        token: tokenToUse, // Make sure this path is correct
       });
     }
   }, [session]);

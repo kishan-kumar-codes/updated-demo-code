@@ -21,6 +21,8 @@ interface CustomSession {
   };
   accessToken: string;
   expires: string;
+  refreshToken: string;
+  provider: string;
 }
 
 const NewCompanyForm: React.FC = () => {
@@ -32,21 +34,24 @@ const NewCompanyForm: React.FC = () => {
   // const { updateContextData, contextData, clearContext } = context;
   // const { data: session, status } = useSession();
   const [fileList, setFiles] = useState<File[]>([]);
-
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   // console.log("session?.user?.id", session?.user?.id);
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: session?.accessToken || "", // Adjust based on actual session structure
+        token: tokenToUse, // Adjust based on actual session structure
         userId: session?.user?.id || "", // Set userId correctly
       });
     }
   }, [session]);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [formData, setFormData] = useState({
-    token: session?.accessToken,
+    token: tokenToUse,
     name: "",
     business: "",
     size: "",
@@ -63,7 +68,7 @@ const NewCompanyForm: React.FC = () => {
   });
 
   const [formBusinessTypeData, setFormBusinessTypeData] = useState({
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: "",
     businessType: "", // For input field
   });
@@ -118,7 +123,7 @@ const NewCompanyForm: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: session?.accessToken, // Ensure this is correct
+          token: tokenToUse, // Ensure this is correct
           name: formBusinessTypeData.businessType, // Passing correct field name
           userId: session?.user?.id, // Ensure correct user ID is passed
         }),
@@ -175,7 +180,7 @@ const NewCompanyForm: React.FC = () => {
     }
 
     const payload = {
-      token: session?.accessToken,
+      token: tokenToUse,
       name: formData.name,
       business: formData.business,
       size: formData.size,

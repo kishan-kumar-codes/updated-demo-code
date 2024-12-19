@@ -15,6 +15,7 @@ import Loader from "../components/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useSearchParams } from "next/navigation";
+import { dividerClasses } from "@mui/material";
 
 interface ListInterface {
   created_ts: number;
@@ -172,30 +173,31 @@ function Index() {
   return (
     <Layout
       Childrens={
-        <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured ">
-          <div className="px-[15px]">
-            <div className="hidden md:block">
-              <TabNavigation tabData={tabData} />
-            </div>
-            <div className="block md:hidden px-4">
-              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
-                <Link
-                  className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : ""} rounded-l-3xl text-darkSilverColor`}
-                  href="/Payment/transactions?name=Payment">
-                  Insights
-                </Link>
-                <Link
-                  className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : ""} rounded-r-3xl text-darkSilverColor`}
-                  href="/Payment/transactions?name=Transactions">
-                  Transactions
-                </Link>
+        <div className="flex justify-center bg-cultured  items-center w-full">
+          <div className=" pt-[18px] flex-1 flex flex-col w-full max-w-[1560px] h-full bg-cultured ">
+            <div className="px-[15px]">
+              <div className="hidden md:block">
+                <TabNavigation tabData={tabData} />
+              </div>
+              <div className="block md:hidden px-4">
+                <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                  <Link
+                    className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : ""} rounded-l-3xl text-darkSilverColor`}
+                    href="/Payment/transactions?name=Payment">
+                    Insights
+                  </Link>
+                  <Link
+                    className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : ""} rounded-r-3xl text-darkSilverColor`}
+                    href="/Payment/transactions?name=Transactions">
+                    Transactions
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex justify-between px-[15px] mt-[15px]  ">
-            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
-              {/* <Link
+            <div className="flex justify-between px-[15px] mt-[15px]  ">
+              <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
+                {/* <Link
                 href={{
                   pathname: "transactions/transactionView",
                   query: {
@@ -208,66 +210,67 @@ function Index() {
                   icon={faArrowLeft}
                 />{" "}
               </Link> */}
-            </div>
-            <div>
-              <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
-                Add Contact
-              </button>
-              <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
-                Add Account Vault
-              </button>
-              <Link
-                href={{
-                  pathname: "quickInvoice",
-                  query: {
-                    tabName: "Quick Invoice",
-                  },
-                }}>
-                <button className="px-3  md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
-                  Add Quick Invoice
+              </div>
+              <div>
+                <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+                  Add Contact
                 </button>
-              </Link>
+                <button className="px-3 md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold mr-1">
+                  Add Account Vault
+                </button>
+                <Link
+                  href={{
+                    pathname: "quickInvoice",
+                    query: {
+                      tabName: "Quick Invoice",
+                    },
+                  }}>
+                  <button className="px-3  md:py-[17px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[24px] text-[10px] font-bold">
+                    Add Quick Invoice
+                  </button>
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <div className="px-[15px] mt-[15px] w-full md:w-96 container">
-              <SearchBox Component="Transactions" onSearch={handleSearch} />
+            <div>
+              <div className="px-[15px] mt-[15px] w-full md:w-96 container">
+                <SearchBox Component="Transactions" onSearch={handleSearch} />
+              </div>
             </div>
+            {loader ? (
+              <div className="h-screen">
+                <Loader message="Loading Transactions..." />
+              </div>
+            ) : (
+              <div className="section pb-14 flex-1 pt-[18px] overflow-y-auto container mx-auto">
+                {filteredData && filteredData.length > 0 ? (
+                  filteredData.map((transaction) => (
+                    <TransactionCard
+                      key={transaction.id}
+                      id={transaction.id}
+                      name={transaction.account_holder_name}
+                      invDate={new Date(
+                        transaction.created_ts * 1000
+                      ).toLocaleDateString()}
+                      tabName={"Transactions"}
+                      amount={`$${transaction.transaction_amount / 100}`}
+                      status={
+                        transaction.status_code === 101 ? "Paid" : "Pending"
+                      }
+                      pathname="/Payment/transactions/transactionView"
+                      query={{ id: transaction.id }}
+                    />
+                  ))
+                ) : (
+                  <div className="h-screen flex justify-center items-center">
+                    <p className="text-palatinatePurple text-[24px] font-bold">
+                      No Transactions Available
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-          {loader ? (
-            <div className="h-screen">
-              <Loader message="Loading Transactions..." />
-            </div>
-          ) : (
-            <div className="section pb-14 flex-1 pt-[18px] overflow-y-auto container mx-auto">
-              {filteredData && filteredData.length > 0 ? (
-                filteredData.map((transaction) => (
-                  <TransactionCard
-                    key={transaction.id}
-                    id={transaction.id}
-                    name={transaction.account_holder_name}
-                    invDate={new Date(
-                      transaction.created_ts * 1000
-                    ).toLocaleDateString()}
-                    tabName={"Transactions"}
-                    amount={`$${transaction.transaction_amount / 100}`}
-                    status={
-                      transaction.status_code === 101 ? "Paid" : "Pending"
-                    }
-                    pathname="/Payment/transactions/transactionView"
-                    query={{ id: transaction.id }}
-                  />
-                ))
-              ) : (
-                <div className="h-screen flex justify-center items-center">
-                  <p className="text-palatinatePurple text-[24px] font-bold">
-                    No Transactions Available
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       }
     />

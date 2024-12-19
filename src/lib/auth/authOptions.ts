@@ -549,7 +549,7 @@ export const authOptions: AuthOptions = ({
 
             // Only add refreshToken for credentials provider sessions
             if (extendedToken.refreshToken && extendedToken.provider === 'credentials') {
-                extendedSession.accessToken = extendedToken.refreshToken;
+                extendedSession.refreshToken = extendedToken.refreshToken;
             }
 
             // Add the provider to the session

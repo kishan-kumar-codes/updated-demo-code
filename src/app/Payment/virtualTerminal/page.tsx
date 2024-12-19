@@ -168,7 +168,7 @@ function Terminal() {
   return (
     <Layout
       Childrens={
-        <div className="flex justify-center bg-cultured  items-center w-full">
+        <div className="flex justify-center bg-cultured min-h-screen w-full">
           <div className=" pt-[18px] lg:max-w-[1560px] w-full flex-1 flex flex-col h-full bg-cultured ">
             <div className="hidden md:block">
               <TabNavigation tabData={tabData} />
@@ -212,11 +212,11 @@ function Terminal() {
                 />{" "}
               </Link> */}
               </div>
-              <div>
-                <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+              <div className="flex">
+                <button className="px-[20px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
                   Add Contact
                 </button>
-                <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+                <button className="px-[20px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
                   Add Account Vault
                 </button>
                 <Link
@@ -226,7 +226,7 @@ function Terminal() {
                       tabName: "Virtual Terminal",
                     },
                   }}>
-                  <button className="px-[25px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
+                  <button className="px-[20px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
                     Add Terminal
                   </button>
                 </Link>

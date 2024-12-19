@@ -33,14 +33,17 @@ const Index = () => {
   const { showToast } = useToast();
   const { data: session, status } = useSession();
   const searchparams = useSearchParams();
-
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: session?.accessToken, // Make sure this path is correct
+        token: tokenToUse, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -130,7 +133,7 @@ const Index = () => {
     validated_decryption: false,
     communication_type: "http",
     active: true,
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 
@@ -230,7 +233,7 @@ const Index = () => {
         validated_decryption: responseData.validated_decryption,
         communication_type: responseData.communication_type,
         active: responseData.active,
-        token: session?.accessToken,
+        token: tokenToUse,
         userId: session?.user?.id,
       });
     } catch (error) {

@@ -26,6 +26,8 @@ interface CustomSession {
   };
   accessToken: string;
   expires: string;
+  provider?: string;
+  refreshToken?: string;
 }
 
 interface BusinessType {
@@ -41,21 +43,26 @@ const NewCompanyForm: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
 
   console.log("Company >>>>", session);
+
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: session?.accessToken || "", // Adjust based on actual session structure
-        userId: session?.user?.id || "", // Set userId correctly
+        token: tokenToUse,
+        userId: session?.user?.id || "",
       });
     }
   }, [session]);
 
   const [formData, setFormData] = useState({
-    token: session?.accessToken,
+    token: tokenToUse,
     name: "",
     business: "",
     size: "",

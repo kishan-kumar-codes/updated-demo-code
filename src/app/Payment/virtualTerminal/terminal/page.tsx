@@ -36,6 +36,10 @@ const Index = () => {
   const { showToast } = useToast();
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
 
   useEffect(() => {
     if (session) {
@@ -133,7 +137,7 @@ const Index = () => {
     validated_decryption: false,
     communication_type: "http",
     active: true,
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
     exp_year: "2026",
     exp_month: "08",
@@ -225,7 +229,7 @@ const Index = () => {
         validated_decryption: responseData.validated_decryption,
         communication_type: responseData.communication_type,
         active: responseData.active,
-        token: session?.accessToken,
+        token: tokenToUse,
         userId: session?.user?.id,
       }));
     } catch (error) {
@@ -245,7 +249,7 @@ const Index = () => {
     const bodyData = {
       ...formData,
       serial_number: generateRandomDigitString(),
-      token: session?.accessToken,
+      token: tokenToUse,
       notification_email_address: formData.email,
       // location_id:location_id,
       ...(accessType === "update" && { terminal_db_id: dbId }),

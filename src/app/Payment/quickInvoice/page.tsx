@@ -60,6 +60,10 @@ const Index = () => {
   const [tiggleButton, setToggleButton] = useState(true);
   const router = useRouter();
 
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   const [formData, setFormData] = useState({
     // Your existing form data state
     items: [{ name: "", quantity: "", unitPrice: "" }],
@@ -89,7 +93,7 @@ const Index = () => {
     singlePaymentMinAmount: 10,
     singlePaymentMaxAmount: 1000,
     cellPhone: "5555551234",
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 
@@ -320,7 +324,7 @@ const Index = () => {
         attach_files_to_email: false,
         files: [],
         tags: [],
-        token: session?.accessToken,
+        token: tokenToUse,
         userId: session?.user?.id,
       };
 

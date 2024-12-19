@@ -15,13 +15,19 @@ interface CustomSession {
     id: string;
   };
   accessToken: string;
+  provider: string;
   expires: string;
+  refreshToken: string;
 }
 
 const AddNewDeal: React.FC = () => {
   // const { data: session, status } = useSession();
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   // const { showToast } = useToast();
   const [companiesList, setCompaniesList] = useState([]);
   const [formData, setFormData] = useState({
@@ -32,7 +38,7 @@ const AddNewDeal: React.FC = () => {
     stage: "",
     type: "",
     amount: null,
-    token: session?.accessToken[0],
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 
@@ -42,7 +48,7 @@ const AddNewDeal: React.FC = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id || "",
-        token: session?.accessToken[0], // Make sure this path is correct
+        token: tokenToUse, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -100,7 +106,7 @@ const AddNewDeal: React.FC = () => {
 
   const handleSave = async () => {
     const payload = {
-      token: session?.accessToken[0],
+      token: tokenToUse,
       userId: session?.user?.id,
       dealName: formData.dealName || "",
       description: formData.description,

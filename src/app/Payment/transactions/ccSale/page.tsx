@@ -23,13 +23,17 @@ const Index = () => {
   const { showToast } = useToast();
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
 
   useEffect(() => {
     if (session) {
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: session?.accessToken, // Make sure this path is correct
+        token: tokenToUse, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -127,7 +131,7 @@ const Index = () => {
     entry_mode_id: "K",
     exp_date: "0722",
     wallet_type: "000",
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 

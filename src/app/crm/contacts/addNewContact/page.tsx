@@ -20,6 +20,8 @@ interface CustomSession {
   };
   accessToken: string;
   expires: string;
+  provider?: string;
+  refreshToken?: string;
 }
 
 const AddNewContact: React.FC = () => {
@@ -34,6 +36,10 @@ const AddNewContact: React.FC = () => {
   // const { showToast } = useToast();
   const [companiesList, setCompaniesList] = useState([]);
   console.log("session....", session);
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -46,7 +52,7 @@ const AddNewContact: React.FC = () => {
     avatar: "",
     tag: "",
     hasNewsLetter: false,
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: session?.user?.id,
   });
 
@@ -56,7 +62,7 @@ const AddNewContact: React.FC = () => {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: session?.accessToken,
+        token: tokenToUse,
         userId: session?.user?.id || "",
       });
     }

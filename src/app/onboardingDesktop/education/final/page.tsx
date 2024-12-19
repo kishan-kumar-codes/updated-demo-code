@@ -13,6 +13,10 @@ const Final: React.FC = () => {
   const router = useRouter();
   const context = useContext(MyContext);
   const { data: session, status } = useSession();
+  const tokenToUse =
+    session?.provider === "credentials"
+      ? session.refreshToken
+      : session?.accessToken;
 
   const handleContinueClick = async () => {
     try {
@@ -22,7 +26,7 @@ const Final: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: session?.accessToken, // Access token directly
+          token: tokenToUse, // Access token directly
           email: session?.user?.email, //
           firstName: context && context.contextData.firstName,
           lastName: context && context.contextData.lastName,
