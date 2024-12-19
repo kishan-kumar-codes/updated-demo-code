@@ -705,9 +705,7 @@ const Index = () => {
                                           "yyyy-MM-dd"
                                         )
                                       ) : (
-                                        <span className="text-xs">
-                                          Pick a date
-                                        </span>
+                                        <span>Pick a date</span>
                                       )}
                                     </div>
                                   </Button>

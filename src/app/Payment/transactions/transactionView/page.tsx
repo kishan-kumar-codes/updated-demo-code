@@ -52,8 +52,8 @@ const TransactionView = () => {
   const [loader, setLoader] = useState(false);
   const [listData, setListData] = useState([]);
   const [formData, setFormData] = useState({
-    checkin_date: "2021-12-01",
-    checkout_date: "2021-12-01",
+    checkin_date: null,
+    checkout_date: null,
     clerk_number: "AE1234",
     customer_id: "customerid",
     description: "some description",
@@ -105,6 +105,8 @@ const TransactionView = () => {
     token: session?.accessToken,
     userId: session?.user?.id,
   });
+
+  console.log("Checkin Data", formData.checkin_date);
   const [refundData, setRefundData] = useState({
     checkin_date: formData.checkin_date,
     checkout_date: formData.checkout_date,
@@ -741,7 +743,7 @@ const TransactionView = () => {
                                 // }
                                 selected={formData.checkin_date}
                                 onSelect={(date) =>
-                                  dateHandler("dueDate", date)
+                                  dateHandler("checkin_date", date)
                                 }
                                 initialFocus
                               />
@@ -753,7 +755,7 @@ const TransactionView = () => {
                         <div className="flex flex-col justify-start items-start">
                           <label
                             className="md:text-[20px] text-[12px] mt-2 font-bold text-[#6D6D6D]"
-                            htmlFor="dueDate">
+                            htmlFor="checkout_date">
                             Checkout Date
                           </label>
                           <Popover>
@@ -785,7 +787,7 @@ const TransactionView = () => {
                                 // }
                                 selected={formData.checkout_date}
                                 onSelect={(date) =>
-                                  dateHandler("dueDate", date)
+                                  dateHandler("checkout_date", date)
                                 }
                                 initialFocus
                               />
