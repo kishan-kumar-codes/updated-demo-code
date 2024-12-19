@@ -25,7 +25,8 @@ const Profile: React.FC<ProfileProps> = ({ setProfile, onProfileComplete }) => {
   const { data: session, status } = useSession();
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/onboarding/trials/business-info");
+      //router.push("/onboarding/trials/business-info");
+      router.push("/");
     }
   }, [status, router]);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +38,7 @@ const Profile: React.FC<ProfileProps> = ({ setProfile, onProfileComplete }) => {
     console.log("made it here");
     if (firstName && lastName) {
       onProfileComplete(); // Notify parent that profile is complete
-      router.push("/onboarding/trials/business-info");
+      //router.push("/onboarding/trials/business-info");
     } else {
       console.log("Please fill out all fields.");
     }

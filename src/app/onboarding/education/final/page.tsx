@@ -1,4 +1,5 @@
-"use client";
+/src/app / onboarding / education / final / page.tsx;
+("use client");
 
 import React, { useContext } from "react";
 import Layout from "../../layout";
@@ -62,12 +63,12 @@ const Final: React.FC = () => {
       // router
       //   .push("/onboarding/trials/business-info")
       //   .catch((error) => console.error("Navigation error:", error));
-      try {
+      /*try {
         await router.push("/onboarding/trials/business-info");
         // Optionally, handle successful navigation here if needed
       } catch (error) {
         console.error("An error occurred during navigation:", error);
-      }
+      }*/
     } catch (error) {
       console.error("Profile update error:", error);
     }
