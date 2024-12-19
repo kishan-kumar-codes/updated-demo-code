@@ -12,6 +12,7 @@ import { useSearchParams } from "next/navigation";
 import CustomInput from "../../components/customInput";
 import { useSession } from "next-auth/react";
 import { useToast } from "../../components/toasterProvider";
+import { Calendar } from "@/components/ui/calendar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +24,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CalendarIcon } from "lucide-react";
+import { format, isBefore } from "date-fns";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const TransactionView = () => {
   const router = useRouter();
@@ -230,6 +240,12 @@ const TransactionView = () => {
     setShowActions(false);
   };
 
+  const dateHandler = (name: string, value: Date | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value ? format(value, "yyyy-MM-dd") : null,
+    }));
+  };
   useEffect(() => {
     if (session?.user?.id) {
       getInvoiceList(); // Call only when session.user.id is available
@@ -688,44 +704,93 @@ const TransactionView = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="mt-[6px]">
-                        <label
-                          htmlFor="invtitle"
-                          className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
-                          Checkin Date
-                        </label>
-                        <div className="w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
-                          <CustomInput
-                            disabled={accessType === "view"}
-                            model="checkin_date"
-                            value={formData.checkin_date}
-                            onChange={handleInputs}
-                            className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
-                            id="invtitle"
-                            placeholder=""
-                            type="date"
-                            readOnly={false}
-                          />
+
+                      <div>
+                        <div className="flex flex-col justify-start items-start">
+                          <label
+                            className="md:text-[20px] text-[12px] mt-2 font-bold text-[#6D6D6D]"
+                            htmlFor="dueDate">
+                            Checkin Date
+                          </label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                id="checkindate"
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full md:h-[55px] h-[27px] rounded-lg md:rounded-lg bg-[#F4F4F4] justify-start text-left font-normal",
+                                  !formData.checkin_date &&
+                                    "text-muted-foreground"
+                                )}
+                                disabled={accessType === "view"}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <div className="text-xs md:text-base font-semibold">
+                                  {formData.checkin_date ? (
+                                    format(formData.checkin_date, "yyyy-MM-dd")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                </div>
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-white">
+                              <Calendar
+                                mode="single"
+                                // disabled={(date) =>
+                                //   isBefore(new Date(date), new Date())
+                                // }
+                                selected={formData.checkin_date}
+                                onSelect={(date) =>
+                                  dateHandler("dueDate", date)
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </div>
                       </div>
-                      <div className="mt-[6px]">
-                        <label
-                          htmlFor="invtitle"
-                          className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
-                          Checkout Date
-                        </label>
-                        <div className="w-full md:h-[56px] h-[27px] rounded-lg px-2 bg-[#F4F4F4]">
-                          <CustomInput
-                            disabled={accessType === "view"}
-                            model="checkout_date"
-                            value={formData.checkout_date}
-                            onChange={handleInputs}
-                            className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none"
-                            id="invtitle"
-                            placeholder=""
-                            type="date"
-                            readOnly={false}
-                          />
+                      <div>
+                        <div className="flex flex-col justify-start items-start">
+                          <label
+                            className="md:text-[20px] text-[12px] mt-2 font-bold text-[#6D6D6D]"
+                            htmlFor="dueDate">
+                            Checkout Date
+                          </label>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                id="checkindate"
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full md:h-[55px] h-[27px] rounded-lg md:rounded-lg bg-[#F4F4F4] justify-start text-left font-normal",
+                                  !formData.checkout_date &&
+                                    "text-muted-foreground"
+                                )}
+                                disabled={accessType === "view"}>
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                <div className="text-xs md:text-base font-semibold">
+                                  {formData.checkout_date ? (
+                                    format(formData.checkout_date, "yyyy-MM-dd")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                </div>
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-white">
+                              <Calendar
+                                mode="single"
+                                // disabled={(date) =>
+                                //   isBefore(new Date(date), new Date())
+                                // }
+                                selected={formData.checkout_date}
+                                onSelect={(date) =>
+                                  dateHandler("dueDate", date)
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                         </div>
                       </div>
 
