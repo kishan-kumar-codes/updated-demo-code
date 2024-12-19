@@ -79,7 +79,7 @@ const NewCompanyForm: React.FC = () => {
   });
 
   const [formBusinessTypeData, setFormBusinessTypeData] = useState({
-    token: session?.accessToken,
+    token: tokenToUse,
     userId: "",
     businessType: "", // For input field
   });
@@ -130,7 +130,7 @@ const NewCompanyForm: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: session?.accessToken, // Ensure this is correct
+          token: tokenToUse, // Ensure this is correct
           name: formBusinessTypeData.businessType, // Passing correct field name
           userId: session?.user?.id, // Ensure correct user ID is passed
         }),
@@ -177,7 +177,7 @@ const NewCompanyForm: React.FC = () => {
     }
 
     const payload = {
-      token: session?.accessToken,
+      token: tokenToUse,
       name: formData.name,
       business: formData.business,
       size: formData.size,
