@@ -1,4 +1,3 @@
-/src/app / onboarding / education / final / page.tsx;
 ("use client");
 
 import React, { useContext } from "react";
