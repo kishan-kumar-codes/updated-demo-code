@@ -20,7 +20,8 @@ import Loader from "../components/Loader";
 import { DatePickerWithRange } from "@/components/CustomComponents/MiniDatePickerRange";
 import { Calendar } from "@/components/ui/calendar";
 import { useDateCalculations } from "./useDateCalculations";
-
+import { DollarSign } from "lucide-react";
+import { Percent } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -56,32 +57,32 @@ const Index = () => {
 
   const { showToast } = useToast();
   const { data: session, status } = useSession();
-  const [tiggleButton, setToggleButton] = useState(false);
+  const [tiggleButton, setToggleButton] = useState(true);
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     // Your existing form data state
     items: [{ name: "", quantity: "", unitPrice: "" }],
     title: "",
-    dueDate: "2025-01-01",
+    dueDate: null,
     locationId: "",
     allowOverPay: false,
     bankFundedOnlyOverride: true,
-    email: "",
+    email: "demo123@gmail.com",
     customerId: "",
-    expireDate: "2025-01-01",
+    expireDate: null,
     allowPartialPar: false,
     sendEmail: false,
     invoiceNumber: "",
     itemHeader: "New Header",
     itemFooter: "New Footer",
     amountDue: 0,
-    notificationEmail: "",
+    notificationEmail: null,
     statusId: 0,
     statusCode: 0,
-    note: "",
-    notificationDayB4DueDay: "2025-01-01",
-    notificationDayAfterDueDay: "2025-01-01",
+    note: null,
+    notificationDayB4DueDay: null,
+    notificationDayAfterDueDay: null,
     notificationOnDueDate: false,
     sendTextToPay: false,
     remainingBalance: 0,
@@ -467,12 +468,50 @@ const Index = () => {
   };
 
   const handleDollar = () => {
-    setDollar(true);
-    setPercent(false);
+    setDiscountType("dollar");
   };
+
+  // Function to handle when the user clicks on the 'Percent' option
   const handlePercent = () => {
-    setDollar(false);
-    setPercent(true);
+    setDiscountType("percent");
+  };
+
+  // Function to handle the change in the discount input field
+  const handleDiscountChange = (e) => {
+    setDiscountValue(e.target.value);
+  };
+
+  const [discountValue, setDiscountValue] = useState(0); // This stores the discount amount or percentage
+  const [discountType, setDiscountType] = useState("percent"); // 'percent' or 'dollar'
+
+  // Helper function to calculate the subtotal
+  const calculateSubtotal = () => {
+    return formData.items.reduce((acc, item) => {
+      return (
+        acc + (parseFloat(item.unitPrice) || 0) * (parseInt(item.quantity) || 0)
+      );
+    }, 0);
+  };
+
+  // Helper function to calculate the discount
+  const calculateDiscount = (subtotal) => {
+    if (discountType === "percent") {
+      return subtotal * (parseFloat(discountValue) / 100); // percentage discount
+    } else if (discountType === "dollar") {
+      return parseFloat(discountValue) || 0; // fixed dollar discount
+    }
+    return 0; // No discount
+  };
+
+  // Helper function to calculate sales tax
+  const calculateSalesTax = (subtotal) => {
+    const salesTaxRate = 0.07; // 7% sales tax, adjust as needed
+    return subtotal * salesTaxRate;
+  };
+
+  // Helper function to calculate the total
+  const calculateTotal = (subtotal, discount, salesTax) => {
+    return subtotal - discount + salesTax;
   };
 
   return (
@@ -521,7 +560,7 @@ const Index = () => {
                       </div>
                       {loading ? (
                         <div className="h-screen">
-                          <Loader message="Loading data..." />
+                          <Loader message="Loading Quick Invoice..." />
                         </div>
                       ) : (
                         <div className="px-[16px] py-[26px] md:px-[35px] md:py-[56px] ">
@@ -537,23 +576,6 @@ const Index = () => {
                                 Location*
                               </label>
                               <div className="w-full md:h-[55px] h-[27px] mt-1 md:mt-3 rounded-lg md:rounded-2xl  bg-[#F4F4F4] md:max-w-[641px]">
-                                {/* <select
-                                  disabled={accessType === "view"}
-                                  className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none rounded-lg md:rounded-2xl "
-                                  id="location"
-                                  name=""
-                                  onChange={(e) =>
-                                    handleSelect(e, "locationId")
-                                  }
-                                >
-                                  {locationOptions.map(
-                                    (loc: any, index: number) => (
-                                      <option key={index} value={loc.value}>
-                                        {loc.label}
-                                      </option>
-                                    )
-                                  )}
-                                </select> */}
                                 <Select
                                   value={formData.locationId || ""}
                                   onValueChange={(e) =>
@@ -583,31 +605,32 @@ const Index = () => {
                                     )}
                                   </SelectContent>
                                 </Select>
+                                {isError && !formData.locationId && (
+                                  <div className="text-red text-[10px] p-1 m-0">
+                                    Please select a location
+                                  </div>
+                                )}
                               </div>
                             </div>
-                            <Input
-                              disabled={accessType === "view"}
-                              label="Invoice Title*"
-                              type=""
-                              value={formData.title}
-                              id=""
-                              model="title"
-                              placeholder=""
-                              readOnly={false}
-                              onChange={inputHandler}
-                            />
                             <div>
-                              {/* <Input
+                              <Input
                                 disabled={accessType === "view"}
-                                label="Due Date*"
-                                type="date"
+                                label="Invoice Title*"
+                                type=""
+                                value={formData.title}
                                 id=""
-                                model="dueDate"
+                                model="title"
                                 placeholder=""
                                 readOnly={false}
-                                value={formData.dueDate}
                                 onChange={inputHandler}
-                              /> */}
+                              />
+                              {isError && !formData.title && (
+                                <div className="text-red text-[10px] p-1 m-0">
+                                  This Field is Required
+                                </div>
+                              )}
+                            </div>
+                            <div>
                               <div className="flex flex-col justify-start items-start">
                                 <label
                                   className="md:text-[20px] text-[12px] mt-2 md:mt-0 font-bold text-[#6D6D6D]"
@@ -649,6 +672,11 @@ const Index = () => {
                                     />
                                   </PopoverContent>
                                 </Popover>
+                                {isError && !formData.dueDate && (
+                                  <div className="text-red text-[10px] p-1 m-0">
+                                    This Field is Required
+                                  </div>
+                                )}
                               </div>
                             </div>
 
@@ -698,6 +726,11 @@ const Index = () => {
                                   />
                                 </PopoverContent>
                               </Popover>
+                              {isError && !formData.expireDate && (
+                                <div className="text-red text-[10px] p-1 m-0">
+                                  This Field is Required
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -730,7 +763,7 @@ const Index = () => {
                                     onChange={(e) => handleChange(e, index)}
                                   />
                                   {isError && !item.name && (
-                                    <div className="text-red text-[10px] p-0 m-0">
+                                    <div className="text-red text-[10px] p-1 m-0">
                                       This Field is Required
                                     </div>
                                   )}
@@ -762,7 +795,7 @@ const Index = () => {
                                   />
 
                                   {isError && !item.unitPrice && (
-                                    <div className="text-red text-[10px] p-0 m-0">
+                                    <div className="text-red text-[10px] p-1 m-0">
                                       This Field is Required
                                     </div>
                                   )}
@@ -792,21 +825,32 @@ const Index = () => {
                                   <div className="text-[10px] font-[400] text-[#6D6D6D] h-full w-[168px] flex justify-center items-center bg-[#F4F4F4] rounded-xl xl:text-[20px] xl:w-[318px] xl:rounded-3xl lg:text-[12px] lg:w-[200px]">
                                     Apply an early payment incentive
                                   </div>
-                                  <div className="text-[10px] font-[400] text-[#6D6D6D] h-full w-[43px] flex justify-center items-center    bg-[#F4F4F4] rounded-[10px] xl:text-[24px] xl:w-[86px] xl:rounded-3xl  lg:text-[12px] lg:w-[55px]">
-                                    <p>150</p>
+                                  <div className="text-[10px] font-[400] text-[#6D6D6D] h-full w-[43px] flex justify-center items-center bg-[#F4F4F4] rounded-[10px] xl:text-[24px] xl:w-[86px] xl:rounded-3xl lg:text-[12px] lg:w-[55px]">
+                                    <input
+                                      type="text"
+                                      value={discountValue}
+                                      onChange={handleDiscountChange}
+                                      placeholder="Enter value"
+                                      className="w-full bg-[#F4F4F4] px-2 outline-none text-[16px] rounded-lg md:rounded-2xl"
+                                    />
                                   </div>
                                   <div className="border-2 border-[#5F1762] flex justify-center items-center rounded-[10px] h-[27px] w-[90px] xl:h-[57px] xl:w-[170px] xl:rounded-3xl lg:w-[100px] lg:h-[35px]">
                                     <span
-                                      className={`text-[10px] font-bold h-full w-[50%] flex justify-center items-center rounded-s-lg ${dollar ? "text-[#5F1762]" : " bg-[#5F1762] text-[#FFF]"} xl:text-[38px] xl:rounded-s-[20px]  lg:text-[20px]`}
+                                      className={`text-[10px] font-bold h-full w-[50%] flex justify-center items-center rounded-l-3xl ${discountType === "percent" ? "text-[#5F1762]" : "bg-[#5F1762] text-[#FFF]"}`}
                                       onClick={handleDollar}>
                                       <span className="md:hidden">Dollars</span>
-                                      <span className="hidden md:flex">$</span>
+                                      <span className="hidden md:flex">
+                                        <DollarSign />
+                                      </span>
                                     </span>
                                     <span
-                                      className={`text-[10px] font-bold h-full  w-[50%] flex justify-center items-center rounded-e-lg    ${percent ? "text-[#5F1762]" : " bg-[#5F1762] text-[#FFF]"} xl:text-[38px] xl:rounded-e-[20px] lg:text-[20px]`}
+                                      className={`text-[10px] font-bold h-full  w-[50%] flex justify-center items-center rounded-r-3xl ${discountType === "dollar" ? "text-[#5F1762]" : "bg-[#5F1762] text-[#FFF]"}`}
                                       onClick={handlePercent}>
                                       <span className="md:hidden">Percent</span>
-                                      <span className="hidden md:flex">%</span>
+                                      <span className="hidden md:flex">
+                                        {" "}
+                                        <Percent />
+                                      </span>
                                     </span>
                                   </div>
                                 </div>
@@ -817,13 +861,28 @@ const Index = () => {
                       </div>
                       <div className="w-full flex justify-between">
                         <div className="w-full h-[72px] bg-[#6D6D6D] text-white rounded-lg md:h-[104px] md:text-[15px] text-[10px] flex flex-col items-end justify-between p-2 xl:w-[60%] xl:rounded-3xl xl:flex-row xl:h-[65px] xl:items-center xl:justify-around xl:text-[20px]">
-                          <span>Subtotal: $ 0.00</span>{" "}
+                          <span>
+                            Subtotal: ${calculateSubtotal().toFixed(2)}
+                          </span>{" "}
                           <span className="hidden xl:block h-full w-[1px] bg-[#F4F4F4]"></span>
-                          <span>Add Discount: $ 0.00</span>{" "}
+                          <span>
+                            Add Discount: $
+                            {calculateDiscount(calculateSubtotal()).toFixed(2)}
+                          </span>{" "}
                           <span className="hidden xl:block h-full w-[1px] bg-[#F4F4F4]"></span>
-                          <span>Sales Tax: $ 0.00</span>{" "}
+                          <span>
+                            Sales Tax: $
+                            {calculateSalesTax(calculateSubtotal()).toFixed(2)}
+                          </span>{" "}
                           <span className="hidden xl:block h-full w-[1px] bg-[#F4F4F4]"></span>
-                          <span>Total: $ 0.00</span>
+                          <span>
+                            Total: $
+                            {calculateTotal(
+                              calculateSubtotal(),
+                              calculateDiscount(calculateSubtotal()),
+                              calculateSalesTax(calculateSubtotal())
+                            ).toFixed(2)}
+                          </span>
                         </div>
                         <div className="hidden xl:block xl:h-[65px] xl:w-[36%]">
                           <div className="w-full h-full bg-[#631363] text-white text-[26px] items-center rounded-3xl flex justify-between  px-[37px]">
@@ -878,22 +937,6 @@ const Index = () => {
                             </div>
                             <div className="pt-8">
                               <div className="md:grid grid-cols-2 gap-x-4 gap-y-[6px] md:gap-y-3 md:gap-x-12">
-                                {/* {isError && !formData.dueDate && <div className="text-red text-[10px] p-0 m-0">This Field is Required</div>} */}
-
-                                {/* {isError && !formData.title && <div className="text-red text-[10px] p-0 m-0">This Field is Required</div>} */}
-
-                                {/* <Input
-                                  disabled={accessType === "view"}
-                                  label="Notify Before Due Date"
-                                  type="date"
-                                  id=""
-                                  model="notificationDayB4DueDay"
-                                  placeholder=""
-                                  readOnly={false}
-                                  value={formData.notificationDayB4DueDay}
-                                  onChange={inputHandler}
-                                /> */}
-
                                 <div className="flex flex-col justify-start items-start">
                                   <label
                                     className="md:text-[20px] text-[12px] mt-2 md:mt-0 font-bold text-[#6D6D6D]"
@@ -943,6 +986,12 @@ const Index = () => {
                                       />
                                     </PopoverContent>
                                   </Popover>
+                                  {isError &&
+                                    !formData.notificationDayB4DueDay && (
+                                      <div className="text-red text-[10px] p-1 m-0">
+                                        This Field is Required
+                                      </div>
+                                    )}
                                 </div>
                                 <div className="flex flex-col justify-start items-start">
                                   <label
@@ -993,6 +1042,12 @@ const Index = () => {
                                       />
                                     </PopoverContent>
                                   </Popover>
+                                  {isError &&
+                                    !formData.notificationDayAfterDueDay && (
+                                      <div className="text-red text-[10px] p-1 m-0">
+                                        This Field is Required
+                                      </div>
+                                    )}
                                 </div>
                                 {/* <Input
                                   disabled={accessType === "view"}
@@ -1006,29 +1061,42 @@ const Index = () => {
                                   onChange={inputHandler}
                                 /> */}
 
-                                <Input
-                                  disabled={accessType === "view"}
-                                  label="Location Notification Emails"
-                                  type=""
-                                  id=""
-                                  model="notificationEmail"
-                                  placeholder=""
-                                  readOnly={false}
-                                  value={formData.notificationEmail}
-                                  onChange={inputHandler}
-                                />
-                                <Input
-                                  disabled={accessType === "view"}
-                                  label="Note"
-                                  type=""
-                                  id=""
-                                  model="note"
-                                  placeholder=""
-                                  readOnly={false}
-                                  value={formData.note}
-                                  onChange={inputHandler}
-                                />
-
+                                <div>
+                                  <Input
+                                    disabled={accessType === "view"}
+                                    label="Location Notification Emails"
+                                    type=""
+                                    id=""
+                                    model="notificationEmail"
+                                    placeholder=""
+                                    readOnly={false}
+                                    value={formData.notificationEmail}
+                                    onChange={inputHandler}
+                                  />
+                                  {isError && !formData.notificationEmail && (
+                                    <div className="text-red text-[10px] p-1 m-0">
+                                      This Field is Required
+                                    </div>
+                                  )}
+                                </div>
+                                <div>
+                                  <Input
+                                    disabled={accessType === "view"}
+                                    label="Note"
+                                    type=""
+                                    id=""
+                                    model="note"
+                                    placeholder=""
+                                    readOnly={false}
+                                    value={formData.note}
+                                    onChange={inputHandler}
+                                  />
+                                  {isError && !formData.note && (
+                                    <div className="text-red text-[10px] p-1 m-0">
+                                      This Field is Required
+                                    </div>
+                                  )}
+                                </div>
                                 <div>
                                   <label
                                     htmlFor="dueDate"
@@ -1054,13 +1122,13 @@ const Index = () => {
                                 <div className="w-full md:flex justify-end items-end hidden">
                                   <button
                                     disabled={accessType === "view"}
-                                    onClick={handleAddItem}
+                                    // onClick={handleAddItem}
                                     className="md:text-[24px] text-[12px] font-bold md:py-0 py-[7px] rounded-lg md:px-[24px] px-[19px] max-h-[80px]  bg-limeGreen text-btnBlack mr-[13px]">
                                     Save
                                   </button>
                                   <button
                                     disabled={accessType === "view"}
-                                    onClick={handleAddItem}
+                                    // onClick={handleAddItem}
                                     className="md:text-[24px] text-[12px] font-bold md:py-0 py-[7px] rounded-lg md:px-[24px] px-[19px] max-h-[80px] bg-red text-white ">
                                     Cancel
                                   </button>

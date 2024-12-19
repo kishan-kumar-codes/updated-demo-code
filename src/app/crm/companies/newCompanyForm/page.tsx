@@ -42,6 +42,7 @@ const NewCompanyForm: React.FC = () => {
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
 
+  console.log("Company >>>>", session);
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);

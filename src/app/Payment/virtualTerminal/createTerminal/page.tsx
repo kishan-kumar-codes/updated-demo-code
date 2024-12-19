@@ -45,6 +45,8 @@ const Index = () => {
     }
   }, [session]);
 
+  console.log("Session>>>>>>>>>>>>>>>>>>>", session);
+
   const tabData = [
     {
       tabName: "Payment",
@@ -153,16 +155,19 @@ const Index = () => {
       },
     });
     const data = await response.json();
-    let locList: any = [];
-    data.list.map((loc: any) => {
-      locList.push(
-        `${loc.address.street1}-${loc.address.city}-${loc.address.state}-${loc.address.country}`
-      );
-      locationObject[
-        `${loc.address.street1}-${loc.address.city}-${loc.address.state}-${loc.address.country}`
-      ] = loc.id;
+
+    let locList = [];
+
+    // Populate location list and location object with ID mapped to formatted address
+    data.list.map((loc) => {
+      const fullAddress = `${loc.address.street1} - ${loc.address.city} - ${loc.address.state} - ${loc.address.country}`;
+      locList.push(fullAddress);
+
+      // Storing the location id mapped by the full address string
+      locationObject[fullAddress] = loc.id;
     });
 
+    console.log("Location>>>>>>>>>>>", data);
     setLocationOptions(locList);
   };
 
@@ -406,15 +411,15 @@ const Index = () => {
                       <Select
                         value={formData.location_id || ""}
                         onValueChange={(e) => handleSelect(e, "location_id")}>
-                        <SelectTrigger className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none rounded-lg md:rounded-lg ">
+                        <SelectTrigger className="w-full md:text-[20px] text-[12px] bg-[#F4F4F4] h-full outline-none rounded-lg md:rounded-lg">
                           <SelectValue placeholder=" " />
                         </SelectTrigger>
                         <SelectContent className="bg-[#F4F4F4] text-[12px] md:text-[20px]">
                           {locationOptions?.length > 0 ? (
-                            locationOptions?.map((loc: any, index: number) => (
+                            locationOptions?.map((loc, index) => (
                               <SelectItem
-                                key={index || undefined}
-                                value={loc}
+                                key={index}
+                                value={locationObject[loc]} // Set value to the location's ID
                                 className="text-[12px] md:text-[20px]">
                                 {loc}
                               </SelectItem>

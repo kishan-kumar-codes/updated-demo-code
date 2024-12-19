@@ -190,215 +190,224 @@ function Index() {
     <Layout
       // hHeading="Payments"
       Childrens={
-        <div className="px-[15px] pt-[18px] flex-1 flex mx-auto flex-col h-full overflow-y-auto bg-cultured ">
-          <div className="hidden md:block">
-            <TabNavigation tabData={tabData} />
-          </div>
-          <div className="block md:hidden px-4">
-            <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
-              <Link
-                className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
-                href="/Payment/transactions?name=Payment">
-                Insights
-              </Link>
-              <Link
-                className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
-                href="/Payment/transactions?name=Transactions">
-                Transactions
-              </Link>
+        <div className="flex justify-center bg-cultured  items-center w-full">
+          <div className="px-[15px] pt-[18px] flex-1 flex mx-auto  w-full max-w-[1560px] flex-col h-full overflow-y-auto ">
+            <div className="hidden md:block">
+              <TabNavigation tabData={tabData} />
             </div>
-          </div>
-          <div className="hidden md:block cardHeader w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] lg:text-[22px] font-bold py-[10px] pl-[15px]">
-            Insights
-          </div>
-          <div className=" md:hidden pb-20 flex-1 overflow-y-auto ">
-            <InsightsCard
-              headerText="Amount Processed"
-              Children={
-                <div className="pb-10 flex-1 md:flex-auto">
-                  <div className="flex mt-2 justify-around flex-wrap">
-                    <button className="text-xs font-bold text-palatinatePurple py-2 px-4 bg-white rounded-lg">
-                      Month
-                    </button>
-                    <button className="text-xs font-bold text-palatinatePurple py-2 px-4">
-                      7 Days
-                    </button>
-                    <button className="text-xs font-bold text-palatinatePurple py-2 px-4">
-                      Today
-                    </button>
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    <h5 className="text-2xl font-bold text-palatinatePurple">
-                      $76,259.00
-                    </h5>
-                  </div>
-                  <div className="flex justify-center mt-2">
-                    <h5 className="text-lg text-darkSilverColor">
-                      So far this month
-                    </h5>
-                  </div>
-                  <div className="flex justify-center mt-2">
-                    <div className="py-2 px-6 rounded-3xl bg-darkSilverColor text-sm font-bold text-cultured">
-                      <span className="text-limeGreen inline">
-                        <Image src={ArrowUp} alt="" className="inline" /> 13%
-                      </span>
-                      versus last month
-                    </div>
-                  </div>
-                  <div className="flex justify-center mt-2">
-                    <div className="text-sm font-bold text-darkSilverColor">
-                      <span className="text-palatinatePurple inline">
-                        $68,125.00
-                      </span>{" "}
-                      this time last month
-                    </div>
-                  </div>
-                </div>
-              }
-            />
-            <InsightsCard
-              headerText="Amount Collected"
-              Children={
-                <div className="px-4 flex-1 md:flex-auto">
-                  <BarChartSvgComponent targetHeights={animatedHeights} />
-                </div>
-              }
-            />
-            <InsightsCard
-              headerText="Estimated Deposits"
-              Children={
-                <div className="px-4 flex-1 md:flex-auto">
-                  <BarChartSvgComponent targetHeights={animatedHeights} />
-                </div>
-              }
-            />
-          </div>
-          <div className="hidden  section flex-1 md:grid grid-cols-3 gap-5 lg:container mx-auto px-4 mt-[12px] soverflow-y-auto ">
-            <InsightsCard
-              headerText="Amount Processed"
-              Children={
-                <div className="pb-[40px]">
-                  <div className="flex mt-[10px] justify-around">
-                    <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px] bg-white rounded-lg">
-                      Month
-                    </button>
-                    <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px]">
-                      7 Days
-                    </button>
-
-                    <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px]">
-                      Today
-                    </button>
-                  </div>
-                  <div className="flex justify-center mt-[17px] ">
-                    <h5 className="text-[48px] font-bold text-palatinatePurple">
-                      $76,259.00
-                    </h5>
-                  </div>
-                  <div className="flex justify-center mt-[7px] ">
-                    <h5 className="text-[20px]  text-darkSilverColor">
-                      So far this month
-                    </h5>
-                  </div>
-
-                  <div className="flex justify-center mt-[7px] ">
-                    <div className="py-[6px] px-[25px] rounded-3xl  bg-darkSilverColor text-[16px] font-bold text-cultured">
-                      <span className="text-limeGreen inline">
-                        <Image src={ArrowUp} alt="" className="inline" /> 13%
-                      </span>
-                      versus last month
-                    </div>
-                  </div>
-
-                  <div className="flex justify-center mt-[10px] ">
-                    <div className=" text-[16px] font-bold text-darkSilverColor ">
-                      <span className="text-palatinatePurple inline">
-                        {" "}
-                        $68,125.00{" "}
-                      </span>
-                      this time last month
-                    </div>
-                  </div>
-                </div>
-              }
-            />
-
-            <InsightsCard
-              headerText="Amount Collected"
-              Children={
-                <div className="px-[60px] pb-[20px]">
-                  <BarChartSvgComponent targetHeights={animatedHeights} />
-                </div>
-              }
-            />
-            <InsightsCard
-              headerText="Estimated Deposits"
-              Children={
-                <div className="px-[60px] pb-[20px]">
-                  <BarChartSvgComponent targetHeights={animatedHeights} />
-                </div>
-              }
-            />
-          </div>
-          <div className="hidden md:block cardHeader w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] font-bold py-[10px] pl-[15px]">
-            Transactions
-          </div>
-          <div className="hidden  md:flex justify-end lg:container mx-auto">
-            <button className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple rounded-lg">
-              Add Contact
-            </button>
-            <button className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple ml-[10px] rounded-lg ">
-              Add Account Vault
-            </button>
-            <button
-              onClick={() => {
-                router.push("quickInvoice?name=Quick+Invoice&id=");
-              }}
-              className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple ml-[10px] mr-[27px] rounded-lg">
-              Add Quick Invoice
-            </button>
-          </div>
-
-          <div className="hidden  md:block pl-[31px] pr-[16px] mt-[23px] pb-[51px] ">
-            {listData.slice(0, 5).map((invoice, index) => (
-              <div
-                key={index}
-                className="mt-[15px] rounded-lg shadow flex items-center justify-around lg:container bg-white h-[101px] ">
-                {/* Customer Name */}
-                <h5 className="text-[20px] text-darkSilverColor font-bold">
-                  {invoice.email
-                    ? invoice.email.split("@")[0]
-                    : "Customer Name"}
-                </h5>
-
-                {/* Due Date & Invoice ID */}
-                <h5 className="text-[18px] text-darkSilverColor">
-                  {new Date(invoice.due_date).toLocaleDateString()} {invoice.id}
-                </h5>
-
-                <div>
-                  {/* Amount */}
-                  <h5 className="text-[18px] font-bold text-palatinatePurple">
-                    ${invoice.invAmount.toFixed(2)}
-                  </h5>
-
-                  {/* Payment Status */}
-                  <h5
-                    className={`text-[17px] font-bold ${
-                      invoice.payment_status_id === 1
-                        ? "text-limeGreen"
-                        : "text-red-600"
-                    }`}>
-                    {invoice.payment_status_id === 1 ? "Paid" : "Unpaid"}
-                  </h5>
-
-                  {/* View Button */}
-                  <h5 className="text-[18px] font-bold text-palatinatePurple cursor-pointer">
-                    View...
-                  </h5>
-                </div>
+            <div className="block md:hidden px-4">
+              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                <Link
+                  className={`font-bold py-3 text-[16px] w-full text-center ${name === "Payment" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                  href="/Payment/transactions?name=Payment">
+                  Insights
+                </Link>
+                <Link
+                  className={`font-bold py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                  href="/Payment/transactions?name=Transactions">
+                  Transactions
+                </Link>
               </div>
-            ))}
+            </div>
+            {/* <div className="hidden md:block cardHeader w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] lg:text-[22px] font-bold py-[10px] pl-[15px]">
+            Insights
+          </div> */}
+            <div className=" md:hidden pb-20 flex-1 overflow-y-auto ">
+              <InsightsCard
+                headerText="Amount Processed"
+                Children={
+                  <div className="pb-10 flex-1 md:flex-auto">
+                    <div className="flex mt-2 justify-around flex-wrap">
+                      <button className="text-xs font-bold text-palatinatePurple py-2 px-4 bg-white rounded-lg">
+                        Month
+                      </button>
+                      <button className="text-xs font-bold text-palatinatePurple py-2 px-4">
+                        7 Days
+                      </button>
+                      <button className="text-xs font-bold text-palatinatePurple py-2 px-4">
+                        Today
+                      </button>
+                    </div>
+                    <div className="flex justify-center mt-4">
+                      <h5 className="text-2xl font-bold text-palatinatePurple">
+                        $76,259.00
+                      </h5>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                      <h5 className="text-lg text-darkSilverColor">
+                        So far this month
+                      </h5>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                      <div className="py-2 px-6 rounded-3xl bg-darkSilverColor text-sm font-bold text-cultured">
+                        <span className="text-limeGreen inline">
+                          <Image src={ArrowUp} alt="" className="inline" /> 13%
+                        </span>
+                        versus last month
+                      </div>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                      <div className="text-sm font-bold text-darkSilverColor">
+                        <span className="text-palatinatePurple inline">
+                          $68,125.00
+                        </span>{" "}
+                        this time last month
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+              <InsightsCard
+                headerText="Amount Collected"
+                Children={
+                  <div className="px-4 flex-1 md:flex-auto">
+                    <BarChartSvgComponent targetHeights={animatedHeights} />
+                  </div>
+                }
+              />
+              <InsightsCard
+                headerText="Estimated Deposits"
+                Children={
+                  <div className="px-4 flex-1 md:flex-auto">
+                    <BarChartSvgComponent targetHeights={animatedHeights} />
+                  </div>
+                }
+              />
+            </div>
+            <div className="w-full">
+              <div className="hidden md:block w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] lg:text-[22px] font-bold py-[10px] pl-[15px]">
+                Insights
+              </div>
+              <div className="hidden  section flex-1 md:grid grid-cols-3 gap-5 lg:container mx-auto px-4 mt-[12px] soverflow-y-auto ">
+                <InsightsCard
+                  headerText="Amount Processed"
+                  Children={
+                    <div className="pb-[40px]">
+                      <div className="flex mt-[10px] justify-around">
+                        <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px] bg-white rounded-lg">
+                          Month
+                        </button>
+                        <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px]">
+                          7 Days
+                        </button>
+
+                        <button className="text-[12px] font-bold text-palatinatePurple py-[6px] px-[17px]">
+                          Today
+                        </button>
+                      </div>
+                      <div className="flex justify-center mt-[17px] ">
+                        <h5 className="text-[48px] font-bold text-palatinatePurple">
+                          $76,259.00
+                        </h5>
+                      </div>
+                      <div className="flex justify-center mt-[7px] ">
+                        <h5 className="text-[20px]  text-darkSilverColor">
+                          So far this month
+                        </h5>
+                      </div>
+
+                      <div className="flex justify-center mt-[7px] ">
+                        <div className="py-[6px] px-[25px] rounded-3xl  bg-darkSilverColor text-[16px] font-bold text-cultured">
+                          <span className="text-limeGreen inline">
+                            <Image src={ArrowUp} alt="" className="inline" />{" "}
+                            13%
+                          </span>
+                          versus last month
+                        </div>
+                      </div>
+
+                      <div className="flex justify-center mt-[10px] ">
+                        <div className=" text-[16px] font-bold text-darkSilverColor ">
+                          <span className="text-palatinatePurple inline">
+                            {" "}
+                            $68,125.00{" "}
+                          </span>
+                          this time last month
+                        </div>
+                      </div>
+                    </div>
+                  }
+                />
+
+                <InsightsCard
+                  headerText="Amount Collected"
+                  Children={
+                    <div className="px-[60px] pb-[20px]">
+                      <BarChartSvgComponent targetHeights={animatedHeights} />
+                    </div>
+                  }
+                />
+                <InsightsCard
+                  headerText="Estimated Deposits"
+                  Children={
+                    <div className="px-[60px] pb-[20px]">
+                      <BarChartSvgComponent targetHeights={animatedHeights} />
+                    </div>
+                  }
+                />
+              </div>
+            </div>
+            <div className="hidden md:block cardHeader w-[273px] mt-[18px] rounded-md rounded-br-3xl bg-palatinatePurple text-white text-[16px] font-bold py-[10px] pl-[15px]">
+              Transactions
+            </div>
+            <div className="hidden  md:flex justify-end lg:container mx-auto">
+              <button className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple rounded-lg">
+                Add Contact
+              </button>
+              <button className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple ml-[10px] rounded-lg ">
+                Add Account Vault
+              </button>
+              <button
+                onClick={() => {
+                  router.push("quickInvoice?name=Quick+Invoice&id=");
+                }}
+                className="text-[16px] font-bold text-chinesWhite px-[22px] py-[15px] bg-palatinatePurple ml-[10px] mr-[27px] rounded-lg">
+                Add Quick Invoice
+              </button>
+            </div>
+
+            <div className="hidden  md:block pl-[31px] pr-[16px] mt-[23px] pb-[51px] ">
+              {listData.slice(0, 5).map((invoice, index) => (
+                <div
+                  key={index}
+                  className="mt-[15px] rounded-lg shadow flex items-center justify-around lg:container bg-white h-[101px] ">
+                  {/* Customer Name */}
+                  <h5 className="text-[20px] text-darkSilverColor font-bold">
+                    {invoice.email
+                      ? invoice.email.split("@")[0]
+                      : "Customer Name"}
+                  </h5>
+
+                  {/* Due Date & Invoice ID */}
+                  <h5 className="text-[18px] text-darkSilverColor">
+                    {new Date(invoice.due_date).toLocaleDateString()}{" "}
+                    {invoice.id}
+                  </h5>
+
+                  <div>
+                    {/* Amount */}
+                    <h5 className="text-[18px] font-bold text-palatinatePurple">
+                      ${invoice.invAmount.toFixed(2)}
+                    </h5>
+
+                    {/* Payment Status */}
+                    <h5
+                      className={`text-[17px] font-bold ${
+                        invoice.payment_status_id === 1
+                          ? "text-limeGreen"
+                          : "text-red-600"
+                      }`}>
+                      {invoice.payment_status_id === 1 ? "Paid" : "Unpaid"}
+                    </h5>
+
+                    {/* View Button */}
+                    <h5 className="text-[18px] font-bold text-palatinatePurple cursor-pointer">
+                      View...
+                    </h5>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       }

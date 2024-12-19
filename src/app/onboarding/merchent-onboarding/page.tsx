@@ -293,13 +293,13 @@ const MerchantOnboarding: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex bg-[#F4F4F4] justify-center w-full">
       {/* <h1>Merchant Onboarding</h1>
       <button onClick={handleSubmit} style={{ cursor: "pointer" }}>
         Submit Onboarding Request
       </button> */}
 
-      <div className="bg-[#F4F4F4] md:max-w-[450px]">
+      <div className=" md:max-w-[450px]">
         <Card className="w-full">
           <CardHeader className=" text-white py-2">
             <CardTitle className="text-center text-[30px] pt-4 text-[#6D6D6D]">

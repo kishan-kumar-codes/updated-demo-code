@@ -102,7 +102,7 @@ const TeamSetup: React.FC = () => {
             </svg>
           </div>
 
-          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
+          <div className="w-full flex flex-col justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #1's mobile phone or email"
@@ -112,7 +112,7 @@ const TeamSetup: React.FC = () => {
             />
           </div>
 
-          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
+          <div className="w-full flex flex-col  justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #2's mobile phone or email"
@@ -122,7 +122,7 @@ const TeamSetup: React.FC = () => {
             />
           </div>
 
-          <div className="w-full flex flex-col lg:w-[40%] justify-start lg:justify-center items-center">
+          <div className="w-full flex flex-col justify-start lg:justify-center items-center">
             <input
               type="text"
               placeholder="Employee #3's mobile phone or email"

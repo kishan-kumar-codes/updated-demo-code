@@ -168,36 +168,37 @@ function Terminal() {
   return (
     <Layout
       Childrens={
-        <div className=" pt-[18px] flex-1 flex flex-col h-full bg-cultured ">
-          <div className="hidden md:block">
-            <TabNavigation tabData={tabData} />
-          </div>
-          <div className="block md:hidden">
-            {/* <TabNavigationMobile tabData={mobileTab} /> */}
-            <div className="block md:hidden px-4">
-              <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
-                <Link
-                  className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
-                  href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
-                  Quick <br />
-                  Invoice
-                </Link>
-                <Link
-                  className={`font-normal py-3 text-[16px] w-full text-center ${name === "Virtual Terminal" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
-                  href="/Payment/virtualTerminal?name=Virtual Terminal">
-                  Virtual <br /> Terminal
-                </Link>
-                <Link
-                  className={`font-normal py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
-                  href="/Payment/keyedCreditCard?name=Credit Card">
-                  Credit <br /> Card
-                </Link>
+        <div className="flex justify-center bg-cultured  items-center w-full">
+          <div className=" pt-[18px] lg:max-w-[1560px] w-full flex-1 flex flex-col h-full bg-cultured ">
+            <div className="hidden md:block">
+              <TabNavigation tabData={tabData} />
+            </div>
+            <div className="block md:hidden">
+              {/* <TabNavigationMobile tabData={mobileTab} /> */}
+              <div className="block md:hidden px-4">
+                <div className="flex border border-darkSilverColor w-full justify-between rounded-l-3xl rounded-r-3xl">
+                  <Link
+                    className={`font-normal py-3 text-[16px] break-words w-full text-center ${name === "Quick Invoice" ? "bg-limeGreen" : "bg-white"} rounded-l-3xl text-darkSilverColor`}
+                    href="/Payment/quickInvoice/invoiceList?name=Quick Invoice">
+                    Quick <br />
+                    Invoice
+                  </Link>
+                  <Link
+                    className={`font-normal py-3 text-[16px] w-full text-center ${name === "Virtual Terminal" ? "bg-limeGreen" : "bg-white"} text-darkSilverColor`}
+                    href="/Payment/virtualTerminal?name=Virtual Terminal">
+                    Virtual <br /> Terminal
+                  </Link>
+                  <Link
+                    className={`font-normal py-3  text-[16px] w-full text-center ${name === "Transactions" ? "bg-limeGreen" : "bg-white"} rounded-r-3xl text-darkSilverColor`}
+                    href="/Payment/keyedCreditCard?name=Credit Card">
+                    Credit <br /> Card
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="flex justify-between px-[15px] mt-[15px]">
-            <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
-              {/* <Link
+            <div className="flex justify-between px-[15px] mt-[15px]">
+              <div className="flex items-center md:text-[24px] text-[19px] font-bold hover:cursor-pointer">
+                {/* <Link
                 href={{
                   pathname: "virtualTerminal/terminal",
                   query: {
@@ -210,97 +211,98 @@ function Terminal() {
                   icon={faArrowLeft}
                 />{" "}
               </Link> */}
-            </div>
-            <div>
-              <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
-                Add Contact
-              </button>
-              <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
-                Add Account Vault
-              </button>
-              <Link
-                href={{
-                  pathname: "virtualTerminal/createTerminal",
-                  query: {
-                    tabName: "Virtual Terminal",
-                  },
-                }}>
-                <button className="px-[25px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
-                  Add Terminal
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <div className="px-[15px] mt-[15px] w-full md:w-96">
-              <SearchBox onSearch={handleSearch} Component="Terminal" />
-            </div>
-          </div>
-
-          <div className="section shadow flex-1 pt-[18px] container mx-auto overflow-y-auto">
-            {!loader ? (
-              filteredData.length > 0 ? (
-                filteredData.map((data, index) => (
-                  <div
-                    key={index}
-                    className="flex pb-[17px] border-b-[.5px]  border-chinesWhite px-[15px] pt-[4px] ">
-                    <div className="flex-1">
-                      <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
-                        {data.title}
-                      </h5>
-                      <h5 className="md:text-[24px] text-[19px]  text-darkSilverColor">
-                        {data.default_checkout}
-                      </h5>
-                    </div>
-                    <div className="flex items-end ">
-                      <h5 className="text-[15px] font-bold text-palatinatePurple"></h5>
-                      {/* <h5 className='text-[14px] font-bold text-limeGreen '>{status}</h5> */}
-
-                      <div className="md:text-[24px] text-[19px] font-bold inline-block mr-1 text-palatinatePurple">
-                        <Link
-                          href={{
-                            pathname: "virtualTerminal/terminal",
-                            query: {
-                              mode: "view",
-                              id: data.id,
-                              tabName: "Virtual Terminal",
-                            },
-                          }}>
-                          <FontAwesomeIcon icon={faEye} />
-                        </Link>
-                      </div>
-
-                      <div className="md:text-[24px] text-[19px] font-bold inline-block text-palatinatePurple">
-                        <Link
-                          href={{
-                            pathname: "virtualTerminal/terminal",
-                            query: {
-                              mode: "update",
-                              id: data.id,
-                              db_id: data.terminal_db_id,
-                              tabName: "Virtual Terminal",
-                            },
-                          }}>
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="h-screen flex justify-center items-center">
-                  <p className="text-palatinatePurple text-[24px] font-bold">
-                    No Terminal Available
-                  </p>
-                </div>
-              )
-            ) : (
-              <div className="h-screen">
-                <Loader message="Loading Terminal..." />
               </div>
-            )}
-            {/* <TransactionCard pathname="" query={{}} name="Alexis Mcconnell" invDate="04/02/17 Invoice ID Number" amount="$2,450.00" status="Paid" /> */}
+              <div>
+                <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+                  Add Contact
+                </button>
+                <button className="px-[25px] md:py-[21px] py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold mr-1">
+                  Add Account Vault
+                </button>
+                <Link
+                  href={{
+                    pathname: "virtualTerminal/createTerminal",
+                    query: {
+                      tabName: "Virtual Terminal",
+                    },
+                  }}>
+                  <button className="px-[25px] md:py-[21px]  py-[8px] rounded-lg bg-palatinatePurple text-cultured md:text-[20px] text-[10px] font-bold">
+                    Add Terminal
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            <div>
+              <div className="px-[15px] mt-[15px] w-full md:w-96">
+                <SearchBox onSearch={handleSearch} Component="Terminal" />
+              </div>
+            </div>
+
+            <div className="section shadow flex-1 pt-[18px] container mx-auto overflow-y-auto">
+              {!loader ? (
+                filteredData.length > 0 ? (
+                  filteredData.map((data, index) => (
+                    <div
+                      key={index}
+                      className="flex pb-[17px] border-b-[.5px]  border-chinesWhite px-[15px] pt-[4px] ">
+                      <div className="flex-1">
+                        <h5 className="md:text-[24px] text-[19px] font-bold text-darkSilverColor">
+                          {data.title}
+                        </h5>
+                        <h5 className="md:text-[24px] text-[19px]  text-darkSilverColor">
+                          {data.default_checkout}
+                        </h5>
+                      </div>
+                      <div className="flex items-end ">
+                        <h5 className="text-[15px] font-bold text-palatinatePurple"></h5>
+                        {/* <h5 className='text-[14px] font-bold text-limeGreen '>{status}</h5> */}
+
+                        <div className="md:text-[24px] text-[19px] font-bold inline-block mr-1 text-palatinatePurple">
+                          <Link
+                            href={{
+                              pathname: "virtualTerminal/terminal",
+                              query: {
+                                mode: "view",
+                                id: data.id,
+                                tabName: "Virtual Terminal",
+                              },
+                            }}>
+                            <FontAwesomeIcon icon={faEye} />
+                          </Link>
+                        </div>
+
+                        <div className="md:text-[24px] text-[19px] font-bold inline-block text-palatinatePurple">
+                          <Link
+                            href={{
+                              pathname: "virtualTerminal/terminal",
+                              query: {
+                                mode: "update",
+                                id: data.id,
+                                db_id: data.terminal_db_id,
+                                tabName: "Virtual Terminal",
+                              },
+                            }}>
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="h-screen flex justify-center items-center">
+                    <p className="text-palatinatePurple text-[24px] font-bold">
+                      No Terminal Available
+                    </p>
+                  </div>
+                )
+              ) : (
+                <div className="h-screen">
+                  <Loader message="Loading Terminal..." />
+                </div>
+              )}
+              {/* <TransactionCard pathname="" query={{}} name="Alexis Mcconnell" invDate="04/02/17 Invoice ID Number" amount="$2,450.00" status="Paid" /> */}
+            </div>
           </div>
         </div>
       }

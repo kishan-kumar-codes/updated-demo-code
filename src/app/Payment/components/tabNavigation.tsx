@@ -35,7 +35,7 @@ export default function TabNavigation({ tabData = [] }: TabNavigationProps) {
                 },
               }}
               className={cn(
-                "font-bold text-[27px] text-darkSilverColor w-[300px] flex h-[77px] justify-center mx-2 items-center rounded-xl",
+                "font-bold md:text-lg lg:text-[27px] text-darkSilverColor w-[300px] flex h-[77px] justify-center mx-2 items-center rounded-xl",
                 currentTab === tab.tabName || currentTabName === tab.tabName
                   ? "bg-limeGreen"
                   : "bg-chinesWhite"

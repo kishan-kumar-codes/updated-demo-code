@@ -138,7 +138,7 @@ export default function Trials() {
                     />
                   </div>
                   <div className="w-full flex justify-center text-center">
-                    <div className="relative w-[60%] lg:w-[40%] text-center">
+                    <div className="relative w-fit lg:w-[40%] text-center">
                       <input
                         type={showPassword ? "text" : "password"}
                         value={password}
