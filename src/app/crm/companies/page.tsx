@@ -130,7 +130,6 @@ const Companies: React.FC = () => {
           (deal: any) => deal.company.id === company.id
         ).length;
 
-        // Add the counts to the company object
         return {
           ...company,
           contactCount,
