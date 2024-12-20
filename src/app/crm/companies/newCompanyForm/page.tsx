@@ -36,7 +36,7 @@ interface BusinessType {
 }
 
 const NewCompanyForm: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   // const { showToast } = useToast();
   const [fileList, setFiles] = useState<File[]>([]);
   const [businessTypes, setBusinessTypes] = useState<BusinessType[]>([]);
