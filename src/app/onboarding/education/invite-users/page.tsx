@@ -85,10 +85,10 @@ const TeamSetup: React.FC = () => {
                 type="text"
                 value={signedInUser ? signedInUser : undefined}
                 readOnly
-                className="w-[289px] lg:w-full h-[33px] mt-[11px] text-[12px] text-[#6D6D6D] pl-[38px] py-[10px] lg:text-[22px] lg:py-7 rounded-xl lg:rounded-3xl"
+                className="w-[289px] lg:w-full h-[33px] mt-[11px] text-[12px] text-[#6D6D6D] pl-4 py-[10px] lg:text-[22px] lg:py-7 rounded-xl lg:rounded-3xl"
               />
 
-              <div className="absolute left-2 top-0.5 py-[10px]  lg:py-7">
+              <div className="absolute right-2 top-1 md:top-[1px] py-[10px]  lg:py-7">
                 <LockKeyhole color="#6D6D6D" />
               </div>
             </div>
