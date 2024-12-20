@@ -93,7 +93,7 @@ const Index = () => {
     singlePaymentMinAmount: 10,
     singlePaymentMaxAmount: 1000,
     cellPhone: "5555551234",
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
@@ -324,7 +324,7 @@ const Index = () => {
         attach_files_to_email: false,
         files: [],
         tags: [],
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id,
       };
 

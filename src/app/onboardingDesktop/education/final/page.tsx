@@ -26,7 +26,7 @@ const Final: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: tokenToUse, // Access token directly
+          token: session?.expires, // Access token directly
           email: session?.user?.email, //
           firstName: context && context.contextData.firstName,
           lastName: context && context.contextData.lastName,

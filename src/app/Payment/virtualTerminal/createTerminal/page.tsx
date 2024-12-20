@@ -43,7 +43,7 @@ const Index = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: tokenToUse, // Make sure this path is correct
+        token: session?.expires, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -133,7 +133,7 @@ const Index = () => {
     validated_decryption: false,
     communication_type: "http",
     active: true,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
@@ -233,7 +233,7 @@ const Index = () => {
         validated_decryption: responseData.validated_decryption,
         communication_type: responseData.communication_type,
         active: responseData.active,
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id,
       });
     } catch (error) {

@@ -36,7 +36,7 @@ interface BusinessType {
 }
 
 const NewCompanyForm: React.FC = () => {
-  const isMobile = useClientMediaQuery("(max-width: 769px)");
+  const [loading, setLoading] = useState(false);
   // const { showToast } = useToast();
   const [fileList, setFiles] = useState<File[]>([]);
   const [businessTypes, setBusinessTypes] = useState<BusinessType[]>([]);
@@ -48,21 +48,21 @@ const NewCompanyForm: React.FC = () => {
       ? session.refreshToken
       : session?.accessToken;
 
-  console.log("Company >>>>", session);
+  console.log("Company >>>>", session?.expires);
 
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id || "",
       });
     }
   }, [session]);
 
   const [formData, setFormData] = useState({
-    token: tokenToUse,
+    token: session?.expires,
     name: "",
     business: "",
     size: "",
@@ -79,7 +79,7 @@ const NewCompanyForm: React.FC = () => {
   });
 
   const [formBusinessTypeData, setFormBusinessTypeData] = useState({
-    token: tokenToUse,
+    token: session?.expires,
     userId: "",
     businessType: "", // For input field
   });
@@ -130,24 +130,21 @@ const NewCompanyForm: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: tokenToUse, // Ensure this is correct
+          token: session?.expires, // Ensure this is correct
           name: formBusinessTypeData.businessType, // Passing correct field name
           userId: session?.user?.id, // Ensure correct user ID is passed
         }),
       });
       console.log("response:", response);
       if (response.ok) {
-        alert("added");
         getAllBusinessTypes();
         // showToast(`Business Type added successfully!`, "success");
       } else {
         const errorData = await response.json();
         console.error("Error adding Business Type:", errorData);
-        alert("Error adding Business Type.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Error adding Business Type.");
     }
   };
 
@@ -169,6 +166,7 @@ const NewCompanyForm: React.FC = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     let logoBase64 = "";
 
     if (fileList.length > 0) {
@@ -177,7 +175,7 @@ const NewCompanyForm: React.FC = () => {
     }
 
     const payload = {
-      token: tokenToUse,
+      token: session?.expires,
       name: formData.name,
       business: formData.business,
       size: formData.size,
@@ -207,7 +205,6 @@ const NewCompanyForm: React.FC = () => {
         console.error("Error response from server:", responseBody);
         throw new Error("Failed to create company");
       }
-      alert("Company created");
       // showToast(`Company added successfully!`, "success");
       router.push("/crm/companies/");
     } catch (error) {
@@ -251,6 +248,23 @@ const NewCompanyForm: React.FC = () => {
     if (dropdown) dropdown.dispatchEvent(new Event("blur"));
     setShowPopup(true);
   };
+
+  const isFormValid = () => {
+    return (
+      formData.name?.trim() !== "" &&
+      formData.business?.trim() !== "" &&
+      formData.size?.trim() !== "" &&
+      formData.address?.trim() !== "" &&
+      formData.city?.trim() !== "" &&
+      formData.zipCode?.trim() !== "" &&
+      formData.state?.trim() !== "" &&
+      formData.website?.trim() !== "" &&
+      formData.linkedin?.trim() !== "" &&
+      formData.phoneNumber?.trim() !== "" &&
+      formData.accountManager?.trim() !== ""
+    );
+  };
+
   return (
     <LayoutView
       Childrens={
@@ -272,8 +286,9 @@ const NewCompanyForm: React.FC = () => {
                 <CustomInput
                   value={formData.name}
                   placeholder=""
+                  required={true}
                   id="name"
-                  className="w-full outline-none border-none bg-[#F4F4F4] rounded-lg h-[27px] text-[12px] px-2 md:h-[42px] md:text-[20px] md:mt-2 md:rounded-2xl"
+                  className={`w-full outline-none border-none bg-[#F4F4F4] rounded-lg h-[27px] text-[12px] px-2 md:h-[42px] md:text-[20px] md:mt-2 md:rounded-2xl ${formData.name ? "" : "border-red-500"}`}
                   type="text"
                   model="name"
                   handleChange={handleChange}
@@ -317,38 +332,6 @@ const NewCompanyForm: React.FC = () => {
                     </div>
                   </SelectContent>
                 </Select>
-                {/* <CustomSelect
-                  id="name"
-                  name=""
-                  className="w-full outline-none border-none bg-[#F4F4F4] rounded-lg h-[27px] text-[12px] px-2 md:h-[42px] md:text-[20px] md:mt-2 md:rounded-2xl"
-                  childrens={
-                    <>
-                      <option value="" disabled hidden selected>
-                        {" "}
-                      </option>
-                      <option className="text-darkSilverColor" value="volvo">
-                        Communication Services
-                      </option>
-                      <option className="text-darkSilverColor" value="saab">
-                        Consumer Discretionary
-                      </option>
-                      <option className="text-darkSilverColor" value="mercedes">
-                        Consumer Staples
-                      </option>
-                      <option className="text-darkSilverColor" value="audi">
-                        Energy
-                      </option>
-                      <option className="text-darkSilverColor" value="audi">
-                        Financials
-                      </option>
-                      <option
-                        className="text-palatinatePurple font-bold pl-[30px] my-[19px]"
-                        value="audi">
-                        + Add Business Type
-                      </option>
-                    </>
-                  }
-                /> */}
               </div>
               <div className="col-span-3">
                 <label
@@ -390,20 +373,6 @@ const NewCompanyForm: React.FC = () => {
                     </SelectItem>
                   </SelectContent>
                 </Select>
-                {/* <CustomSelect
-                  id="name"
-                  name=""
-                  className="w-full outline-none border-none bg-[#F4F4F4] rounded-lg h-[27px] text-[12px] px-2 md:h-[42px] md:text-[20px] md:mt-2 md:rounded-2xl"
-                  childrens={
-                    <>
-                      <option value="" disabled hidden selected></option>
-                      <option value="volvo">Volvo</option>
-                      <option value="saab">Saab</option>
-                      <option value="mercedes">Mercedes</option>
-                      <option value="audi">Audi</option>
-                    </>
-                  }
-                />{" "} */}
               </div>
               <div className="col-span-6">
                 <label
@@ -579,11 +548,16 @@ const NewCompanyForm: React.FC = () => {
                   }
                 /> */}
               </div>
-              <div className="col-span-6 mt-[8px] text-right">
+              <div className="col-span-6 mt-[8px]  flex justify-end text-right">
                 <button
                   onClick={handleSave}
-                  className="bg-limeGreen px-[11px] py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-3 ">
-                  Save Profile
+                  disabled={!isFormValid()} // Disable button if form is invalid
+                  className={`bg-limeGreen flex justify-center px-[11px] w-24 lg:w-48 whitespace-nowrap py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-4 ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}>
+                  {loading ? (
+                    <div className="w-[30px] h-[30px] md:w-[30px] md:h-[30px] lg:w-[40px] lg:h-[40px] xl:w-[50px] xl:h-[50px] border-4 border-[#631363]/30 border-t-[#631363] rounded-full animate-spin" />
+                  ) : (
+                    "Save Profile"
+                  )}
                 </button>
               </div>
             </div>

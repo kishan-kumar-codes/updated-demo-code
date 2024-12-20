@@ -80,8 +80,8 @@ export async function POST(req: Request) {
     // Parse the request body
     const body = await req.json();
     const { userId } = body;
-console.log("_++++++++++++++++++++++")
-console.log(userId);
+    console.log("_++++++++++++++++++++++")
+    console.log(userId);
     if (!userId) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
@@ -96,7 +96,7 @@ console.log(userId);
 
     // Check if companies array is undefined or empty
     if (!companies || companies.length === 0) {
-      return NextResponse.json({ error: "No companies found for this user" }, { status: 404 });
+      return NextResponse.json({ error: "No companies found for this user" }, { status: 200 });
     }
 
     return NextResponse.json(companies, { status: 200 });

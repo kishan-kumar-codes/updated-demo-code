@@ -137,7 +137,7 @@ const Index = () => {
     validated_decryption: false,
     communication_type: "http",
     active: true,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
     exp_year: "2026",
     exp_month: "08",
@@ -229,7 +229,7 @@ const Index = () => {
         validated_decryption: responseData.validated_decryption,
         communication_type: responseData.communication_type,
         active: responseData.active,
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id,
       }));
     } catch (error) {
@@ -249,7 +249,7 @@ const Index = () => {
     const bodyData = {
       ...formData,
       serial_number: generateRandomDigitString(),
-      token: tokenToUse,
+      token: session?.expires,
       notification_email_address: formData.email,
       // location_id:location_id,
       ...(accessType === "update" && { terminal_db_id: dbId }),

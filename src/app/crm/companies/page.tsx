@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { StaticImageData } from "next/image";
 import { selectClasses } from "@mui/material";
+import Loader from "@/app/Payment/components/Loader";
 
 // interface Business {
 //   name: string;
@@ -43,6 +44,7 @@ const Companies: React.FC = () => {
   const [isAddNewCompany, setIsAddNewCompany] = useState<boolean>(false);
   const [showFilterCard, setShowFilterCard] = useState<boolean>(false);
   const router = useRouter();
+
   const { data: session, status } = useSession();
   // console.log("session?.session[0]", session?.session[0]);
   console.log("session?.session[0]", session);
@@ -78,7 +80,8 @@ const Companies: React.FC = () => {
     }
 
     try {
-      setloading(true);
+      setloading(true); // Set loading to true before starting API calls
+
       // Fetch all companies, contacts, and deals concurrently
       const [companiesResponse, contactsResponse, dealsResponse] =
         await Promise.all([
@@ -112,12 +115,10 @@ const Companies: React.FC = () => {
       const companies = await companiesResponse.json();
       const contacts = await contactsResponse.json();
       const deals = await dealsResponse.json();
-      console.log("Here is the company dataa");
-      console.log(companies);
-      console.log("Here is the contact dataa");
-      console.log(contacts);
-      console.log("Here is the deals dataa");
-      console.log(deals);
+
+      console.log("Here is the company dataa", companies);
+      console.log("Here is the contact dataa", contacts);
+      console.log("Here is the deals dataa", deals);
 
       // Process the companies to add contact and deal counts
       const enrichedCompanies = companies.map((company: any) => {
@@ -137,16 +138,13 @@ const Companies: React.FC = () => {
         };
       });
 
-      // console.log("enrichedCompanies", enrichedCompanies);
       // Set the enriched company list
       setCompaniesList(enrichedCompanies);
-      // console.log(
-      //   "Enriched Companies with Contact and Deal Counts:",
-      //   enrichedCompanies
-      // );
-      setloading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      // Ensure loading state is set to false regardless of success or failure
+      setloading(false);
     }
   };
 
@@ -279,31 +277,37 @@ const Companies: React.FC = () => {
                   selectedBusinessType={selectedBusinessType}
                 />
               </div>
-              <div
-                className="w-full flex-1 grid gap-4 p-4 min-h-screen"
-                style={{
-                  gridTemplateColumns: "repeat(auto-fit, minmax(308px, 1fr))",
-                }}>
-                {filteredCompanies.length > 0 ? (
-                  filteredCompanies.map((data, index) => (
-                    <div key={index} className="">
-                      <CompaniesCard
-                        comLogo={data.logo}
-                        comName={data.name}
-                        comDesc={data?.business}
-                        compContacts={data?.contactCount}
-                        compDeals={data?.dealCount}
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <>
-                    <div className="text-[#6D6D6D] font-bold ">
-                      No compaines to show{" "}
-                    </div>
-                  </>
-                )}
-              </div>
+              {loading ? (
+                <div className="flex justify-between w-full">
+                  <Loader />
+                </div>
+              ) : (
+                <div
+                  className="w-full flex-1 grid gap-4 p-4 min-h-screen"
+                  style={{
+                    gridTemplateColumns: "repeat(auto-fit, minmax(308px, 1fr))",
+                  }}>
+                  {filteredCompanies.length > 0 ? (
+                    filteredCompanies.map((data, index) => (
+                      <div key={index} className="">
+                        <CompaniesCard
+                          comLogo={data.logo}
+                          comName={data.name}
+                          comDesc={data?.business}
+                          compContacts={data?.contactCount}
+                          compDeals={data?.dealCount}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="text-[#6D6D6D] font-bold ">
+                        No compaines to show{" "}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

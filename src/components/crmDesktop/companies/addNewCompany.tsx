@@ -34,7 +34,7 @@ const NewCompanyForm: React.FC = () => {
   // const { updateContextData, contextData, clearContext } = context;
   // const { data: session, status } = useSession();
   const [fileList, setFiles] = useState<File[]>([]);
-  const tokenToUse =
+  const session?.expires =
     session?.provider === "credentials"
       ? session.refreshToken
       : session?.accessToken;
@@ -44,14 +44,14 @@ const NewCompanyForm: React.FC = () => {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: tokenToUse, // Adjust based on actual session structure
+        token: session?.expires, // Adjust based on actual session structure
         userId: session?.user?.id || "", // Set userId correctly
       });
     }
   }, [session]);
   const [businessTypes, setBusinessTypes] = useState([]);
   const [formData, setFormData] = useState({
-    token: tokenToUse,
+    token: session?.expires,
     name: "",
     business: "",
     size: "",
@@ -68,7 +68,7 @@ const NewCompanyForm: React.FC = () => {
   });
 
   const [formBusinessTypeData, setFormBusinessTypeData] = useState({
-    token: tokenToUse,
+    token: session?.expires,
     userId: "",
     businessType: "", // For input field
   });
@@ -123,7 +123,7 @@ const NewCompanyForm: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          token: tokenToUse, // Ensure this is correct
+          token: session?.expires, // Ensure this is correct
           name: formBusinessTypeData.businessType, // Passing correct field name
           userId: session?.user?.id, // Ensure correct user ID is passed
         }),
@@ -180,7 +180,7 @@ const NewCompanyForm: React.FC = () => {
     }
 
     const payload = {
-      token: tokenToUse,
+      token: session?.expires,
       name: formData.name,
       business: formData.business,
       size: formData.size,

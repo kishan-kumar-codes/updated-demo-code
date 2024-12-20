@@ -47,7 +47,7 @@ const AddNewContact: React.FC = () => {
     avatar: "",
     tag: "",
     hasNewsLetter: false,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
@@ -56,7 +56,7 @@ const AddNewContact: React.FC = () => {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id || "",
       });
     }

@@ -38,7 +38,7 @@ const AddNewDeal: React.FC = () => {
     stage: "",
     type: "",
     amount: null,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
@@ -48,7 +48,7 @@ const AddNewDeal: React.FC = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id || "",
-        token: tokenToUse, // Make sure this path is correct
+        token: session?.expires, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -106,7 +106,7 @@ const AddNewDeal: React.FC = () => {
 
   const handleSave = async () => {
     const payload = {
-      token: tokenToUse,
+      token: session?.expires,
       userId: session?.user?.id,
       dealName: formData.dealName || "",
       description: formData.description,

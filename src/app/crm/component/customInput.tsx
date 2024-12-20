@@ -8,6 +8,7 @@ interface CustomInputProps {
   model?: any;
   handleChange: (model: string, value: any) => void;
   value: string | number;
+  required?: undefined | boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -17,12 +18,14 @@ const CustomInput: React.FC<CustomInputProps> = ({
   id,
   model,
   value,
+  required,
   handleChange,
 }) => {
   return (
     <input
       id={id}
       type={type}
+      required={required}
       placeholder={placeholder}
       className={className}
       value={value}

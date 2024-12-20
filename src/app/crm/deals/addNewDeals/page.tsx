@@ -28,6 +28,7 @@ const AddNewDeals: React.FC = () => {
   // if(isMobile){
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const tokenToUse =
     session?.provider === "credentials"
       ? session.refreshToken
@@ -42,11 +43,30 @@ const AddNewDeals: React.FC = () => {
     stage: "",
     type: "",
     amount: null,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
-  console.log(formData.dealName, " dealname");
+  const isFormValid = () => {
+    return (
+      formData.dealName?.trim() !== "" &&
+      formData.description?.trim() !== "" &&
+      formData.company?.trim() !== "" &&
+      // formData.startAt?.trim() !== "" &&
+      formData.stage?.trim() !== "" &&
+      formData.type?.trim() !== ""
+    );
+  };
+
+  console.log(
+    "Data",
+    formData.dealName,
+    formData.description,
+    formData.company
+    // formData.startAt,
+    // formData.stage,
+    // formData.type
+  );
 
   useEffect(() => {
     if (session) {
@@ -54,15 +74,13 @@ const AddNewDeals: React.FC = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id || "",
-        token: tokenToUse, // Make sure this path is correct
+        token: session?.expires, // Make sure this path is correct
       });
     }
   }, [session]);
 
   const handleChange = (model: any, event: any) => {
     let value = event.target.value;
-
-    console.log(value, "sdjbnjd");
 
     // Check if the input is for amount, ensure it's a valid numeric string
     if (model === "amount") {
@@ -114,7 +132,7 @@ const AddNewDeals: React.FC = () => {
 
   const handleSave = async () => {
     const payload = {
-      token: tokenToUse,
+      token: session?.expires,
       userId: session?.user?.id,
       dealName: formData.dealName || "",
       description: formData.description,
@@ -124,6 +142,7 @@ const AddNewDeals: React.FC = () => {
       type: formData.type,
       amount: parseFloat(formData.amount),
     };
+    setLoading(true);
 
     try {
       const response = await fetch("/api/deals/create-deals", {
@@ -144,6 +163,7 @@ const AddNewDeals: React.FC = () => {
     } catch (error) {
       console.error("Error during company creation:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -354,8 +374,12 @@ const AddNewDeals: React.FC = () => {
                 <div className="col-span-6 mt-[8px] text-right mb-[9px]">
                   <button
                     onClick={handleSave}
-                    className="bg-limeGreen px-[11px] py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-3">
-                    Save Deals
+                    className={`bg-limeGreen flex justify-center px-[11px] w-24 lg:w-48 whitespace-nowrap py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-4 ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}>
+                    {loading ? (
+                      <div className="w-[30px] h-[30px] md:w-[30px] md:h-[30px] lg:w-[40px] lg:h-[40px] xl:w-[50px] xl:h-[50px] border-4 border-[#631363]/30 border-t-[#631363] rounded-full animate-spin" />
+                    ) : (
+                      "Save Deals"
+                    )}
                   </button>
                 </div>
               </div>

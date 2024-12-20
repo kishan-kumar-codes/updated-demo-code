@@ -14,6 +14,7 @@ import ToggleSwitch from "../component/toggleSwitch";
 import ExpansionPanel from "../component/expansionPanel";
 import ExpansionCard from "../component/expansionCard";
 import Link from "next/link";
+import Loader from "@/app/Payment/components/Loader";
 
 // import DesktopDeals from "../../../components/crmDesktop/deals";
 import DesktopDeals from "@/components/crmDesktop/deals";
@@ -44,6 +45,7 @@ const Deals: React.FC = () => {
   const [showCategorySorting, setShowCategorySorting] = useState(false);
   const [showTypeSorting, setShowTypeSorting] = useState(false);
   const [showStage, setShowStage] = useState(false);
+  const [loading, setloading] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   const { data: session, status } = useSession();
   const [dealsData, setDealsData] = useState<Deal[]>([]);
@@ -55,7 +57,10 @@ const Deals: React.FC = () => {
   const [isCompanySelected, setIsCompanySelected] = useState(false);
   const [isCategorySelected, setIsCategorySelected] = useState(false);
 
+  console.log("filtered deals", filteredDeals);
+
   const getAllDeals = async () => {
+    setloading(true);
     try {
       const userId = session?.user?.id;
       const response = await fetch("/api/deals/get-deals", {
@@ -77,6 +82,7 @@ const Deals: React.FC = () => {
     } catch (error) {
       console.error("Error fetching deals:", error);
     }
+    setloading(false);
   };
 
   const getAllCompanies = async () => {
@@ -125,28 +131,34 @@ const Deals: React.FC = () => {
   };
 
   useEffect(() => {
-    let filtered = [...dealsData];
+    // Check if dealsData is valid and iterable
+    if (Array.isArray(dealsData)) {
+      let filtered = [...dealsData];
 
-    // Filter by type if selected
-    if (selectedCategory) {
-      filtered = filtered.filter((deal) => deal.type === selectedCategory);
+      // Filter by type if selected
+      if (selectedCategory) {
+        filtered = filtered.filter((deal) => deal.type === selectedCategory);
+      }
+
+      // Filter by company if selected
+      if (selectedCompany) {
+        filtered = filtered.filter(
+          (deal) => deal.company.name === selectedCompany
+        );
+      }
+
+      // Filter by account manager if checked
+      if (checked) {
+        filtered = filtered.filter(
+          (deal) => deal.company.accountManager === "me"
+        );
+      }
+
+      setFilteredDeals(filtered);
+    } else {
+      // If dealsData is not valid, handle it accordingly (maybe reset filteredDeals)
+      setFilteredDeals([]);
     }
-
-    // Filter by company if selected
-    if (selectedCompany) {
-      filtered = filtered.filter(
-        (deal) => deal.company.name === selectedCompany
-      );
-    }
-
-    // Filter by account manager if checked
-    if (checked) {
-      filtered = filtered.filter(
-        (deal) => deal.company.accountManager === "me"
-      );
-    }
-
-    setFilteredDeals(filtered);
   }, [selectedCategory, selectedCompany, checked, dealsData]);
 
   const exportToCSV = () => {
@@ -231,7 +243,6 @@ const Deals: React.FC = () => {
             <div className="mt-4 md:hidden">
               <SearchBox Component={""} />
             </div>
-
             <div className="section relative w-full mt-[16px]">
               <div className="relative w-full flex justify-end text-[10px] font-bold font-arial text-cultured">
                 <span className="relative">
@@ -408,7 +419,6 @@ const Deals: React.FC = () => {
                 </Link>
               </div>
             </div>
-
             <div className="flex justify-end mt-[20px]">
               <ToggleSwitch checked={checked} setChecked={setChecked} />
               <h5 className="text-[10px] text-darkSilverColor font-bold ml-[11px] md:text-[18px]">
@@ -418,146 +428,151 @@ const Deals: React.FC = () => {
             <div className=" hidden md:flex md:w-full md:my-4">
               <SearchBox Component={""} />
             </div>
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="mt-[14px] overflow-y-auto  pe-2 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-6 gap-4  md:px-2 lg:rounded-lg">
+                <ExpansionPanel title="Opportunity">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals?.filter((deal) => deal.stage === "Opportunity")
+                    .length > 0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "Opportunity")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
 
-            <div className="mt-[14px] overflow-y-auto  pe-2 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-6 gap-4  md:px-2 lg:rounded-lg">
-              <ExpansionPanel title="Opportunity">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "Opportunity")
-                  .length > 0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "Opportunity")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
+                <ExpansionPanel title="Proposal Sent">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals?.filter(
+                    (deal) => deal.stage === "Proposal Sent"
+                  ).length > 0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "Proposal Sent")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
 
-              <ExpansionPanel title="Proposal Sent">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "Proposal Sent")
-                  .length > 0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "Proposal Sent")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
+                <ExpansionPanel title="In Negotiation">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals.filter(
+                    (deal) => deal.stage === "In Negotiation"
+                  ).length > 0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "In Negotiation")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
 
-              <ExpansionPanel title="In Negotiation">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "In Negotiation")
-                  .length > 0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "In Negotiation")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
+                <ExpansionPanel title="Won">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals.filter((deal) => deal.stage === "Won").length >
+                    0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "Won")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
 
-              <ExpansionPanel title="Won">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "Won").length >
-                  0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "Won")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
+                <ExpansionPanel title="Lost">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals.filter((deal) => deal.stage === "Lost").length >
+                    0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "Lost")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
 
-              <ExpansionPanel title="Lost">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "Lost").length >
-                  0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "Lost")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
-
-              <ExpansionPanel title="Delayed">
-                {filteredDeals &&
-                filteredDeals.filter((deal) => deal.stage === "Delayed")
-                  .length > 0 ? (
-                  filteredDeals
-                    .filter((deal) => deal.stage === "Delayed")
-                    .map((deal, key) => (
-                      <ExpansionCard
-                        logoSrc={deal.company.logo}
-                        key={deal.id}
-                        description={deal.description}
-                        quantity={key + 1}
-                        price={deal.amount}
-                        category={deal.company.name}
-                      />
-                    ))
-                ) : (
-                  <div className="flex justify-center items-center p-4 text-gray-500">
-                    No deals available
-                  </div>
-                )}
-              </ExpansionPanel>
-            </div>
+                <ExpansionPanel title="Delayed">
+                  {filteredDeals.length > 0 &&
+                  filteredDeals.filter((deal) => deal.stage === "Delayed")
+                    .length > 0 ? (
+                    filteredDeals
+                      .filter((deal) => deal.stage === "Delayed")
+                      .map((deal, key) => (
+                        <ExpansionCard
+                          logoSrc={deal.company.logo}
+                          key={deal.id}
+                          description={deal.description}
+                          quantity={key + 1}
+                          price={deal.amount}
+                          category={deal.company.name}
+                        />
+                      ))
+                  ) : (
+                    <div className="flex justify-center items-center p-4 text-gray-500">
+                      No deals available
+                    </div>
+                  )}
+                </ExpansionPanel>
+              </div>
+            )}
           </div>
         </div>
       }

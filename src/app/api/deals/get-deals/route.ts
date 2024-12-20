@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
 
     // Handle the case where no deals are found
     if (!deals || deals.length === 0) {
-      return NextResponse.json({ error: "No deals found" }, { status: 404 });
+      return NextResponse.json({ error: "No deals found" }, { status: 200 });
     }
 
     // Return the deals in the response

@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     // Check if companies array is undefined or empty
     if (!companies || companies.length === 0) {
-      return NextResponse.json({ error: "No companies found for this user" }, { status: 404 });
+      return NextResponse.json({ error: "No companies found for this user" }, { status: 200 });
     }
     return NextResponse.json(companies, { status: 200 }); // Return the list of companies
   } catch (error) {

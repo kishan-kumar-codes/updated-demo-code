@@ -8,6 +8,7 @@ import Image from "next/image";
 import ProgressBar from "../../layout/progressBar";
 import { MyContext } from "../../../../utils/MyContext";
 import { useSession } from "next-auth/react";
+import { LockKeyhole } from "lucide-react";
 
 const TeamSetup: React.FC = () => {
   const context = useContext(MyContext);
@@ -79,27 +80,18 @@ const TeamSetup: React.FC = () => {
               style={{ fontWeight: "bold" }}>
               Your team
             </p>
-            <input
-              type="text"
-              value={signedInUser ? signedInUser : undefined}
-              readOnly
-              className="w-[289px] lg:w-full h-[33px] mt-[11px] text-[12px] text-[#6D6D6D] pl-[18px] py-[10px] lg:text-[22px] lg:py-7 rounded-xl lg:rounded-3xl"
-            />
-            <svg
-              width="20"
-              height="20"
-              style={{
-                position: "absolute",
-                right: "1280px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-              viewBox="-4 0 32 32">
-              <path
-                d="M26,12H24V7h-.069A7.993,7.993,0,0,0,8.069,7H8v5H6a2,2,0,0,0-2,2V30a2,2,0,0,0,2,2H26a2,2,0,0,0,2-2V14A2,2,0,0,0,26,12ZM12,8a4,4,0,0,1,8,0v4H12ZM23,28H9a1,1,0,0,1-1-1V17a1,1,0,0,1,1-1H23a1,1,0,0,1,1,1V27A1,1,0,0,1,23,28Z"
-                fill="#ccc"></path>
-              <circle cx="16" cy="22" r="2" fill="#ccc"></circle>
-            </svg>
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={signedInUser ? signedInUser : undefined}
+                readOnly
+                className="w-[289px] lg:w-full h-[33px] mt-[11px] text-[12px] text-[#6D6D6D] pl-[38px] py-[10px] lg:text-[22px] lg:py-7 rounded-xl lg:rounded-3xl"
+              />
+
+              <div className="absolute left-2 top-0.5 py-[10px]  lg:py-7">
+                <LockKeyhole color="#6D6D6D" />
+              </div>
+            </div>
           </div>
 
           <div className="w-full flex flex-col justify-start lg:justify-center items-center">

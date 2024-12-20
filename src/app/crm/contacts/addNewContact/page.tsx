@@ -33,6 +33,7 @@ const AddNewContact: React.FC = () => {
   // const { data: session, status } = useSession();
   const { data: session } = useSession() as { data: CustomSession | null };
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   // const { showToast } = useToast();
   const [companiesList, setCompaniesList] = useState([]);
   console.log("session....", session);
@@ -52,17 +53,38 @@ const AddNewContact: React.FC = () => {
     avatar: "",
     tag: "",
     hasNewsLetter: false,
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
-  console.log(fileList, "New file list");
+  const isFormValid = () => {
+    return (
+      formData.firstName?.trim() !== "" &&
+      formData.lastName?.trim() !== "" &&
+      formData.title?.trim() !== "" &&
+      formData.company?.trim() !== "" &&
+      formData.email?.trim() !== ""
+    );
+  };
+
+  console.log(
+    formData.firstName,
+    formData.lastName,
+    formData.title,
+    formData.company,
+    formData.email,
+    formData.phoneNumber_1,
+    formData.phoneNumber_2,
+    formData.background,
+    formData.avatar,
+    "New file list"
+  );
   useEffect(() => {
     if (session) {
       console.log("Session object:", session);
       setFormData({
         ...formData,
-        token: tokenToUse,
+        token: session?.expires,
         userId: session?.user?.id || "",
       });
     }
@@ -109,6 +131,7 @@ const AddNewContact: React.FC = () => {
     };
 
     try {
+      setLoading(true);
       console.log("payload", payload);
       const response = await fetch("/api/contact/create-contact", {
         method: "POST",
@@ -128,6 +151,7 @@ const AddNewContact: React.FC = () => {
     } catch (error) {
       console.error("Error during contact creation:", error);
     }
+    setLoading(false);
   };
 
   const handleCheck = (check: boolean) => {
@@ -340,28 +364,6 @@ const AddNewContact: React.FC = () => {
                   value={formData.background}
                 />
               </div>
-              {/* <div className="col-span-6">
-                <label
-                  htmlFor="file-upload"
-                  className="text-darkSilverColor text-[12px] font-bold mb-[6px] md:text-[20px]">
-                  Avatar
-                </label>
-                <CustomInput
-                  placeholder=""
-                  id="name"
-                  type="file"
-                  onChange={setFile}
-                  value={formData.avatar}
-                  accept="image/*" // Optional: restrict to image files
-                  className="
-                         w-full outline-none border-none bg-[#F4F4F4] rounded-lg h-[27px] text-[12px] px-3 py-1
-                        file:mr-5 file:py-0 file:px-2 file:rounded-lg  file:bg-[#6D6D6D] file:text-white 
-                        file:text-[8px] file:h-[17px] file:text-center md:file:text-[18px] md:file:px-4 md:file:py-0 first-line:md:p-0
-                        md:h-[42px] md:text-[20px] md:mt-2  md:pt-[6px] md:file:h-[30px] md:file:rounded-xl md:rounded-2xl
-                        italic
-                        "
-                />
-              </div> */}
               <div className="col-span-6">
                 <label
                   htmlFor="file-upload"
@@ -384,13 +386,19 @@ const AddNewContact: React.FC = () => {
                   accept="image/*" // Optional: restrict to image files
                 />
               </div>
-              <div
-                onClick={handleSave}
-                className="col-span-6 mt-[8px] text-right">
-                <button className="bg-limeGreen px-[11px] py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-3">
-                  Save Profile
+              <div className="col-span-6 mt-[8px]  flex justify-end text-right">
+                <button
+                  onClick={handleSave}
+                  disabled={!isFormValid()} // Disable button if form is invalid
+                  className={`bg-limeGreen flex justify-center px-[11px] w-24 lg:w-48 whitespace-nowrap py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-4 ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}>
+                  {loading ? (
+                    <div className="w-[30px] h-[30px] md:w-[30px] md:h-[30px] lg:w-[40px] lg:h-[40px] xl:w-[50px] xl:h-[50px] border-4 border-[#631363]/30 border-t-[#631363] rounded-full animate-spin" />
+                  ) : (
+                    "Save Contacts"
+                  )}
                 </button>
               </div>
+
               <div className="ml-[14px] hidden md:block col-span-6">
                 <ToggleSwitch checked={checked} setChecked={setChecked} />
                 <span className="font-bold text-xs text-darkSilverColor ml-[17px] md:text-[20px]">

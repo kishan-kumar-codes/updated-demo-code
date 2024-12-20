@@ -17,6 +17,7 @@ import { useClientMediaQuery } from "../../../utils/srchooksuseClientMediaQuery"
 import { useRouter } from "next/navigation";
 import DesktopContact from "../../../components/crmDesktop/contacts/index";
 import { useSession } from "next-auth/react";
+import Loader from "@/app/Payment/components/Loader";
 
 interface Contact {
   id: string;
@@ -64,6 +65,7 @@ const Contacts: React.FC = () => {
   }, [session?.user?.id]);
 
   const getAllContacts = async () => {
+    setLoading(true);
     const userId = session?.user?.id;
     const response = await fetch("/api/contact/get-contact", {
       method: "POST",
@@ -180,18 +182,8 @@ const Contacts: React.FC = () => {
   return (
     <LayoutView
       Childrens={
-        <div className="relative h-full w-full bg-[#F4F4F4]">
-          {showFilterCard &&
-            (console.log("tags in contacts page", tags),
-            (
-              <FilterContacts
-                setShowFilterCard={setShowFilterCard}
-                tags={tags}
-                onTagSelect={handleTagFilter}
-                selectedTags={selectedTags}
-              />
-            ))}
-          <div className=" h-[65%]">
+        <div className="relative min-h-screen w-full bg-[#F4F4F4]">
+          <div>
             <div className="w-full lg:hidden mt-4 flex px-[20px]">
               <TabNavigation />
             </div>
@@ -201,11 +193,23 @@ const Contacts: React.FC = () => {
             </div>
 
             <div className="section relative flex w-full justify-between mt-[16px] px-[20px]">
-              <button
-                onClick={() => setShowFilterCard(true)}
-                className={`ml-[4px] ${showFilterCard ? "hidden" : ""} md:hidden`}>
-                <Image src={FilterIcon} alt="filter" />
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setShowFilterCard(true)}
+                  className={`ml-[4px] ${showFilterCard ? "hidden" : ""} md:hidden`}>
+                  <Image src={FilterIcon} alt="filter" />
+                </button>
+                {showFilterCard &&
+                  (console.log("tags in contacts page", tags),
+                  (
+                    <FilterContacts
+                      setShowFilterCard={setShowFilterCard}
+                      tags={tags}
+                      onTagSelect={handleTagFilter}
+                      selectedTags={selectedTags}
+                    />
+                  ))}
+              </div>
               {/* {showFilterCard && (
                 <FilterContacts setShowFilterCard={setShowFilterCard} />
               )} */}
@@ -275,7 +279,7 @@ const Contacts: React.FC = () => {
               </div>
               <div className="mt-[35px] h-full overflow-y-auto w-full flex-1 md:pl-3 2xl:pr-32 ">
                 {loading ? (
-                  "Loading..."
+                  <Loader />
                 ) : filteredContacts.length > 0 ? (
                   filteredContacts.map((contact, index) => (
                     <Link
@@ -296,7 +300,9 @@ const Contacts: React.FC = () => {
                     </Link>
                   ))
                 ) : (
-                  <p>No contacts found</p>
+                  <p className="font-semibold text-darkSilverColor pl-4">
+                    No contacts found
+                  </p>
                 )}
 
                 <Link

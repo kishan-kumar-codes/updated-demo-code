@@ -30,7 +30,7 @@ const FilterContacts: React.FC<FilterContactsProps> = ({
   };
 
   return (
-    <div className="absolute h-[514px] z-50 bottom-0 left-0 w-[220px] bg-[#F4F4F4] overflow-y-scroll overflow-x-hidden rounded-r-2xl border-palatinatePurple border-2 md:static md:w-full md:h-full md:flex md:flex-col md:border-none md:pl-7">
+    <div className="absolute h-[430px] pb-16 top-2 bottom-8 z-50 left-0 w-[220px] bg-[#F4F4F4] overflow-y-scroll overflow-x-hidden rounded-r-2xl border-palatinatePurple border-2 md:static md:w-full md:h-full md:flex md:flex-col md:border-none md:pl-7">
       <div className="flex justify-between pl-[14px] pr-[22px] mt-[16px] w-full md:hidden">
         <div className="flex">
           <Image src={FilterIcon} alt="filter" className="h-3  w-4" />

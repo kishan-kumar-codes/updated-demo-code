@@ -33,7 +33,7 @@ const Index = () => {
       setFormData({
         ...formData,
         userId: session?.user?.id,
-        token: tokenToUse, // Make sure this path is correct
+        token: session?.expires, // Make sure this path is correct
       });
     }
   }, [session]);
@@ -131,7 +131,7 @@ const Index = () => {
     entry_mode_id: "K",
     exp_date: "0722",
     wallet_type: "000",
-    token: tokenToUse,
+    token: session?.expires,
     userId: session?.user?.id,
   });
 
