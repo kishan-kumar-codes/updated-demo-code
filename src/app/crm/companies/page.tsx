@@ -279,7 +279,7 @@ const Companies: React.FC = () => {
               </div>
               {loading ? (
                 <div className="flex justify-between w-full">
-                  <Loader />
+                  <Loader message={"Loading Companies..."} />
                 </div>
               ) : (
                 <div

@@ -279,7 +279,7 @@ const Contacts: React.FC = () => {
               </div>
               <div className="mt-[35px] h-full overflow-y-auto w-full flex-1 md:pl-3 2xl:pr-32 ">
                 {loading ? (
-                  <Loader />
+                  <Loader message={"Loading Contacts..."} />
                 ) : filteredContacts.length > 0 ? (
                   filteredContacts.map((contact, index) => (
                     <Link

@@ -36,7 +36,7 @@ interface BusinessType {
 }
 
 const NewCompanyForm: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // const { showToast } = useToast();
   const [fileList, setFiles] = useState<File[]>([]);
   const [businessTypes, setBusinessTypes] = useState<BusinessType[]>([]);
@@ -553,11 +553,7 @@ const NewCompanyForm: React.FC = () => {
                   onClick={handleSave}
                   disabled={!isFormValid()} // Disable button if form is invalid
                   className={`bg-limeGreen flex justify-center px-[11px] w-24 lg:w-48 whitespace-nowrap py-[8px] rounded-lg text-[10px] font-bold ripple md:text-[22px] md:rounded-[30px] md:px-9 md:py-4 ${!isFormValid() ? "opacity-50 cursor-not-allowed" : ""}`}>
-                  {loading ? (
-                    <div className="w-[30px] h-[30px] md:w-[30px] md:h-[30px] lg:w-[40px] lg:h-[40px] xl:w-[50px] xl:h-[50px] border-4 border-[#631363]/30 border-t-[#631363] rounded-full animate-spin" />
-                  ) : (
-                    "Save Profile"
-                  )}
+                  {loading ? <div> Loading....</div> : "Save Profile"}
                 </button>
               </div>
             </div>

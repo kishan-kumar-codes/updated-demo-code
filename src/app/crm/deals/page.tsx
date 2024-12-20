@@ -429,7 +429,7 @@ const Deals: React.FC = () => {
               <SearchBox Component={""} />
             </div>
             {loading ? (
-              <Loader />
+              <Loader message={"Loading Deals..."} />
             ) : (
               <div className="mt-[14px] overflow-y-auto  pe-2 grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-6 gap-4  md:px-2 lg:rounded-lg">
                 <ExpansionPanel title="Opportunity">
