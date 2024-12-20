@@ -138,7 +138,6 @@ const Companies: React.FC = () => {
         };
       });
 
-      // Set the enriched company list
       setCompaniesList(enrichedCompanies);
     } catch (error) {
       console.error("Error fetching data:", error);
