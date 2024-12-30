@@ -34,6 +34,7 @@ import ChatDropDown from "../Webchat-Settings/ChatDropDown";
 import * as XLSX from "xlsx"; // Import the XLSX library to handle Excel files
 import WebChatFaqTable from "../Webchat-Settings/WebChatFaqTable";
 import { Input } from "../ui/input";
+import CitationNavbar from "../review-dashboard-mobile/ReviewNavbar";
 import {
   Select,
   SelectContent,
@@ -43,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "../ui/checkbox";
 
 const GeneralUsers = () => {
   const [menuTab, setMenuTab] = React.useState(false);
@@ -150,49 +152,52 @@ const GeneralUsers = () => {
   );
   return (
     <div className="flex justify-center items-center w-full h-full ">
-      <div className="flex flex-col w-full md:w-[430px] justify-center items-center lg:w-[430px] h-full">
+      <div className="flex flex-col w-full justify-center items-center  h-full">
         <div className="flex flex-col gap-7 justify-center items-center w-full">
-          <Header title={"General Settings"} displayName=" General Settings" />
+          {/* <Header title={"General Settings"} displayName=" General Settings" /> */}
+          <CitationNavbar isHeaderVisible={false} heading="General Settings" />
           <div className="flex flex-col   w-[90%] h-full">
             <div className="flex flex-col w-full  items-center gap-2 min-h-[490px] h-full">
               <div className="flex w-full gap-3 flex-col ">
-                <div className="flex rounded-3xl z-10 min-h-[160px] justify-start  w-full bg-[#E0E0E0] pb-10">
-                  <div className="flex flex-col w-full gap-2">
-                    <div className="w-full rounded-xl text-white text-[16px] font-bold pl-5 py-2.5 bg-[#631363]">
+                <div className="flex rounded-xl lg:rounded-3xl z-10 min-h-[160px] justify-start  w-full bg-[#E0E0E0] pb-10">
+                  <div className="flex flex-col w-full lg:gap-2">
+                    <div className="w-full rounded-xl text-white text-[16px] md:text-xl lg:text-[26px] font-bold pl-5 lg:pl-10 py-2.5 lg:py-4 bg-[#631363]">
                       Users
                     </div>
-                    <span className="text-[#6D6D6D] text-xl font-bold leading-normal px-5">
+                    <span className="text-[#6D6D6D] text-xl md:text-xl mt-2 lg:py-4 lg:text-[24px] font-bold leading-normal px-5 lg:px-14">
                       2 Users
                     </span>
-                    <div className="w-full flex justify-between items-center pl-5">
-                      <div className="flex relative justify-center items-center py-1">
+                    <div className="w-full flex justify-between items-center pl-5 mt-3 lg:pl-14">
+                      <div className="flex relative justify-center items-center py-1 lg:py-3">
                         <input
                           type="text"
-                          className="w-[180px] h-[30px] bg-white text-center text-[#6D6D6D] rounded-full focus:outline-none"
+                          className="w-[180px] lg:w-[340px] h-[30px] lg:h-[40px] text-start pl-8 lg:pl-8 bg-white  text-[#6D6D6D] rounded-xl lg:rounded-full focus:outline-none"
                           placeholder="Search"
                         />
                         <div className="absolute inset-y-0 -left-1 flex justify-center items-center py-2 px-4">
                           <SearchSvg />
                         </div>
                       </div>
-                      <div className="flex relative w-[40%] justify-center items-center">
+                      <div className="flex relative w-[40%]  justify-center items-center lg:justify-end lg:pr-12">
                         <span
-                          className="text-[#631363] flex items-center gap-2 font-bold text-xs leading-normal border border-[#631363] rounded-xl px-3 py-2 shadow-sm cursor-pointer"
+                          className="text-[#631363] flex items-center gap-2 font-bold text-[14px] md:text-base lg:text-[22px] leading-normal border border-[#631363] rounded-lg px-2 lg:px-6 lg:py-2 h-[26px] lg:h-[43px] shadow-sm cursor-pointer"
                           onClick={() => setMenuTab(true)}>
                           Add Users <GerneralDropDownSvgs />
                         </span>
 
                         {menuTab && (
-                          <div className="absolute inset-y-0 w-full h-24 border border-[#631363] rounded-xl  py-2 shadow-sm flex-col gap-1 px-3 flex justify-center items-center bg-[#E0E0E0]">
-                            <div className="w-full flex cursor-pointer justify-end text-xs font-bold  hover:text-[#6D6D6D] ">
+                          <div className="absolute inset-y-0 w-full md:w-[80%] lg:w-fit h-[72px] lg:h-24 border-2 border-[#631363] rounded-xl  py-2 shadow-sm flex-col gap-1 px-1 lg:px-6 flex justify-center items-center bg-[#E0E0E0]">
+                            <div
+                              onClick={() => setMenuTab(false)}
+                              className="w-full flex cursor-pointer justify-end text-xs font-bold  hover:text-[#6D6D6D] ">
                               <GerneralDropDownSvgs />
                             </div>
                             <Dialog>
                               <DialogTrigger>
-                                <div className="w-full text-[#631363] flex cursor-pointer my-2 text-xs font-bold justify-center hover:text-[#6D6D6D] ">
+                                <div className="w-full  text-[#631363] flex cursor-pointer my-2 text-xs  md:text-base lg:text-[22px]  font-bold justify-center hover:text-[#6D6D6D] ">
                                   Add A Single User
                                 </div>
-                                <div className="w-full flex cursor-pointer text-xs  text-[#631363] font-bold justify-center  hover:text-[#6D6D6D]">
+                                <div className="w-full flex cursor-pointer text-xs  text-[#631363]  md:text-base lg:text-[22px]  font-bold justify-center  hover:text-[#6D6D6D]">
                                   Add Multiple Users
                                 </div>
                               </DialogTrigger>
@@ -202,16 +207,16 @@ const GeneralUsers = () => {
                                   {!importUser ? (
                                     <div className="flex gap-3  w-full flex-col bg-[#F4F4F4]">
                                       <div className="w-full flex justify-between pt-4 items-center">
-                                        <span className="text-[#6D6D6D] text-xl font-bold leading-normal">
+                                        <span className="text-[#6D6D6D] text-xl md:text-2xl lg:text-[36px] font-bold leading-normal">
                                           Add A User
                                         </span>
                                         <div className="flex gap-5">
                                           <Button
-                                            className="bg-[#40F440] text-[#27272D] h-9  py-1 px-5 font-bold rounded-lg"
+                                            className="bg-[#40F440] text-[#27272D] h-9  lg:text-[20px] py-1 px-5 font-bold rounded-lg"
                                             onClick={() => setImportUser(true)}>
                                             Add
                                           </Button>
-                                          <Button className="bg-[#BA0416] text-[#FFF] h-9 px-3 py-1 font-bold rounded-lg">
+                                          <Button className="bg-[#BA0416] text-[#FFF] h-9 lg:text-[20px] px-3 py-1 font-bold rounded-lg">
                                             Cancel
                                           </Button>
                                         </div>
@@ -219,27 +224,27 @@ const GeneralUsers = () => {
                                       <div className="flex w-full mt-2 gap-2">
                                         <Input
                                           placeholder="First Name"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs lg:text-[16px] h-10 lg:h-12 bg-white"
                                         />
                                         <Input
                                           placeholder="Last Name"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs lg:text-[16px] h-10 lg:h-12 bg-white"
                                         />
                                       </div>
                                       <div className="flex w-full  gap-2">
                                         <Input
                                           placeholder="Email"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs h-10 lg:text-[16px] lg:h-12 bg-white"
                                         />
 
                                         <Input
                                           placeholder="Phone Number"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs h-10 lg:text-[16px] lg:h-12 bg-white"
                                         />
                                       </div>
                                       <div className="relative">
                                         <div
-                                          className="w-full flex rounded-xl  items-center cursor-pointer h-10 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal"
+                                          className="w-full flex rounded-xl  items-center cursor-pointer h-10 lg:text-[16px] lg:h-12 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal"
                                           onClick={() =>
                                             setLocation(!location)
                                           }>
@@ -248,7 +253,7 @@ const GeneralUsers = () => {
                                             : "  Locations "}
                                         </div>
                                         {location && (
-                                          <div className="absolute flex-col w-full  gap-3 z-40 -mt-2 flex rounded-b-xl h-fit bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal">
+                                          <div className="absolute flex-col w-full  gap-3 z-50 -mt-2 flex rounded-b-xl h-fit bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal">
                                             {!status && (
                                               <div className="flex w-full flex-col gap-1.5">
                                                 {/* <ChatDropDown
@@ -256,7 +261,7 @@ const GeneralUsers = () => {
                                                   onSelect={handleSelect}
                                                 /> */}
                                                 <Select>
-                                                  <SelectTrigger className="w-full  text-[#6D6D6D] text-xs  bg-[#F4F4F4] rounded-2xl">
+                                                  <SelectTrigger className="w-full  text-[#6D6D6D] text-xs lg:text-[16px] lg:h-12  bg-[#F4F4F4] rounded-2xl">
                                                     <SelectValue
                                                       className="bg-white"
                                                       placeholder="Location"
@@ -279,20 +284,20 @@ const GeneralUsers = () => {
                                                 </Select>
 
                                                 <div className="flex w-full justify-between py-3 items-center bg-[#F4F4F4] rounded-2xl px-3">
-                                                  <span className="text-[#6D6D6D] text-xs font-normal leading-normal">
+                                                  <span className="text-[#6D6D6D] text-xs lg:text-[16px] font-normal leading-normal">
                                                     2 Locations
                                                   </span>
                                                   <GerneralCrossSvgs />
                                                 </div>
                                                 <div className="flex justify-end  py-2 gap-5">
                                                   <Button
-                                                    className="bg-[#40F440] text-[#27272D] h-9 py-2 px-5 font-bold rounded-lg"
+                                                    className="bg-[#40F440] text-[#27272D] lg:text-[16px]  h-9 py-2 px-5 font-bold rounded-lg"
                                                     onClick={() =>
                                                       setStatus(true)
                                                     }>
                                                     Apply
                                                   </Button>
-                                                  <Button className="bg-[#BA0416] text-[#FFF] h-9 px-2 py-3 font-bold rounded-lg">
+                                                  <Button className="bg-[#BA0416] text-[#FFF] lg:text-[16px]  h-9 px-2 py-3 font-bold rounded-lg">
                                                     Cancel
                                                   </Button>
                                                 </div>
@@ -325,36 +330,36 @@ const GeneralUsers = () => {
                                         )}
 
                                         <div
-                                          className="w-full flex rounded-xl items-center cursor-pointer h-10 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal mt-4"
+                                          className="w-full flex rounded-xl lg:text-[16px] lg:h-12 items-center cursor-pointer h-10 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal mt-4"
                                           onClick={() => setRole(!role)}>
                                           Select Role*
                                         </div>
                                         {role && (
-                                          <div className="absolute w-full flex-col  z-50 -mt-2 flex rounded-b-xl h-32 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal">
-                                            <span className="text-[#6D6D6D] text-[10px] font-bold leading-normal">
+                                          <div className="absolute w-full flex-col  z-50 -mt-2 flex rounded-b-xl h-32 lg:h-40 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal">
+                                            <span className="text-[#6D6D6D] lg:text-[16px]  text-[10px] font-bold leading-normal">
                                               Owner
                                             </span>
-                                            <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+                                            <span className="text-[#6D6D6D] text-[10px] lg:text-[14px] font-normal leading-normal">
                                               Has full access to the account
                                             </span>
-                                            <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+                                            <span className="text-[#6D6D6D] text-[10px] lg:text-[14px]  font-normal leading-normal">
                                               eg. business owner of a large
                                               organization
                                             </span>
-                                            <span className="text-[#6D6D6D] text-[10px] font-bold leading-normal">
+                                            <span className="text-[#6D6D6D] text-[10px] lg:text-[14px]  font-bold leading-normal">
                                               Administration
                                             </span>
-                                            <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+                                            <span className="text-[#6D6D6D] text-[10px]  lg:text-[14px] font-normal leading-normal">
                                               Has full access to the account
                                             </span>
-                                            <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+                                            <span className="text-[#6D6D6D] text-[10px]  lg:text-[14px] font-normal leading-normal">
                                               eg. business owner of a large
                                               organization
                                             </span>
                                           </div>
                                         )}
                                         <div
-                                          className="w-full flex rounded-xl cursor-pointer  items-center   mt-4 h-10 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs font-normal leading-normal"
+                                          className="w-full flex rounded-xl cursor-pointer  items-center   mt-4 h-10 bg-[#FFF] p-2 focus:outline-none text-[#6D6D6D] text-xs lg:text-[16px] font-normal leading-normal"
                                           onClick={() => setTeams(!teams)}>
                                           Select Teams
                                         </div>
@@ -371,27 +376,36 @@ const GeneralUsers = () => {
                                                   <SearchSvg />
                                                 </div>
                                               </div>
-                                              <SquareCheckBoxButton
-                                                label="Select All"
-                                                id={"Select All"}
-                                              />
-                                              <SquareCheckBoxButton
-                                                label="Inbox Teams"
-                                                id={"Inbox Teams"}
-                                              />
-
-                                              <SquareCheckBoxButton
-                                                label="Hubsparkm"
-                                                id={"Hubsparkm"}
-                                              />
-                                              <SquareCheckBoxButton
-                                                label="New Sales"
-                                                id={"New Sales"}
-                                              />
-                                              <SquareCheckBoxButton
-                                                label="Hubspark"
-                                                id={"Hubspark"}
-                                              />
+                                              <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-sm lg:text-[16px]">
+                                                <Checkbox className="rounded-sm border" />
+                                                <div className="pt-0.5">
+                                                  Select All
+                                                </div>
+                                              </div>
+                                              <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-sm lg:text-[16px]">
+                                                <Checkbox className="rounded-sm border" />
+                                                <div className="pt-0.5">
+                                                  Inbox Teams
+                                                </div>
+                                              </div>
+                                              <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-sm lg:text-[16px]">
+                                                <Checkbox className="rounded-sm border" />
+                                                <div className="pt-0.5">
+                                                  Hubsparkm
+                                                </div>
+                                              </div>
+                                              <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-sm lg:text-[16px]">
+                                                <Checkbox className="rounded-sm border" />
+                                                <div className="pt-0.5">
+                                                  New Sales
+                                                </div>
+                                              </div>
+                                              <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-sm lg:text-[16px]">
+                                                <Checkbox className="rounded-sm border" />
+                                                <div className="pt-0.5">
+                                                  Hubspark
+                                                </div>
+                                              </div>
                                             </div>
                                           </div>
                                         )}
@@ -400,7 +414,7 @@ const GeneralUsers = () => {
                                         <div className="w-full  flex justify-between">
                                           <Label
                                             htmlFor="Send-Invitation-Email"
-                                            className="text-[#6D6D6D] text-xs font-bold leading-normal">
+                                            className="text-[#6D6D6D] text-xs md:text-base lg:text-[16px] font-bold leading-normal">
                                             Send Invitation Email
                                           </Label>
                                           <Switch
@@ -408,60 +422,55 @@ const GeneralUsers = () => {
                                             checked
                                           />
                                         </div>
-                                        <span className="text-[#6D6D6D] pt-1 tracking-tight text-xs font-normal leading-normal">
-                                          If turned off, a password is required
-                                          for this user to log in.
-                                        </span>
+                                      </div>
+                                      <div className="text-[#6D6D6D] pt-1 tracking-tight text-xs lg:text-sm font-normal leading-normal">
+                                        If turned off, a password is required
+                                        for this user to log in.
                                       </div>
                                       <div className="flex w-full mt-2 gap-2">
                                         <Input
                                           placeholder="Password"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs h-10 lg:text-[16px]  lg:h-12 bg-white"
                                         />
                                         <Input
                                           placeholder="Confirm Password"
-                                          className="rounded-2xl text-xs h-10 bg-white"
+                                          className="rounded-2xl text-xs lg:text-[16px] h-10 lg:h-12 bg-white"
                                         />
                                       </div>
-                                      <span className="text-[#6D6D6D] text-xs font-bold leading-normal">
+                                      <span className="text-[#6D6D6D] text-xs lg:text-[16px]  font-bold leading-normal">
                                         Notifications
                                       </span>
                                       <div className="flex flex-col gap-1">
-                                        <span className="text-[#6D6D6D] text-xs font-bold leading-normal">
+                                        <span className="text-[#6D6D6D] text-xs lg:text-[16px]  font-bold leading-normal">
                                           Review Emails
                                         </span>
-                                        <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+                                        <span className="text-[#6D6D6D] text-[10px] lg:text-xs font-normal leading-normal">
                                           Send review emails for{" "}
-                                          <span className="text-[#631363] pl-1">
+                                          <span className="text-[#631363] pl-1 lg:text-xs">
                                             {" "}
                                             All ratings
                                           </span>{" "}
-                                          <span className="text-[#631363] pl-2">
+                                          <span className="text-[#631363] pl-2 lg:text-xs">
                                             {" "}
                                             All reviewes
                                           </span>{" "}
                                         </span>
                                       </div>
                                       <div className="flex flex-col gap-1">
-                                        <SquareCheckBoxButton
-                                          label="Instantly"
-                                          id="Instantly"
-                                          fontWeight={400}
-                                        />{" "}
-                                        <SquareCheckBoxButton
-                                          label="Daily"
-                                          id="Daily"
-                                          fontWeight={400}
-                                        />{" "}
+                                        <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-xs ">
+                                          <Checkbox className="rounded-sm border" />
+                                          <div className="pt-0.5">
+                                            Instantly
+                                          </div>
+                                        </div>
+                                        <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-xs ">
+                                          <Checkbox className="rounded-sm border" />
+                                          <div className="pt-0.5">Daily</div>
+                                        </div>
                                       </div>
                                       <div className="flex w-2/4">
-                                        {/* <ChatDropDown
-                                          options={members}
-                                          onSelect={handleSelect}
-                                          bgColor="#FFF"
-                                        /> */}
                                         <Select>
-                                          <SelectTrigger className="w-full  text-[#6D6D6D] text-xs  bg-white rounded-2xl">
+                                          <SelectTrigger className="w-full  text-[#6D6D6D] text-xs lg:text-[16px]  bg-white rounded-2xl">
                                             <SelectValue
                                               className="bg-white"
                                               placeholder="10:00 AM IST"
@@ -480,11 +489,10 @@ const GeneralUsers = () => {
                                           </SelectContent>
                                         </Select>
                                       </div>
-                                      <SquareCheckBoxButton
-                                        label="Weekly"
-                                        id="Weekly"
-                                        fontWeight={400}
-                                      />{" "}
+                                      <div className="flex gap-2 items-center font-normal text-[#6D6D6D] text-[10px] md:text-xs ">
+                                        <Checkbox className="rounded-sm border" />
+                                        <div className="pt-0.5">Weekly</div>
+                                      </div>
                                       <div className="flex w-full gap-2">
                                         {/* <ChatDropDown
                                           options={members}
@@ -492,7 +500,7 @@ const GeneralUsers = () => {
                                           bgColor="#FFF"
                                         /> */}
                                         <Select>
-                                          <SelectTrigger className="w-full  text-[#6D6D6D] text-xs  bg-white rounded-2xl">
+                                          <SelectTrigger className="w-full lg:text-[16px]  text-[#6D6D6D] text-xs  bg-white rounded-2xl">
                                             <SelectValue
                                               className="bg-white"
                                               placeholder="Select a Day"
@@ -511,7 +519,7 @@ const GeneralUsers = () => {
                                           </SelectContent>
                                         </Select>
                                         <Select>
-                                          <SelectTrigger className="w-full  text-[#6D6D6D] text-xs  bg-white rounded-2xl">
+                                          <SelectTrigger className="w-full lg:text-[16px]  text-[#6D6D6D] text-xs  bg-white rounded-2xl">
                                             <SelectValue
                                               className="bg-white"
                                               placeholder="Select a Time Zone"
@@ -529,17 +537,12 @@ const GeneralUsers = () => {
                                             </SelectGroup>
                                           </SelectContent>
                                         </Select>
-                                        {/* <ChatDropDown
-                                          options={members}
-                                          onSelect={handleSelect}
-                                          bgColor="#FFF"
-                                        /> */}
                                       </div>
-                                      <div className="flex flex-col9">
-                                        <div className="text-[#6D6D6D] text-xs font-bold leading-normal">
+                                      <div className="flex flex-col">
+                                        <div className="text-[#6D6D6D] text-xs lg:text-[16px] pb-1 font-bold leading-normal">
                                           Review SMS
                                         </div>
-                                        <div className="flex w-full pb-4 gap-1">
+                                        <div className="flex w-full pb-4  gap-1">
                                           <Info color="#40F440" size="28" />
                                           <div className="text-[#6D6D6D] text-xs pt-1 font-normal leading-normal">
                                             We did not find a mobile number for
@@ -554,20 +557,20 @@ const GeneralUsers = () => {
                                     </div>
                                   ) : (
                                     <div className="flex flex-col w-full gap-2">
-                                      <span className=" text-[#6D6D6D] text-xl font-bold leading-normal">
+                                      <span className=" text-[#6D6D6D] text-xl py-0 lg:py-2  md:text-2xl lg:text-[36px] font-bold leading-normal">
                                         Import Users
                                       </span>
                                       <div className="w-full justify-center items-center flex pt-4">
                                         <div className="flex flex-col gap-1 items-center">
                                           {uploadStatus === "success" ? (
                                             <span
-                                              className={`text-[#FFF] z-50 bg-[#631363] w-10 flex justify-center items-center h-10 rounded-full`}>
+                                              className={`text-[#FFF] z-50 bg-[#631363] w-10 lg:w-14 flex justify-center items-center h-10 lg:h-14 rounded-full`}>
                                               {" "}
                                               <WebchatSettingStepCheckSvg />{" "}
                                             </span>
                                           ) : (
                                             <span
-                                              className={`text-[#FFF] z-50 bg-[#631363] w-10 flex justify-center items-center h-10 rounded-full`}>
+                                              className={`text-[#FFF] lg:text-[22px] z-50 bg-[#631363] lg:h-14 w-10 lg:w-14 flex justify-center items-center h-10 rounded-full`}>
                                               {" "}
                                               1{" "}
                                             </span>
@@ -581,7 +584,7 @@ const GeneralUsers = () => {
                                         <hr className="h-0.5 w-full flex z-20 -mt-5 justify-center items-center bg-[#631363]" />
                                         <div className="flex flex-col gap-1 items-center">
                                           <span
-                                            className={` z-50 ${currentStep === 3 ? "bg-[#631363] text-[#FFF]" : "bg-[#F4F4F4] text-[#6D6D6D] border border-[#631363]"} w-10 flex justify-center items-center h-10 rounded-full`}>
+                                            className={` z-50 ${currentStep === 3 ? "bg-[#631363] text-[#FFF]" : "bg-[#F4F4F4] text-[#6D6D6D] border border-[#631363]"} w-10 lg:w-14 flex justify-center items-center h-10 rounded-full`}>
                                             {returnToContact ? (
                                               <span
                                                 className={`text-[#FFF] z-50 bg-[#631363] w-10 flex justify-center items-center h-10 rounded-full`}>
@@ -590,7 +593,7 @@ const GeneralUsers = () => {
                                               </span>
                                             ) : (
                                               <span
-                                                className={`text-[#631363] z-50 border border-[#631363] bg-[#F4F4F4] w-10 flex justify-center items-center h-10 rounded-full`}>
+                                                className={`text-[#631363] z-50 border border-[#631363] lg:text-[22px] bg-[#F4F4F4] lg:h-14 w-10 lg:w-14 flex justify-center items-center h-10 rounded-full`}>
                                                 2
                                               </span>
                                             )}
@@ -609,7 +612,7 @@ const GeneralUsers = () => {
                                                   htmlFor="upload-input"
                                                   className="cursor-pointer flex flex-col justify-center items-center text-[#6D6D6D] text-[10.63px] font-semibold">
                                                   <WebchatSettingUploadFQSvg />
-                                                  <span className="text-[#631363] pt-2 text-[13px] font-bold leading-normal">
+                                                  <span className="text-[#631363] pt-2 text-[13px] md:text-xl lg:text-[22px] font-bold leading-normal">
                                                     Upload Spreadsheet
                                                   </span>
                                                   <input
@@ -620,7 +623,7 @@ const GeneralUsers = () => {
                                                     id="upload-input"
                                                   />
 
-                                                  <span className="text-[#6D6D6D] text-center w-[70%] text-[10px] font-bold leading-3">
+                                                  <span className="text-[#6D6D6D] lg:text-[18px] py-0 lg:py-2  text-center w-[70%] lg:w-full lg:leading-5 text-[10px] font-bold leading-3">
                                                     {" "}
                                                     Drag and drop or upload your
                                                     All .xlsx and .xls file
@@ -628,7 +631,7 @@ const GeneralUsers = () => {
                                                   </span>
                                                 </label>
 
-                                                <span className="text-[#6D6D6D] my-5 w-2/3 text-center text-[10.63px] font-normal leading-normal">
+                                                <span className="text-[#6D6D6D] my-5 w-2/3 text-center text-[10.63px] lg:text-xl lg:leading-5 font-normal leading-normal">
                                                   {" "}
                                                   Download a{" "}
                                                   <span className="text-[#631363]">
@@ -680,13 +683,13 @@ const GeneralUsers = () => {
 
                                             <div className="flex justify-end w-full items-center gap-3 px-3">
                                               <button
-                                                className="text-xs font-bold leading-normal w-20 my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
+                                                className="text-xs font-bold leading-normal lg:text-[26px] w-20 lg:w-24 my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
                                                 onClick={handleNextStep}
                                                 type="submit">
                                                 Next
                                               </button>
                                               <button
-                                                className="text-xs font-bold leading-normal w-20 my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2"
+                                                className="text-xs font-bold leading-normal lg:text-[26px] w-20 lg:w-fit my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2"
                                                 onClick={handleCancel}>
                                                 Cancel
                                               </button>
@@ -702,25 +705,25 @@ const GeneralUsers = () => {
                                                 <>
                                                   <div className="flex justify-center flex-col w-full items-center  px-3">
                                                     <WebchatSettingUploadFQSvg />
-                                                    <span className="text-[#631363] text-[13px] font-bold pt-2 leading-normal">
+                                                    <span className="text-[#631363] text-[13px] lg:text-[26px] font-bold pt-2 leading-normal">
                                                       We’re Ready To Import
                                                     </span>
                                                     <div className="flex w-[80%] justify-center items-center gap-2">
                                                       <WebchatSettingGreenInfoSvg />
-                                                      <span className="text-[#6D6D6D] text-[10.63px] font-bold pt-1 leading-normal">
+                                                      <span className="text-[#6D6D6D] text-[10.63px] lg:text-[20px] font-bold pt-1 leading-normal">
                                                         This might take a few
                                                         minutes
                                                       </span>
                                                     </div>
                                                   </div>
-                                                  <div className="flex justify-end w-full my-3 items-center gap-3 px-3">
+                                                  <div className="flex justify-end w-full my-3 lg:my-6 items-center gap-3 px-3">
                                                     <button
-                                                      className="text-xs font-bold leading-normal w-24 my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
+                                                      className="text-xs font-bold lg:text-[22px] leading-normal w-24 lg:w-36 whitespace-nowrap my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
                                                       // onClick={handleNextStep}
                                                       type="submit">
                                                       Start Import
                                                     </button>
-                                                    <button className="text-xs font-bold leading-normal w-20 my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2">
+                                                    <button className="text-xs font-bold lg:text-[22px] leading-normal w-20 lg:w-28 my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2">
                                                       Cancel
                                                     </button>
                                                   </div>
@@ -729,13 +732,13 @@ const GeneralUsers = () => {
                                               {showTable && (
                                                 <div className="flex justify-end w-full items-center gap-3 px-3">
                                                   <button
-                                                    className="text-xs font-bold leading-normal w-20 my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
+                                                    className="text-xs font-bold leading-normal w-20 lg:w-24 lg:text-[26px] my-1 cursor-pointer bg-[#40F440] rounded-lg px-3 py-2"
                                                     onClick={handleImport}
                                                     type="submit">
                                                     Next
                                                   </button>
                                                   <button
-                                                    className="text-xs font-bold leading-normal w-20 my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2"
+                                                    className="text-xs font-bold leading-normal w-20 lg:w-28 lg:text-[26px] my-1 text-white cursor-pointer bg-[#BA0416] rounded-lg px-3 py-2"
                                                     onClick={handleCancel}>
                                                     Cancel
                                                   </button>
@@ -755,7 +758,7 @@ const GeneralUsers = () => {
                       </div>
                     </div>
 
-                    <div className="px-1">
+                    <div className="px-1 mt-[19px]">
                       <UsersTable />
                     </div>
                   </div>
@@ -764,7 +767,7 @@ const GeneralUsers = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center mt-10 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
+        <div className="flex w-full justify-center mt-10 items-center md:hidden bg-[#40F440] h-[46px] rounded-t-3xl"></div>
       </div>
     </div>
   );

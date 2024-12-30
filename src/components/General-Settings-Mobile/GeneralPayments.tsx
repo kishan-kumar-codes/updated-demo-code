@@ -41,27 +41,28 @@ const GeneralPayments = () => {
   return (
     <div className="w-full flex flex-col gap-2 px-3">
       <div className="w-full flex justify-end">
-        <Button className="bg-[#631363] text-[#FFFFFF] py-3 font-bold rounded-2xl px-2">
+        <Button className="bg-[#631363] text-[#FFFFFF] py-3 font-bold rounded-2xl lg:h-12 md:text-sm lg:text-[16px] px-2">
           + Add Payment Method
         </Button>
       </div>
-      <GerernalPaymentMethod />
-      <GereralTaxInformation />
-      <GereralBillingInformation />
-      <div className="w-full flex flex-col  my-1">
-        <span className="text-[#6D6D6D] text-xs font-bold leading-normal">
+      <div className="grid grid-cols-1  lg:grid-cols-2 gap-4">
+        <GerernalPaymentMethod />
+        <GereralTaxInformation />
+        <GereralBillingInformation />
+      </div>
+      <div className="w-full flex flex-col  my-1 lg:my-3">
+        <span className="text-[#6D6D6D] text-xs md:text-base lg:text-[20px] font-bold leading-normal">
           Payments History
         </span>
-        <span className="text-[#6D6D6D] text-xs font-normal leading-normal">
+        <span className="text-[#6D6D6D] text-xs pt-1 font-normal md:text-base lg:text-[16px] leading-normal">
           Keep track of your payments
         </span>
         <div className="flex my-3 w-full">
           <span
             onClick={() => handleActiveTab("Charge")}
-            className="text-[#6D6D6D] flex px-4 border border-[#6D6D6D] rounded-l-full cursor-pointer py-2 h-[30px] text-center items-end justify-end"
+            className="text-[#6D6D6D] flex items-center px-4 border text-xs md:text-base lg:text-[18px] border-[#6D6D6D] rounded-l-full cursor-pointer  lg:h-[40px]  h-[30px] text-center  justify-end"
             style={{
               ...Typography,
-              fontSize: "12px",
               color: activeTab === "Charge" ? "#FFFFFF" : "#6D6D6D",
               backgroundColor:
                 activeTab === "Charge" ? "#631363" : "transparent",
@@ -70,10 +71,10 @@ const GeneralPayments = () => {
           </span>
           <span
             onClick={() => handleActiveTab("Invoice")}
-            className="text-[#6D6D6D] px-3 border border-[#6D6D6D] rounded-r-full cursor-pointer py-2 h-[30px] text-center items-end justify-end"
+            className="text-[#6D6D6D] flex px-4 lg:px-5 border border-[#6D6D6D] text-xs  md:text-base lg:text-[18px] rounded-r-full cursor-pointer h-[30px] lg:h-[40px] text-center items-center justify-end"
             style={{
               ...Typography,
-              fontSize: "12px",
+
               color: activeTab === "Invoice" ? "#FFFFFF" : "#6D6D6D",
               backgroundColor:
                 activeTab === "Invoice" ? "#631363" : "transparent",

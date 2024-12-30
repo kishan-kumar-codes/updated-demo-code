@@ -45,101 +45,120 @@ export default function PhoneNumber() {
 
   return (
     <div className="bg-[#F4F4F4]">
-      <CitationNavbar heading="Phone Number" />
+      <CitationNavbar isHeaderVisible={false} heading="Phone Number" />
       <div className="flex flex-col gap-4 p-4">
         <div className="bg-[#E0E0E0] rounded-2xl">
           <div
             onClick={() => setChooseNum((prev) => !prev)}
-            className="bg-[#631363] rounded-2xl text-white text-[16px] p-4 font-bold">
+            className="bg-[#631363] rounded-2xl cursor-pointer text-white text-[16px] md:text-xl  lg:text-[26px] p-4 lg:p-6  font-bold">
             Choose Numbers
           </div>
           {chooseNum && (
-            <div className="px-2 py-6">
+            <div className="px-4 lg:px-6 py-3 lg:py-6">
               <Label
                 htmlFor="country"
-                className="text-[#6D6D6D] font-bold text-xs pb-1 ">
+                className="text-[#6D6D6D] font-bold text-xs md:text-sm  lg:text-[22px] pb-1 ">
                 Country <span className="text-[#631363]">(Required)</span>
               </Label>
-              <Input className="rounded-2xl bg-[#F4F4F4] mt-1" name="country" />
-              <span className="text-[#6D6D6D] font-normal leading-normal text-[10px] pl-2">
-                Your number will be available for HD Voice, SMS, MMS,
-              </span>
-              <div className="text-[#6D6D6D] font-normal text-[10px] pl-2 pb-2">
-                International SMS
+              <Input
+                className="rounded-2xl md:h-14  bg-[#F4F4F4] mt-1"
+                name="country"
+              />
+              <div className="flex flex-col pt-1 lg:pt-2 lg:flex-row">
+                <div className="text-[#6D6D6D] font-normal leading-normal text-[10px] md:text-sm  lg:text-[18px] pl-2">
+                  Your number will be available for HD Voice, SMS, MMS,
+                </div>
+                <div className="text-[#6D6D6D] font-normal md:text-sm  lg:text-[18px] text-[10px] pl-2 pb-2">
+                  International SMS
+                </div>
               </div>
-              <div>
+              <div className="py-0 md:py-4 mb-2 lg:mb-0">
                 <Label
                   htmlFor="Type"
-                  className="text-[#6D6D6D] font-bold text-xs pb-1 pt-4">
+                  className="text-[#6D6D6D] font-bold text-xs md:text-sm  lg:text-[22px] pb-1 pt-4">
                   Type
                 </Label>
                 <Select>
-                  <SelectTrigger className="w-full rounded-2xl text-[#6D6D6D] mt-1 bg-[#F4F4F4]">
+                  <SelectTrigger className="w-full  md:h-14 lg:py-4 rounded-2xl text-[#6D6D6D] mt-1 bg-[#F4F4F4]">
                     <SelectValue
-                      className="text-[#6D6D6D]"
+                      className="text-[#6D6D6D] text-xs  md:text-sm  lg:text-[22px]"
                       placeholder="Select a type"
                     />
                   </SelectTrigger>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-white lg:p-4">
                     <SelectGroup>
-                      <SelectItem value="apple">Local</SelectItem>
-                      <SelectItem value="banana">Toll-Free</SelectItem>
+                      <SelectItem
+                        className="text-xs md:text-sm  lg:text-[22px]"
+                        value="apple">
+                        Local
+                      </SelectItem>
+                      <SelectItem
+                        className="text-xs md:text-sm  lg:text-[22px]"
+                        value="banana">
+                        Toll-Free
+                      </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </div>
               <Label
                 htmlFor="code"
-                className="text-[#6D6D6D] font-bold text-xs pt-4">
+                className="text-[#6D6D6D] font-bold text-xs md:text-sm  lg:text-[22px] pt-4">
                 Area Code
               </Label>
-              <div className="flex pt-1">
+              <div className="flex pt-1 lg:pt-2">
                 <Input
                   readOnly
                   value={code}
-                  className="rounded-2xl w-[80px] bg-[#F4F4F4]"
+                  className="rounded-2xl text-xs  md:h-12 md:text-sm  lg:text-[22px] text-[#6D6D6D] w-[80px] bg-[#F4F4F4]"
                   name="code"
                 />
                 <div className="flex gap-3">
                   <Button
-                    className="bg-[#631363] text-white rounded-2xl ml-4 font-bold"
+                    className="bg-[#631363] text-white md:text-sm  md:h-12  lg:text-[22px] rounded-2xl ml-4 font-bold"
                     variant="outline">
                     {" "}
                     Edit
                   </Button>
                   <Button
-                    className="bg-[#40F440] rounded-2xl font-bold"
+                    className="bg-[#40F440] rounded-2xl md:text-sm  md:h-12   lg:text-[22px] font-bold"
                     variant="outline">
                     {" "}
                     Confirm
                   </Button>
                 </div>
               </div>
-              <div className="px-4">
-                <span className="text-[#6D6D6D] text-[10px] font-normal">
+              <div className="px-0 flex flex-col pt-0 md:pt-4 md:flex-row">
+                <div className="text-[#6D6D6D] text-[10px] md:text-sm pt-2 lg:pt-0 lg:text-[22px] font-normal">
                   Would you like additional phone numbers that will call forward
-                </span>
-                <div className="text-[#6D6D6D] text-[10px] font-normal">
                   to your main number above?{" "}
-                  <span className="text-[#631363] text-[10px]">
+                  <span className="text-[#631363] md:text-sm  lg:text-[22px] text-[10px]">
                     (ea. add’l number costs $5/mo.)
                   </span>
                 </div>
               </div>
               <RadioGroup defaultValue="comfortable">
-                <div className="flex gap-3 p-4">
-                  <div className="flex items-center space-x-2">
+                <div className="flex gap-3 p-4 pt-4">
+                  <div className="flex items-center space-x-2 lg:space-x-4">
                     <RadioGroupItem value="default" id="r1" />
-                    <Label htmlFor="r1">Yes</Label>
+                    <Label
+                      className="md:text-sm  lg:text-[22px] text-[#6D6D6D]"
+                      htmlFor="r1">
+                      Yes
+                    </Label>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 lg:space-x-4">
                     <RadioGroupItem value="comfortable" id="r2" />
-                    <Label htmlFor="r2">No</Label>
+                    <Label
+                      className="md:text-sm  lg:text-[22px] text-[#6D6D6D]"
+                      htmlFor="r2">
+                      No
+                    </Label>
                   </div>
                 </div>
               </RadioGroup>
               <div className="flex justify-end">
-                <Button className="bg-[#40F440] rounded-xl font-bold">
+                <Button className="bg-[#40F440] md:text-sm  md:h-14   lg:text-[22px]  rounded-xl font-bold">
                   Search Numbers
                 </Button>
               </div>
@@ -149,34 +168,48 @@ export default function PhoneNumber() {
         <div className="bg-[#E0E0E0] rounded-2xl">
           <div
             onClick={() => setMynum((prev) => !prev)}
-            className="bg-[#631363] rounded-2xl text-white text-[16px] p-4 font-bold">
+            className="bg-[#631363] rounded-2xl text-white text-[16px] md:text-xl  lg:text-[26px] cursor-pointer  p-4 lg:p-6  font-bold">
             My Numbers
           </div>
           {myNum && (
-            <div className="px-4 pb-4">
-              <div className="text-xs font-bold py-4 text-[#6D6D6D]">
+            <div className="px-4 lg:px-6 pb-6">
+              <div className="text-xs font-bold py-4 text-[#6D6D6D] md:text-lg  lg:text-[22px]">
                 Here are the phone number(s) that you selected:
               </div>
-              <div className="flex gap-4 justify-between items-center">
-                <div className="text-[#6D6D6D] font-bold">Main:</div>
-                <div className="flex-1 text-[#6D6D6D]">(555)-555-5555</div>
-                <Button className="bg-[#40F440] rounded-xl font-bold">
-                  Active
-                </Button>
-              </div>
-              <div className="flex gap-4 justify-between items-center py-2">
-                <div className="text-[#6D6D6D] font-bold">Main:</div>
-                <div className="flex-1 text-[#6D6D6D]">(555)-555-5555</div>
-                <Button className="bg-[#631363] text-white rounded-xl font-bold">
-                  Pending
-                </Button>
-              </div>
-              <div className="flex gap-4 justify-between items-center">
-                <div className="text-[#6D6D6D] font-bold">Main:</div>
-                <div className="flex-1 text-[#6D6D6D]">(555)-555-5555</div>
-                <Button className="bg-[#BA0416] text-white rounded-xl font-bold">
-                  Under Review
-                </Button>
+              <div className="flex w-full justify-between py-2 lg:py-6 px-0 lg:px-[10%] flex-col lg:flex-row">
+                <div className="flex gap-4  lg:gap-8 justify-between lg:flex-col items-center">
+                  <div className="text-[#6D6D6D] font-bold md:text-lg  lg:text-[28px]">
+                    Main:
+                  </div>
+                  <div className="flex-1 text-[#6D6D6D] md:text-lg  lg:text-[32px]">
+                    (555)-555-5555
+                  </div>
+                  <Button className="bg-[#40F440] md:text-lg  md:h-14 lg:text-[28px] rounded-xl font-bold">
+                    Active
+                  </Button>
+                </div>
+                <div className="flex gap-4 lg:gap-8 justify-between  lg:flex-col  items-center py-2 lg:py-0">
+                  <div className="text-[#6D6D6D] font-bold md:text-lg  lg:text-[28px]">
+                    Main:
+                  </div>
+                  <div className="flex-1 text-[#6D6D6D] md:text-lg  lg:text-[32px]">
+                    (555)-555-5555
+                  </div>
+                  <Button className="bg-[#631363] md:text-lg  lg:text-[28px] md:h-14 text-white rounded-xl font-bold">
+                    Pending
+                  </Button>
+                </div>
+                <div className="flex gap-4 lg:gap-8 justify-between lg:flex-col  items-center">
+                  <div className="text-[#6D6D6D] font-bold md:text-lg  lg:text-[28px]">
+                    Main:
+                  </div>
+                  <div className="flex-1 text-[#6D6D6D] md:text-lg  lg:text-[32px]">
+                    (555)-555-5555
+                  </div>
+                  <Button className="bg-[#BA0416] md:text-lg md:h-14  lg:text-[28px] text-white rounded-xl font-bold">
+                    Under Review
+                  </Button>
+                </div>
               </div>
             </div>
           )}
@@ -184,30 +217,32 @@ export default function PhoneNumber() {
         <div className="bg-[#E0E0E0] rounded-2xl">
           <div
             onClick={() => setOrders((prev) => !prev)}
-            className="bg-[#631363] rounded-2xl text-white text-[16px] p-4 font-bold">
+            className="bg-[#631363] rounded-2xl text-white cursor-pointer text-[16px] md:text-xl lg:text-[26px] p-4 lg:p-6 font-bold">
             Orders
           </div>
           {order && (
             <>
               {tab === 1 && (
-                <div className="p-4">
-                  <div className="text-xs text-[#6D6D6D] font-bold">Date</div>
+                <div className="p-4 lg:p-6">
+                  <div className="text-xs text-[#6D6D6D] font-bold md:text-sm lg:text-[22px]">
+                    Date
+                  </div>
                   <Popover>
-                    <PopoverTrigger className="font-normal  text-[#6D6D6D] text-xs aria-selected:font-bold">
+                    <PopoverTrigger className="font-normal w-full lg:w-fit text-[#6D6D6D] text-xs aria-selected:font-bold">
                       <div className="relative">
                         <Input
-                          className="mt-1 rounded-2xl"
+                          className="mt-1 px-1 lg:px-10 rounded-2xl"
                           value={"DD/MM/YY"}
                           readOnly
                         />
-                        <div className="absolute right-[10px] top-[6px]">
+                        <div className="absolute right-[10px] lg:right-6  top-[6px]">
                           <CalendarIcon color="black" />
                         </div>
                       </div>
                     </PopoverTrigger>
                     <PopoverContent
                       style={{ zIndex: "1000" }}
-                      className="z-[10000] border-0 bg-white shadow-none">
+                      className="z-[10000] border-0 w-fit bg-white shadow-none">
                       <Calendar
                         mode="range"
                         defaultMonth={date?.from}
@@ -217,180 +252,188 @@ export default function PhoneNumber() {
                       />
                     </PopoverContent>
                   </Popover>
-                  <div className="text-xs text-[#6D6D6D] pt-2 font-bold">
+                  <div className="text-xs text-[#6D6D6D] md:text-sm  lg:text-[22px] pt-2 lg:pt-6 font-bold">
                     Phone Numbers
                   </div>
                   <div className="pt-3">
-                    <div className="flex text-[13px] rounded-t-xl bg-[#631363]">
-                      <span className="min-w-[100px] text-[13px] p-2  text-white">
+                    <div className="flex text-[13px] rounded-t-xl border-b border-white bg-[#631363]">
+                      <span className="min-w-[30%] text-center text-[13px] md:text-base lg:text-[22px] p-2 lg:p-4 text-white">
                         {" "}
                         Main
                       </span>
-                      <span className="bg-[#FFFFFF] text-[11px] pt-2 pl-1 rounded-tr-xl text-[#6D6D6D] min-w-[70%]">
+                      <span className="bg-[#FFFFFF] text-[11px] pt-2  lg:pt-4 pl-1 lg:pl-[8%]  md:text-base lg:text-[22px]  rounded-tr-xl text-[#6D6D6D] min-w-[70%]">
                         (555)-555-5555
                       </span>
                     </div>
-                    <div className="flex text-[13px] bg-[#631363]">
-                      <span className="min-w-[100px] text-white p-2">
+                    <div className="flex text-[13px] bg-[#631363] border-b border-white">
+                      <span className="lg:p-4  min-w-[30%] text-center md:text-base lg:text-[22px]  text-white p-2">
                         {" "}
                         Additional
                       </span>
 
-                      <span className="bg-[#F4F4F4] pt-2 pl-1  text-[#6D6D6D] min-w-[70%]">
+                      <span className="bg-[#F4F4F4]  md:text-base lg:text-[22px] lg:pl-[8%]  pt-2 lg:pt-4 pl-1  text-[#6D6D6D] min-w-[70%]">
                         (555)-555-5555
                       </span>
                     </div>
                     <div className="flex text-[13px] rounded-b-xl bg-[#631363]">
-                      <span className="min-w-[100px] text-white p-2">
+                      <span className="min-w-[30%]  text-center md:text-base lg:text-[22px]  text-white  lg:p-4  p-2">
                         {" "}
                         Additional
                       </span>
-                      <span className="bg-[#FFFFFF] pt-2 pl-1 rounded-br-xl text-[#6D6D6D] min-w-[70%]">
+                      <span className="bg-[#FFFFFF]  md:text-base lg:text-[22px] lg:pl-[8%]  pt-2 lg:pt-4 pl-1 rounded-br-xl text-[#6D6D6D] min-w-[70%]">
                         (555)-555-5555
                       </span>
                     </div>
                   </div>
                   <div>
-                    <div className="flex justify-between">
-                      <div className="text-xs font-bold pt-5 text-[#6D6D6D]">
+                    <div className="flex justify-between lg:pt-4 lg:pb-5">
+                      <div className="text-xs md:text-base lg:text-[22px] font-bold pt-5  text-[#6D6D6D]">
                         Total Phone Numbers
                       </div>
-                      <div className="text-xs font-bold text-[#6D6D6D] pt-5 ">
+                      <div className="text-xs font-bold text-[#6D6D6D] md:text-base lg:text-[22px] pt-5 ">
                         4
                       </div>
                     </div>
                     <div className="h-0.5 bg-[#6D6D6D] w-full rounded-xl"></div>
-                    <div className="flex justify-between">
-                      <div className="text-xs font-bold text-[#6D6D6D] pt-3 ">
+                    <div className="flex justify-between lg:pt-4 lg:pb-5">
+                      <div className="text-xs font-bold md:text-base lg:text-[22px]  pt-3  text-[#6D6D6D]">
                         Subtotal: (additional numbers are $5/mo ea.)
                       </div>
-                      <div className="text-xs font-bold text-[#6D6D6D] pt-3 ">
+                      <div className="text-xs font-bold md:text-base lg:text-[22px] text-[#6D6D6D] pt-3 ">
                         $15.00
                       </div>
                     </div>
                     <div className="h-0.5 bg-[#6D6D6D] w-full rounded-xl"></div>
-                    <div className="flex justify-between">
-                      <div className="text-xs font-bold text-[#6D6D6D] pt-3 ">
+                    <div className="flex justify-between  lg:pt-4 lg:pb-5">
+                      <div className="text-xs font-bold text-[#6D6D6D] md:text-base lg:text-[22px] pt-3 ">
                         Applicable Taxes: (7%)
                       </div>
-                      <div className="text-xs font-bold text-[#6D6D6D] pt-3 ">
+                      <div className="text-xs font-bold text-[#6D6D6D] md:text-base lg:text-[22px] pt-3 ">
                         $1.50
                       </div>
                     </div>
                     <div className="h-0.5 bg-[#6D6D6D] w-full rounded-xl"></div>
-                    <div className="flex  justify-between pt-1">
-                      <div className="text-[#631363] font-bold text-xs">
+                    <div className="flex  justify-between pt-3  lg:pt-6">
+                      <div className="text-[#631363] font-bold md:text-base lg:text-[22px] text-xs">
                         Total
                       </div>
-                      <div className="text-[#631363] font-bold text-xs">
+                      <div className="text-[#631363] font-bold md:text-base lg:text-[22px] text-xs">
                         $16.50
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between pt-6">
-                    <div className="text-[#6D6D6D] font-bold text-xs">
-                      Current Wallet Balance : $47.12
+                    <div className="flex flex-col ">
+                      <div className="flex flex-col lg:flex-row gap-0 lg:gap-4 w-full">
+                        <div className="flex flex-col w-full">
+                          <div className="text-[#6D6D6D] font-bold md:text-base lg:text-[22px] text-xs">
+                            Current Wallet Balance : $47.12
+                          </div>
+                          <div className="font-normal text-[#6D6D6D] pb-4 text-[10px] md:text-base lg:text-[20px]">
+                            (The first $100.00 is on us)
+                          </div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          className=" font-bold bg-[#40F440]   md:h-14 md:text-base lg:text-[22px] rounded-xl">
+                          +Add to Balance
+                        </Button>
+                      </div>
                     </div>
+
                     <Button
                       onClick={() => setTab(3)}
                       variant="outline"
-                      className="text-white font-bold bg-[#631363] rounded-xl">
+                      className="text-white font-bold md:h-14 bg-[#631363] md:text-base lg:text-[22px] rounded-xl">
                       Place Order
                     </Button>
                   </div>
-
-                  <div className="font-normal text-[#6D6D6D] pb-4 text-[10px] mt-[-10px]">
-                    (The first $100.00 is on us)
-                  </div>
-                  <Button
-                    variant="outline"
-                    className=" font-bold bg-[#40F440] rounded-xl">
-                    +Add to Balance
-                  </Button>
-                  <div>
-                    <Label
-                      htmlFor="Type"
-                      className="text-[#6D6D6D] font-bold text-xs pb-1 pt-4">
-                      How much you would like to add:
-                    </Label>
-                    <Select>
-                      <SelectTrigger className="w-full rounded-2xl text-[#6D6D6D] mt-1 bg-[#F4F4F4]">
-                        <SelectValue
-                          className="text-[#6D6D6D]"
-                          placeholder="Select amount"
-                        />
-                      </SelectTrigger>
-                      <SelectContent className="bg-white">
-                        <SelectGroup>
-                          <SelectItem value="10">$10.00</SelectItem>
-                          <SelectItem value="25">$25.00</SelectItem>
-                          <SelectItem value="50">$50.00</SelectItem>
-                          <SelectItem value="100">$100.00</SelectItem>
-                          <SelectItem value="200">$200.00</SelectItem>
-                          <span className="text-[#6D6D6D] text-xs font-bold">
-                            Enter amount
-                          </span>
-                          {/* <SelectItem value="apple">
-                        <Input placeholder="Enter amount" />
-                      </SelectItem> */}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex pt-4 justify-end">
-                    <Button
-                      onClick={() => setTab(2)}
-                      variant="outline"
-                      className=" font-bold bg-[#40F440] rounded-xl">
-                      +Add To Wallet
-                    </Button>
+                  <div className="pt-2 lg:pt-8">
+                    <div className="flex flex-col lg:flex-row  items-start lg:items-center gap-2 ">
+                      <div className="w-full">
+                        <Label
+                          htmlFor="Type"
+                          className="text-[#6D6D6D] font-bold lg:font-normal md:text-base lg:text-[20px] text-xs pb-1 pt-4">
+                          How much you would like to add:
+                        </Label>
+                        <Select>
+                          <SelectTrigger className="w-full rounded-2xl text-[#6D6D6D] mt-1 md:h-14 bg-[#F4F4F4]">
+                            <SelectValue
+                              className="text-[#6D6D6D]"
+                              placeholder="Select amount"
+                            />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white">
+                            <SelectGroup>
+                              <SelectItem value="10">$10.00</SelectItem>
+                              <SelectItem value="25">$25.00</SelectItem>
+                              <SelectItem value="50">$50.00</SelectItem>
+                              <SelectItem value="100">$100.00</SelectItem>
+                              <SelectItem value="200">$200.00</SelectItem>
+                              <span className="text-[#6D6D6D] text-xs font-bold">
+                                Enter amount
+                              </span>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="pt-2 w-full lg:pt-8 flex justify-end lg:justify-start">
+                        <Button
+                          onClick={() => setTab(2)}
+                          variant="outline"
+                          className=" font-bold bg-[#40F440] md:text-base lg:text-[22px]  md:h-14 rounded-xl">
+                          +Add To Wallet
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
               {tab === 2 && (
                 <div className="px-4 w-full min-h-[300px] text-center">
-                  <div className="text-[11px] text-center pt-4 pb-2 text-[#6D6D6D] font-bold">
+                  <div className="text-[11px] text-center pt-4 lg:pt-14 pb-2 text-[#6D6D6D] md:text-xl lg:text-[28px] font-bold">
                     Yay! You’ve added to your wallet balance.
                   </div>
-                  <div className="text-[16px] font-bold text-center text-[#6D6D6D] ">
-                    Current Balance: <span>$47.12</span>
+                  <div className="text-[16px] pt-0 lg:pt-8 font-bold text-center md:text-xl lg:text-[34px] text-[#6D6D6D] ">
+                    Current Balance:{" "}
+                    <span className="text-[#631363]">$47.12</span>
                   </div>
                   <Button
                     onClick={() => setTab(1)}
                     variant="outline"
-                    className="font-bold bg-[#40F440] mt-8 rounded-xl">
+                    className="font-bold bg-[#40F440] text-xs lg:text-[26px] md:h-14 mt-2 lg:mt-8 rounded-xl">
                     Complete your Order
                   </Button>
                 </div>
               )}
               {tab === 3 && (
-                <div className="px-4 pb-4">
-                  <div className="text-[#6D6D6D] pt-3 font-bold">
+                <div className="px-4 lg:px-[30%] pb-4 py-0 lg:py-6">
+                  <div className="text-[#6D6D6D] pt-3 lg:w-full text-center md:text-base lg:text-[22px] font-bold">
                     Oh oh, there is an issue with your card.
                   </div>
-                  <div className="text-[#6D6D6D] py-2 font-bold">
+                  <div className="text-[#6D6D6D] py-2 lg:py-4 lg:w-full text-center md:text-base lg:text-[22px] font-bold">
                     Please try a different payment method.
                   </div>
                   <Label
                     htmlFor="namecard"
-                    className="text-[#6D6D6D] font-bold text-xs  pb-1 ">
+                    className="text-[#6D6D6D] font-bold text-xs md:text-base lg:text-[22px]   pb-1 ">
                     Name on Card:{" "}
                   </Label>
                   <Input
-                    className="rounded-2xl bg-[#F4F4F4] mt-1"
+                    className="rounded-2xl md:h-14 mb-0 lg:mb-4 bg-[#F4F4F4] mt-1"
                     name="namecard"
                   />
                   <Label
                     htmlFor="cardno"
-                    className="text-[#6D6D6D] font-bold text-xs  pb-1 ">
+                    className="text-[#6D6D6D] font-bold  md:text-base lg:text-[22px]  text-xs  pb-1">
                     Card Number:{" "}
                   </Label>
                   <div className="relative">
                     <Input
-                      className="rounded-2xl bg-[#F4F4F4] mt-1"
+                      className="rounded-2xl md:h-14 bg-[#F4F4F4] mt-1"
                       name="cardno"
                     />
-                    <div className="absolute flex top-2 items-center right-2">
+                    <div className="absolute flex top-2 lg:top-4 items-center right-2">
                       <svg
                         width="24"
                         height="20"
@@ -637,37 +680,37 @@ export default function PhoneNumber() {
                       </svg>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 pt-0 lg:pt-8">
                     <div>
                       <Label
                         htmlFor="cardno"
-                        className="text-[#6D6D6D] font-bold text-xs  pb-1 ">
+                        className="text-[#6D6D6D] font-bold md:text-base lg:text-[22px]  text-xs  pb-1 ">
                         Exp. Date:
                       </Label>
                       <Input
-                        className="rounded-2xl bg-[#F4F4F4] mt-1"
+                        className="rounded-2xl md:h-14 bg-[#F4F4F4] mt-1"
                         name="cardno"
                       />
                     </div>
                     <div>
                       <Label
                         htmlFor="cardno"
-                        className="text-[#6D6D6D] font-bold text-xs  pb-1 ">
+                        className="text-[#6D6D6D] font-bold md:text-base lg:text-[22px]  text-xs  pb-1 ">
                         CVV Number:{" "}
                       </Label>
                       <Input
-                        className="rounded-2xl bg-[#F4F4F4] mt-1"
+                        className="rounded-2xl md:h-14 bg-[#F4F4F4] mt-1"
                         name="cardno"
                       />
                     </div>
                     <div>
                       <Label
                         htmlFor="cardno"
-                        className="text-[#6D6D6D] whitespace-nowrap font-bold text-xs pb-1 ">
+                        className="text-[#6D6D6D] whitespace-nowrap md:text-base lg:text-[22px]  font-bold text-xs pb-1 ">
                         Billing Zip Code:{" "}
                       </Label>
                       <Input
-                        className="rounded-2xl bg-[#F4F4F4] mt-1"
+                        className="rounded-2xl md:h-14 bg-[#F4F4F4] mt-1"
                         name="cardno"
                       />
                     </div>
@@ -676,7 +719,7 @@ export default function PhoneNumber() {
                     <Button
                       onClick={() => setTab(1)}
                       variant="outline"
-                      className="font-bold bg-[#40F440] mt-8 rounded-xl">
+                      className="font-bold bg-[#40F440] md:text-base lg:text-[22px] md:h-14 mt-8 rounded-xl">
                       Complete your Order
                     </Button>
                   </div>

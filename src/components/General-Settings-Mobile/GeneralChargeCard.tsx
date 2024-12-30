@@ -6,68 +6,68 @@ const GeneralHistoryCard = ({ review }: any) => {
     <div className="w-full">
       <div className="flex w-full">
         <div className=" text-white rounded-2xl pb-4 w-full overflow-hidden">
-          <div className=" w-full">
-            <div className="flex w-full">
+          <div className=" flex flex-col lg:flex-row h-full w-full">
+            <div className="flex lg:flex-col h-full w-full">
               {" "}
-              <div className="bg-[#631363] text-white border-b w-[110px] text-xs p-2">
+              <div className="bg-[#631363] lg:text-[22px] lg:border lg:border-[#CCC] py-0 lg:py-3 text-white border-b w-[110px] lg:w-full text-xs p-2">
                 ID
               </div>{" "}
-              <div className="text-[#6D6D6D] bg-[#FFFFFF] rounded-tr-2xl p-2 text-xs break-words w-full">
+              <div className="text-[#6D6D6D] h-full bg-[#FFFFFF] lg:bg-[#E0E0E0] lg:border lg:border-[#CCC] rounded-tr-2xl lg:rounded-tr-none p-2 lg:text-[20px] text-xs break-words w-full">
                 {review.id}
               </div>{" "}
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] border-b w-[110px] text-xs p-2">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] lg:text-[22px] lg:border lg:border-[#CCC] py-0 lg:py-3 border-b w-[110px] lg:w-full text-xs p-2">
                 Date
               </div>{" "}
-              <div className="text-[#6D6D6D] bg-[#F4F4F4] w-full p-2 text-xs break-words">
+              <div className="text-[#6D6D6D] lg:text-[20px] bg-[#F4F4F4] lg:bg-[#E0E0E0] lg:border lg:border-[#CCC] h-full w-full  p-2 text-xs break-words lg:leading-5">
                 {review.date}
               </div>{" "}
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] border-b w-[110px] text-xs p-2">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] lg:text-[22px] lg:border lg:border-[#CCC] py-0 lg:py-3 border-b w-[110px] lg:w-full lg:min-w-[280px] text-xs p-2">
                 Description
               </div>{" "}
-              <div className="text-[#6D6D6D] bg-white w-full text-xs p-2 break-words">
+              <div className="text-[#6D6D6D]  lg:leading-5 lg:text-[20px] bg-white lg:bg-[#E0E0E0] lg:border lg:border-[#CCC] h-full w-full text-xs p-2 break-words">
                 {review.desc}
               </div>{" "}
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] border-b w-[110px] p-2 text-xs">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] lg:text-[22px] whitespace-nowrap lg:border lg:border-[#CCC] py-0 lg:py-3 border-b w-[110px] lg:w-full p-2 text-xs">
                 Card Details
               </div>
-              <div className="text-[#6D6D6D] bg-[#F4F4F4] font-bold w-full p-2 text-xs break-words">
+              <div className="text-[#6D6D6D]  lg:leading-5 lg:text-[20px] bg-[#F4F4F4] lg:bg-[#E0E0E0] lg:border lg:border-[#CCC] h-full font-bold w-full p-2 text-xs break-words">
                 {" "}
                 {review.cardDetails}
               </div>{" "}
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] border-b w-[110px] p-2 text-xs">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] lg:text-[22px] lg:border lg:border-[#CCC] py-0 lg:py-3 border-b w-[110px] lg:w-full p-2 text-xs">
                 Amount
               </div>
-              <div className="text-[#6D6D6D] w-full bg-white p-2 text-xs break-words">
+              <div className="text-[#6D6D6D] lg:text-[20px] w-full bg-white lg:bg-[#E0E0E0] lg:border lg:border-[#CCC] h-full p-2 text-xs break-words">
                 {" "}
                 {review.amount}
               </div>{" "}
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] border-b w-[110px] text-xs p-2">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] lg:text-[22px] lg:border lg:border-[#CCC] py-0 lg:py-3 border-b w-[110px] lg:w-full text-xs p-2">
                 {" "}
                 Status
               </div>
-              <div className="w-full p-2 bg-[#F4F4F4]">
-                <div className="text-[#631363] text-xs break-words">
+              <div className="w-full p-2 bg-[#F4F4F4] lg:border h-full  lg:border-[#CCC] lg:bg-[#E0E0E0]">
+                <div className="text-[#631363]  text-xs lg:text-[20px] break-words">
                   {" "}
                   {review.status}
                 </div>
               </div>
             </div>
-            <div className="flex w-full">
-              <div className="bg-[#631363] rounded-bl-lg border-b w-[110px] text-xs p-2">
+            <div className="flex w-full lg:flex-col">
+              <div className="bg-[#631363] rounded-bl-lg lg:rounded-bl-none border-b w-[110px] py-1 lg:py-5  lg:w-full text-xs p-2">
                 {" "}
               </div>
-              <div className="w-full p-2 bg-white">
-                <div className="text-[#6D6D6D] text-xs flex gap-2 break-words">
+              <div className="w-full p-2 bg-white lg:bg-[#E0E0E0] lg:border h-full  lg:border-[#CCC]  py-1 lg:py-3">
+                <div className="text-[#6D6D6D] text-xs lg:text-[20px]  flex gap-2 break-words">
                   <GerneralViewSvgs /> View
                 </div>
               </div>

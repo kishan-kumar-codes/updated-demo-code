@@ -24,7 +24,7 @@ const GeneralInfo = () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center mt-10 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
+        <div className="flex w-full justify-center mt-10 lg:hidden items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
       </div>
     </div>
   );

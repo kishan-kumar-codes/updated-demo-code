@@ -31,10 +31,10 @@ const GereralBillingInformation = () => {
   return (
     <div className="flex flex-col w-full gap-2">
       {" "}
-      <span className="text-[#6D6D6D] text-xs font-bold leading-normal">
+      <span className="text-[#6D6D6D] text-xs lg:text-[22px] font-bold leading-normal">
         Billing Information
       </span>
-      <div className="w-full flex px-4 flex-col gap-1 h-24 bg-[#F4F4F4] rounded-xl">
+      <div className="w-full flex px-4 flex-col gap-1 h-24 lg:h-32 bg-[#F4F4F4] lg:bg-white rounded-xl">
         <div className="w-full flex justify-between items-center mt-2 ">
           <GerneralUser1Svgs />{" "}
           <Dialog>
@@ -45,10 +45,10 @@ const GereralBillingInformation = () => {
             </DialogTrigger>
             <DialogContent className="w-[95%] rounded-xl flex  bg-[#F4F4F4] hide-scrollbar">
               <DialogDescription className="w-full flex-col gap-2 flex ">
-                <span className="text-[#6D6D6D] text-xl -mt-3 font-bold leading-normal">
+                <span className="text-[#6D6D6D] text-xl lg:text-[34px]  -mt-3 font-bold leading-normal">
                   Billing Information
                 </span>
-                <span className="text-[#6D6D6D] text-xs font-bold leading-normal">
+                <span className="text-[#6D6D6D] text-xs md:text-xl lg:text-[22px] font-bold leading-normal">
                   Update your billing Information
                 </span>
                 <div className="w-full flex flex-col gap-2">
@@ -60,21 +60,21 @@ const GereralBillingInformation = () => {
                       textCenter="text-left"
                       fontFamily="Arial"
                     /> */}
-                    <div className="flex gap-1 pt-1 flex-col">
-                      <Label className="text-[#6D6D6D] pl-1 text-xs font-bold">
+                    <div className="flex gap-1 pt-1 lg:pt-4 flex-col">
+                      <Label className="text-[#6D6D6D] pl-1 lgtext-xs md:text-sm lg:text-[16px] font-bold">
                         Full Name
                       </Label>
                       <Input
                         placeholder="John Doe"
-                        className="rounded-2xl h-10 bg-white"
+                        className="rounded-2xl h-10 lg:h-12 lg:text-[16px] bg-white"
                       />
                     </div>
                     <div className="flex gap-1 pt-1 flex-col">
-                      <Label className="text-[#6D6D6D] text-xs pl-1 flex gap-2 font-bold">
+                      <Label className="text-[#6D6D6D] text-xs md:text-sm lg:text-[16px] pl-1 flex gap-2 font-bold">
                         Country Or Region
                       </Label>
                       <Select>
-                        <SelectTrigger className="w-full font-bold  text-[#6D6D6D] text-xs bg-white rounded-2xl">
+                        <SelectTrigger className="w-full font-bold lg:h-12 lg:text-[16px] text-[#6D6D6D] text-xs bg-white rounded-2xl">
                           <SelectValue
                             className="bg-white font-bold"
                             placeholder="United States"
@@ -103,22 +103,22 @@ const GereralBillingInformation = () => {
                       fontFamily="Arial"
                     /> */}
                     <div className="flex gap-1 pt-1 flex-col">
-                      <Label className="text-[#6D6D6D] text-xs pl-1 font-bold">
+                      <Label className="text-[#6D6D6D] text-xs md:text-sm lg:text-[16px] pl-1 font-bold">
                         Address Line 1
                       </Label>
-                      <Input className="rounded-2xl h-10 bg-white" />
+                      <Input className="rounded-2xl h-10 lg:text-[16px] lg:h-12 bg-white" />
                     </div>
                     <div className="flex gap-1 pt-1 flex-col">
-                      <Label className="text-[#6D6D6D] text-xs pl-1 font-bold">
+                      <Label className="text-[#6D6D6D] text-xs  md:text-sm lg:text-[16px] pl-1 font-bold">
                         Address Line 2
                       </Label>
-                      <Input className="rounded-2xl h-10 bg-white" />
+                      <Input className="rounded-2xl h-10 lg:text-[16px] lg:h-12 bg-white" />
                     </div>
                     <div className="flex gap-1 pt-1 flex-col">
-                      <Label className="text-[#6D6D6D] text-xs pl-1 font-bold">
+                      <Label className="text-[#6D6D6D] text-xs md:text-sm lg:text-[16px] pl-1 font-bold">
                         City
                       </Label>
-                      <Input className="rounded-2xl h-10 bg-white" />
+                      <Input className="rounded-2xl h-10 lg:text-[16px] lg:h-12 bg-white" />
                     </div>
                     {/* <InputBarField
                       label="City"
@@ -151,11 +151,11 @@ const GereralBillingInformation = () => {
                     </div> */}
                     <div className="flex gap-1 pt-2 ">
                       <div className="flex gap-1 w-1/2 flex-col">
-                        <Label className="text-[#6D6D6D] text-xs pl-1 font-bold">
+                        <Label className="text-[#6D6D6D] text-xs md:text-sm lg:text-[16px] pl-1 font-bold">
                           State
                         </Label>
                         <Select>
-                          <SelectTrigger className="w-full font-bold  text-[#6D6D6D] text-xs bg-white rounded-2xl">
+                          <SelectTrigger className="w-full font-bold lg:h-12 lg:text-[16px] text-[#6D6D6D] text-xs bg-white rounded-2xl">
                             <SelectValue
                               className="bg-white font-bold"
                               placeholder="Florida"
@@ -172,17 +172,17 @@ const GereralBillingInformation = () => {
                         </Select>
                       </div>
                       <div className="flex gap-1 w-1/2 flex-col">
-                        <Label className="text-[#6D6D6D] text-xs pl-1 font-bold">
+                        <Label className="text-[#6D6D6D] text-xs md:text-sm lg:text-[16px] pl-1 font-bold">
                           Zip Code
                         </Label>
-                        <Input className="rounded-2xl h-10 bg-white" />
+                        <Input className="rounded-2xl h-10 lg:text-[16px] lg:h-12 bg-white" />
                       </div>
                     </div>
                     <div className="flex w-full my-2 justify-end gap-5">
-                      <Button className="bg-[#40F440] text-[#3D3D3D] h-9 py-3 px-5 font-bold rounded-lg">
+                      <Button className="bg-[#40F440] text-[#3D3D3D] h-9 lg:h-12 md:text-lg lg:text-[22px] py-3 px-5 font-bold rounded-lg">
                         Save
                       </Button>
-                      <Button className="bg-[#BA0416] text-[#FFFFFF] h-9  py-3 px-4 font-bold rounded-lg">
+                      <Button className="bg-[#BA0416] text-[#FFFFFF] h-9 lg:h-12 md:text-lg lg:text-[22px] py-3 px-4 font-bold rounded-lg">
                         Cancel
                       </Button>
                     </div>
@@ -192,10 +192,10 @@ const GereralBillingInformation = () => {
             </DialogContent>
           </Dialog>
         </div>
-        <span className="text-[#6D6D6D] text-xs  font-bold leading-normal">
+        <span className="text-[#6D6D6D] text-xs lg:text-base  font-bold leading-normal">
           John Doe
         </span>
-        <span className="text-[#6D6D6D] text-[10px] font-normal leading-normal">
+        <span className="text-[#6D6D6D] text-[10px] lg:text-base font-normal leading-normal">
           1234 Elmwood Avenue, Apt 56B, Springfield, CA 90210
         </span>
       </div>

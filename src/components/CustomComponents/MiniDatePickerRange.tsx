@@ -93,6 +93,7 @@ interface Calendar {
   onSelect?: (event: any) => void;
   defaultMonth?: any;
   selected?: any;
+  textSize?: any;
 }
 
 export function DatePickerWithRange({
@@ -103,6 +104,7 @@ export function DatePickerWithRange({
   onSelect,
   defaultMonth,
   selected,
+  textSize,
 }: Calendar) {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(),
@@ -145,20 +147,20 @@ export function DatePickerWithRange({
             onClick={handleYearToDate}
             className={` ${active === "year" ? "bg-[#631363]" : "bg-white"} ${
               active === "year" ? "text-white" : "text-[#6D6D6D]"
-            }  rounded-tl-none text-[8px] md:text-lg lg:text-xl font-bold h-fit px-1 rounded-tr-xl md:rounded-tr-2xl rounded-br-xl md:rounded-br-2xl  rounded-bl-none`}>
+            }  rounded-tl-none text-[8px] md:text-lg lg:text-${textSize ? textSize : "xl"} font-bold h-fit px-1 rounded-tr-xl md:rounded-tr-2xl rounded-br-xl md:rounded-br-2xl  rounded-bl-none`}>
             Year To Date
           </Button>
           <Button
             className={` ${active === "month" ? "bg-[#631363]" : "bg-white"} ${
               active === "month" ? "text-white" : "text-[#6D6D6D]"
-            }  rounded-tl-none text-[8px] md:text-lg lg:text-xl font-bold h-fit  px-1 rounded-tr-xl rounded-br-xl rounded-bl-none md:rounded-tr-2xl md:rounded-br-2xl`}
+            }  rounded-tl-none text-[8px] md:text-lg lg:text-${textSize ? textSize : "xl"} font-bold h-fit  px-1 rounded-tr-xl rounded-br-xl rounded-bl-none md:rounded-tr-2xl md:rounded-br-2xl`}
             onClick={handleThisMonth}>
             This Month
           </Button>
           <Button
             className={` ${active === "week" ? "bg-[#631363]" : "bg-white"} ${
               active === "week" ? "text-white" : "text-[#6D6D6D]"
-            }  rounded-tl-none text-[8px] md:text-lg lg:text-xl font-bold h-fit  px-1 rounded-tr-xl rounded-br-xl rounded-bl-none md:rounded-tr-2xl md:rounded-br-2xl`}
+            }  rounded-tl-none text-[8px] md:text-lg lg:text-${textSize ? textSize : "xl"} font-bold h-fit  px-1 rounded-tr-xl rounded-br-xl rounded-bl-none md:rounded-tr-2xl md:rounded-br-2xl`}
             onClick={handleThisWeek}>
             This Week
           </Button>

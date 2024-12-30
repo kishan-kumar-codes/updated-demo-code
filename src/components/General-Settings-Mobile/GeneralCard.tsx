@@ -9,13 +9,13 @@ const GeneralCard = ({ logoSvg, title, href }: IGeneralCardProps) => {
   return (
     <>
       <Link href={href}>
-        <div className="flex flex-col h-40 w-full bg-[#FFFFFF] rounded-xl">
-          <div className="flex flex-col justify-center items-center gap-3 h-full w-full">
-            <span className=" w-14 h-14 flex text-center justify-center items-center rounded-full bg-[#E0E0E0]  cursor-pointer">
+        <div className="flex flex-col h-[132px]  lg:h-[275px] w-full lg:max-w-[276px] bg-[#FFFFFF] rounded-xl lg:rounded-3xl">
+          <div className="flex flex-col justify-center items-center gap-3 lg:gap-4 h-full w-full">
+            <span className=" w-14 h-14 p-3 lg:p-7 lg:h-[118px] lg:w-[118px] flex text-center justify-center items-center rounded-full bg-[#E0E0E0]  cursor-pointer">
               {" "}
               {logoSvg}
             </span>
-            <span className="text-[#6D6D6D] text-center text-lg font-bold leading-normal">
+            <span className="text-[#6D6D6D] text-center text-[16px] lg:text-[30px] font-bold leading-normal">
               {title}
             </span>
           </div>
