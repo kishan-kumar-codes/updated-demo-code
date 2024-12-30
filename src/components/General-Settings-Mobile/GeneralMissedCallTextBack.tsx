@@ -8,7 +8,7 @@ const GeneralMissedCallTextBack = () => {
   return (
     <div className="flex w-full gap-3 flex-col lg:mb-10 ">
       {/* <HeaderBarMobile title="Missed Call Text Back" /> */}
-      <div className="flex rounded-xl lg:rounded-3xl flex-col z-10 min-h-fit justify-start lg:pb-10 w-full bg-[#E0E0E0]">
+      <div className="flex rounded-xl lg:rounded-3xl flex-col z-10 min-h-fit justify-start  w-full bg-[#E0E0E0]">
         <div
           onClick={() => setToggle((prev) => !prev)}
           className="w-full rounded-xl text-white text-[16px] cursor-pointer lg:text-[26px] font-bold pl-5 py-2.5 lg:py-4 bg-[#631363] lg:rounded-2xl">
