@@ -15,7 +15,7 @@ const FacebookAdMobile = () => {
   return (
     <div className="flex justify-center items-center w-full h-full">
       <div className="flex flex-col w-full justify-center items-center h-full">
-        <div className="flex flex-col gap-7 justify-center items-center w-full">
+        <div className="flex flex-col gap-7  min-h-screen items-center w-full">
           {/* <Header title={"Facebook Ads"} displayName=" Facebook Ads" /> */}
           <CitationNavbar isHeaderVisible={false} heading="Facebook Ads" />
           <div className="flex flex-col w-[90%] min-h-[490px] ">
@@ -43,7 +43,7 @@ const FacebookAdMobile = () => {
             {currentStep === 5 && <PayAllInfo />}
           </div>
         </div>
-        <div className="flex w-full lg:hidden z-50 justify-center mt-10 sticky bottom-0 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
+        <div className="flex w-full lg:hidden justify-center mt-10 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
       </div>
     </div>
   );
