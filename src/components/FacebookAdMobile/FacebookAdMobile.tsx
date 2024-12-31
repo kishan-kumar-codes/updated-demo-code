@@ -14,7 +14,7 @@ const FacebookAdMobile = () => {
   const { currentStep, handleNextStep, handlePrevStep } = useFeedbackAdsHooks();
   return (
     <div className="flex justify-center items-center w-full h-full">
-      <div className="flex flex-col w-full min-h-screen justify-center items-center h-full">
+      <div className="flex flex-col w-full justify-center items-center h-full">
         <div className="flex flex-col gap-7 justify-center items-center w-full">
           {/* <Header title={"Facebook Ads"} displayName=" Facebook Ads" /> */}
           <CitationNavbar isHeaderVisible={false} heading="Facebook Ads" />
