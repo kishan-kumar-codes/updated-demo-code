@@ -46,7 +46,7 @@ export default function PhoneNumber() {
   return (
     <div className="bg-[#F4F4F4]">
       <CitationNavbar isHeaderVisible={false} heading="Phone Number" />
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex mx-2 lg:mx-10 flex-col  gap-4 p-4">
         <div className="bg-[#E0E0E0] rounded-2xl">
           <div
             onClick={() => setChooseNum((prev) => !prev)}

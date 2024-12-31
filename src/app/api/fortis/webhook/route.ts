@@ -90,7 +90,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
     try {
-        const webhookData = await request.json();
+        const webhookData: FortisOnboardingWebhookResponse = await request.json();
 
         // Process the webhook data here
         console.log("Received webhook data:", webhookData);

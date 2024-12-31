@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button";
 import { styles } from "./ReputionManager";
 import { RepuSearchSvgs } from "@/svgs/review-dashboard-mobile/svgs";
 
+export interface Country {
+  Name: string;
+  Code: string;
+}
+
 const items = [
   {
     id: "recents",
