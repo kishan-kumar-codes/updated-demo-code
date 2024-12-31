@@ -43,7 +43,7 @@ const FacebookAdMobile = () => {
             {currentStep === 5 && <PayAllInfo />}
           </div>
         </div>
-        <div className="flex w-full lg:hidden justify-center mt-10 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
+        <div className="flex w-full lg:hidden z-50 justify-center mt-10 sticky bottom-0 items-center bg-[#40F440] h-[55px] rounded-t-3xl"></div>
       </div>
     </div>
   );

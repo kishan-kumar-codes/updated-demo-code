@@ -118,7 +118,7 @@ const CreateNewAdset = ({
           className="w-full rounded-xl text-white text-[16px] cursor-pointer lg:text-[26px] font-bold pl-5 py-2.5 lg:py-4 bg-[#631363] lg:rounded-2xl">
           Create New Adset
         </div>
-        <div className="flex flex-col w-full gap-2 pt-3 lg:pt-8 px-4">
+        <div className="flex flex-col w-full gap-2 py-3 lg:py-8 px-4">
           <div className="flex items-center justify-end my-2 gap-2">
             <Button className="bg-[#631363] text-xs lg:h-14 lg:text-[22px] text-[#FFF] py-3 font-bold rounded-lg">
               Ad Sets
