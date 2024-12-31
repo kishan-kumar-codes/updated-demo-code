@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
 type FortisOnboardingWebhookResponse = {
     type: string;
@@ -86,7 +86,6 @@ type FortisOnboardingWebhookResponse = {
     };
 };
 
-import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
     try {

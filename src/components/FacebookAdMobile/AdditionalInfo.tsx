@@ -4,6 +4,7 @@ import InputBarField from "../citations-builder/InputBarField";
 import SquareCheckBoxButton from "../citations-builder/SquareCheckBox";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
+import { Input } from "../ui/input";
 interface AdditionalInfoProps {
   setAdditionalInfo: React.Dispatch<
     React.SetStateAction<{
@@ -41,42 +42,18 @@ const AdditionalInfo = ({
           Additional Info
         </div>
         <div className="flex flex-col w-full gap-2 px-2 lg:px-8 py-8">
-          <InputBarField
-            label="Email Address"
-            placeHolder=""
-            value={additionalInfo.email}
-            setValue={(newValue) =>
-              setAdditionalInfo({ ...additionalInfo, email: newValue })
-            }
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="Phone Number (Optional)"
-            value={additionalInfo.phone}
-            setValue={(newValue) =>
-              setAdditionalInfo({ ...additionalInfo, phone: newValue })
-            }
-            placeHolder=""
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="Notification Email Address"
-            placeHolder=""
-            value={additionalInfo.notificationEmail}
-            setValue={(newValue) =>
-              setAdditionalInfo({
-                ...additionalInfo,
-                notificationEmail: newValue,
-              })
-            }
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Email Address
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Phone Number (Optional)
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Notification Email Address
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
           <div className="flex items-center gap-2 py-2 lg:py-4 lg:gap-8">
             <Checkbox className="border border-black rounded-sm" />
             <p className="text-[#6D6D6D] text-xs lg:text-[22px] font-bold leading-normal">

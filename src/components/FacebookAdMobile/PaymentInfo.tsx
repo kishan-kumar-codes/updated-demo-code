@@ -35,7 +35,7 @@ const PaymentInfo = ({ setPaymentInfo, paymentInfo }: PaymentInfoProps) => {
           </span>
           <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
           <div className="flex w-full gap-1 my-2 flex-col">
-            <span className="text-[#6D6D6D] text-xs pl-2 lg:text-[22px] font-bold leading-normal">
+            <span className="text-[#6D6D6D] text-xs pl-2 lg:text-[22px] pb-2 font-bold leading-normal">
               Expiration Date (MM/YY)
             </span>
             <div className="flex w-full items-center bg-[#FFF] rounded-2xl px-2">
@@ -52,26 +52,14 @@ const PaymentInfo = ({ setPaymentInfo, paymentInfo }: PaymentInfoProps) => {
               </div>
             </div>
           </div>
-          <InputBarField
-            label="CVV (Optional)"
-            value={paymentInfo.cvv}
-            setValue={(newValue) =>
-              setPaymentInfo({ ...paymentInfo, cvv: newValue })
-            }
-            placeHolder=""
-            isMobile={true}
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="Name On Card"
-            value={paymentInfo.name}
-            setValue={(newValue) =>
-              setPaymentInfo({ ...paymentInfo, name: newValue })
-            }
-            placeHolder=""
-            isMobile={true}
-            textCenter="text-left"
-          />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            CVV (Optional)
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Name On Card
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
         </div>
       </div>
     </div>

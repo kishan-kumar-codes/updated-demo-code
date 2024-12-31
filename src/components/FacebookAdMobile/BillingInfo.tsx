@@ -1,6 +1,7 @@
 import React from "react";
 // import { HeaderBarMobile } from "../citations-builder/HeadBar";
 import InputBarField from "../citations-builder/InputBarField";
+import { Input } from "../ui/input";
 interface BillingInfoProps {
   setBillingInfo: React.Dispatch<
     React.SetStateAction<{
@@ -30,61 +31,26 @@ const BillingInfo = ({ setBillingInfo, billingInfo }: BillingInfoProps) => {
           Billing Info
         </div>
         <div className="flex flex-col w-full gap-2 px-2 lg:px-8 py-8">
-          <InputBarField
-            label="Address"
-            placeHolder=""
-            value={billingInfo.address}
-            setValue={(newValue) =>
-              setBillingInfo({ ...billingInfo, address: newValue })
-            }
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="Country"
-            value={billingInfo.country}
-            setValue={(newValue) =>
-              setBillingInfo({ ...billingInfo, country: newValue })
-            }
-            placeHolder=""
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="State"
-            placeHolder=""
-            value={billingInfo.state}
-            setValue={(newValue) =>
-              setBillingInfo({ ...billingInfo, state: newValue })
-            }
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="City (Optional)"
-            placeHolder=""
-            value={billingInfo.city}
-            setValue={(newValue) =>
-              setBillingInfo({ ...billingInfo, city: newValue })
-            }
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
-          <InputBarField
-            label="Zip Code"
-            value={billingInfo.zipCode}
-            setValue={(newValue) =>
-              setBillingInfo({ ...billingInfo, zipCode: newValue })
-            }
-            placeHolder=""
-            isMobile={true}
-            marginY="my-1"
-            textCenter="text-left"
-          />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Address
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Country
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            State
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            City (Optional)
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
+          <span className="text-[#6D6D6D] text-xs  lg:text-[22px] pt-0 lg:pt-4 px-2  font-bold leading-normal">
+            Zip Code
+          </span>
+          <Input className="rounded-xl bg-[#F4F4F4] h-8 lg:h-12" />
         </div>
       </div>
     </div>
