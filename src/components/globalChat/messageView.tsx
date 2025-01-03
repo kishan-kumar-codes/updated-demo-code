@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import React from "react";
 import Image from "next/image";
 import ScreenView from "@/components/ScreenView";
 import "../../app/globals.css";

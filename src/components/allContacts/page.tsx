@@ -9,6 +9,30 @@ import LayoutView from "../Layout/LayoutView";
 
 interface ContactViewProps {}
 
+export const dummyallContactData = [
+  {
+    avatar: user,
+    cellNmbr: "(305) 555-3653",
+    type: "Outgoing Call",
+    time: "12:10",
+    userName: "Lily Broke",
+  },
+  {
+    avatar: user,
+    cellNmbr: "(305) 555-3653",
+    type: "Incoming Call",
+    time: "12:10",
+    userName: "Lily Broke",
+  },
+  {
+    avatar: user,
+    cellNmbr: "(305) 555-3653",
+    type: "Missed Call",
+    time: "12:10",
+    userName: "Lily Broke",
+  },
+];
+
 const ContactView: React.FC<ContactViewProps> = () => {
   const [contact, setContact] = useState({});
   const [showInfoDialog, setShowInfoDialog] = useState(false);
@@ -22,30 +46,6 @@ const ContactView: React.FC<ContactViewProps> = () => {
       link: "/allContacts",
     },
   ]);
-
-  const dummyData = [
-    {
-      avatar: user,
-      cellNmbr: "(305) 555-3653",
-      type: "Outgoing Call",
-      time: "12:10",
-      userName: "Lily Broke",
-    },
-    {
-      avatar: user,
-      cellNmbr: "(305) 555-3653",
-      type: "Incoming Call",
-      time: "12:10",
-      userName: "Lily Broke",
-    },
-    {
-      avatar: user,
-      cellNmbr: "(305) 555-3653",
-      type: "Missed Call",
-      time: "12:10",
-      userName: "Lily Broke",
-    },
-  ];
 
   const showContactInfo = (data: any) => {
     if (data) {
@@ -65,7 +65,7 @@ const ContactView: React.FC<ContactViewProps> = () => {
               A
             </div>
             <div className="">
-              {dummyData.map((info, ind) => (
+              {dummyallContactData.map((info, ind) => (
                 <ContactDetails
                   key={ind}
                   avatar={info.avatar}
@@ -85,6 +85,7 @@ const ContactView: React.FC<ContactViewProps> = () => {
                 />
                 {showInfoDialog && (
                   <ContactInfo
+                    setShowInfoDialog={setShowInfoDialog}
                     contactInfo={contact}
                     infoDialog={showInfoDialog}
                   />

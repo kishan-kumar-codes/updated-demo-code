@@ -18,28 +18,22 @@ interface tabsProbs {
 const GlobalChatsView: FC<GlobalChatsViewProps> = () => {
   const [tabs, setTabs] = useState<tabsProbs[]>([
     {
-      menuName: "All Conversion",
+      menuName: "All incoming Activity",
       link: "",
     },
+    {
+      menuName: "Contacts",
+      link: "/allContacts",
+    },
   ]);
-  const isMobile = useClientMediaQuery("(max-width: 769px)");
-  if (isMobile) {
-    return (
-      <LayoutView
-        Childrens={<AllGlobalChats />}
-        tabs={tabs}
-        searchType="Conversation"
-        component="GlobalChatsView"
-      />
-    );
-  } else
-    return (
-      <DesktopInboxView
-        currentView=""
-        setCurrentView={() => null}
-        setSelectedMessage={() => null}
-      />
-    );
+  return (
+    <LayoutView
+      Childrens={<AllGlobalChats />}
+      tabs={tabs}
+      searchType="Conversation"
+      component="GlobalChatsView"
+    />
+  );
 };
 
 export default GlobalChatsView;

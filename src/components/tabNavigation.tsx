@@ -25,29 +25,45 @@ const TabNavigation: FC<TabNavigationProps> = ({ tabs = [], gridColumns }) => {
     setActiveTab(menuName);
   };
 
+  const directMessage = searchParams?.get("dm");
+
   return (
     <nav
       className="flex textBreak w-12/12 w-full rounded-xl bg-white"
       aria-label="Tab Navigation">
-      {tabs.map((tab, ind) => (
-        <Link
-          key={ind}
-          className="flex textBreak w-12/12 w-full"
-          href={{
-            pathname: tab.link,
-            query: { name: tab.menuName },
-          }}>
-          <div
-            role="tab"
-            aria-selected={searchParams?.get("name") === tab.menuName}
-            onClick={() => handleTabClick(tab.menuName)}
-            className={`w-full flex justify-center items-center text-blackOlive textBreak ripple select-none text-[14px] tab border-x border-solid border-chinesWhite cursor-pointer text-center ${
-              searchParams?.get("name") === tab.menuName ? "bg-limeGreen" : ""
-            } h-[42px]`}>
-            {tab.menuName}
-          </div>
-        </Link>
-      ))}
+      {directMessage ? (
+        <div
+          role="tab"
+          className={`w-full flex justify-center items-center text-blackOlive textBreak ripple select-none text-[14px] tab border-x border-solid border-chinesWhite cursor-pointer text-center bg-white h-[42px]`}>
+          All {directMessage} Messages
+        </div>
+      ) : (
+        <>
+          {tabs.map((tab, ind) => (
+            <>
+              <Link
+                key={ind}
+                className="flex textBreak w-12/12 w-full"
+                href={{
+                  pathname: tab.link,
+                  query: { name: tab.menuName },
+                }}>
+                <div
+                  role="tab"
+                  aria-selected={searchParams?.get("name") === tab.menuName}
+                  onClick={() => handleTabClick(tab.menuName)}
+                  className={`w-full flex justify-center items-center text-blackOlive textBreak ripple select-none text-[14px] tab border-x border-solid border-chinesWhite cursor-pointer text-center ${
+                    searchParams?.get("name") === tab.menuName
+                      ? "bg-limeGreen"
+                      : ""
+                  } h-[42px]`}>
+                  {tab.menuName}
+                </div>
+              </Link>
+            </>
+          ))}
+        </>
+      )}
     </nav>
   );
 };

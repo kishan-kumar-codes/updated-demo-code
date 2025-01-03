@@ -112,42 +112,42 @@ const TransactionView = () => {
 
   console.log("Checkin Data", formData.checkin_date);
   const [refundData, setRefundData] = useState({
-    checkin_date: formData.checkin_date,
-    checkout_date: formData.checkout_date,
-    clerk_number: formData.clerk_number,
-    customer_id: formData.customer_id,
+    // checkin_date: formData.checkin_date,
+    // checkout_date: formData.checkout_date,
+    // clerk_number: formData.clerk_number,
+    // customer_id: formData.customer_id,
     description: formData.description,
-    iias_ind: 1,
-    installment: true,
-    installment_number: 1,
-    installment_count: 1,
+    // iias_ind: 1,
+    // installment: true,
+    // installment_number: 1,
+    // installment_count: 1,
     product_transaction_id: "",
-    advance_deposit: false,
-    no_show: false,
+    // advance_deposit: false,
+    // no_show: false,
     notification_email_address: "",
-    order_number: "433659378839",
-    po_number: "555555553123",
+    // order_number: "433659378839",
+    // po_number: "555555553123",
     quick_invoice_id: "",
-    recurring: false,
-    recurring_number: 1,
-    room_num: "303",
-    room_rate: 95,
-    save_account: false,
-    save_account_title: "John Account",
-    subtotal_amount: 599,
-    surcharge_amount: 100,
-    tax: 0,
-    tip_amount: 0,
+    // recurring: false,
+    // recurring_number: 1,
+    // room_num: "303",
+    // room_rate: 95,
+    // save_account: false,
+    // save_account_title: "John Account",
+    // subtotal_amount: 599,
+    // surcharge_amount: 100,
+    // tax: 0,
+    // tip_amount: 0,
     transaction_amount: formData.transaction_amount,
-    secondary_amount: 0,
-    transaction_c1: formData.transaction_c1,
-    transaction_c2: formData.transaction_c2,
-    transaction_c3: formData.transaction_c3,
-    bank_funded_only_override: false,
-    allow_partial_authorization_override: false,
-    auto_decline_cvv_override: false,
-    auto_decline_street_override: false,
-    auto_decline_zip_override: false,
+    // secondary_amount: 0,
+    // transaction_c1: formData.transaction_c1,
+    // transaction_c2: formData.transaction_c2,
+    // transaction_c3: formData.transaction_c3,
+    // bank_funded_only_override: false,
+    // allow_partial_authorization_override: false,
+    // auto_decline_cvv_override: false,
+    // auto_decline_street_override: false,
+    // auto_decline_zip_override: false,
   });
   const [showCancelDialog, setShowCancelDialog] = useState(false);
 
@@ -403,10 +403,10 @@ const TransactionView = () => {
         product_transaction_id: selectedInvoice?.cc_product_transaction_id
           ? selectedInvoice?.cc_product_transaction_id
           : selectedInvoice?.ach_product_transaction_id,
-        image_front: stripBase64Metadata(bodyData.image_front),
-        image_back: stripBase64Metadata(bodyData.image_back),
+        // image_front: stripBase64Metadata(bodyData.image_front),
+        // image_back: stripBase64Metadata(bodyData.image_back),
       };
-      console.log("formDataToSend", formDataToSend);
+      // console.log("formDataToSend", formDataToSend);
 
       // const id = query.id;
       response = await fetch(`/api/fortis/refundOrder?id=${id}`, {
@@ -494,9 +494,11 @@ const TransactionView = () => {
                     <h5 className="md:md:text-[26px]  text-[16px] ml-4 font-bold text-darkSilverColor">
                       {transaction?.status_code === 101
                         ? "Paid"
-                        : transaction?.status_code === 111
-                          ? "Refund"
-                          : "Pending"}
+                        : transaction?.status_code === 201
+                          ? "Cancelled"
+                          : transaction?.status_code === 111
+                            ? "Refund"
+                            : "Pending"}
                     </h5>
                   </div>
                 </div>
@@ -711,7 +713,7 @@ const TransactionView = () => {
                         </div>
                       </div>
 
-                      <div>
+                      {/* <div>
                         <div className="flex flex-col justify-start items-start">
                           <label
                             className="md:text-[20px] text-[12px] mt-2 font-bold text-[#6D6D6D]"
@@ -798,9 +800,9 @@ const TransactionView = () => {
                             </PopoverContent>
                           </Popover>
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-[6px]">
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -840,9 +842,9 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-[6px]">
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -861,8 +863,8 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
-
+                      </div> */}
+                      {/* 
                       <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
@@ -900,8 +902,8 @@ const TransactionView = () => {
                             Choose Image
                           </button>
                         </div>
-                      </div>
-                      <div className="mt-[6px]">
+                      </div> */}
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -940,9 +942,9 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-[6px]">
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -961,8 +963,8 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
-                      <div className="mt-[6px]">
+                      </div> */}
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -1043,9 +1045,9 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
-                      <div className="mt-[6px]">
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -1153,7 +1155,7 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
@@ -1181,7 +1183,7 @@ const TransactionView = () => {
                         </div>
                       </div>
 
-                      <div className="mt-[6px]">
+                      {/* <div className="mt-[6px]">
                         <label
                           htmlFor="invtitle"
                           className="md:text-[20px] text-[12px] font-bold text-darkSilverColor">
@@ -1263,95 +1265,9 @@ const TransactionView = () => {
                             readOnly={false}
                           />
                         </div>
-                      </div>
+                      </div> */}
                     </div>
-
-                    <div className="flex items-center mt-[6px]">
-                      <Checkbox
-                        id={"Provisioned"}
-                        className="border border-black rounded-sm"
-                        checked={formData.bank_funded_only_override}
-                        onCheckedChange={(checked) =>
-                          handleCheckBox("bank_funded_only_override", {
-                            target: { checked },
-                          } as React.ChangeEvent<HTMLInputElement>)
-                        }
-                        disabled={accessType === "view"}
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Bank Funded Only Override
-                      </h5>
-                    </div>
-
-                    <div className="flex items-center mt-[6px]">
-                      <Checkbox
-                        id={"Provisioned"}
-                        className="border border-black rounded-sm"
-                        checked={formData.allow_partial_authorization_override}
-                        onCheckedChange={(checked) =>
-                          handleCheckBox(
-                            "allow_partial_authorization_override",
-                            {
-                              target: { checked },
-                            } as React.ChangeEvent<HTMLInputElement>
-                          )
-                        }
-                        disabled={accessType === "view"}
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Allow Partial Authorization Override
-                      </h5>
-                    </div>
-
-                    <div className="flex items-center mt-[6px]">
-                      <Checkbox
-                        id={"Provisioned"}
-                        className="border border-black rounded-sm"
-                        checked={formData.auto_decline_cvv_override}
-                        onCheckedChange={(checked) =>
-                          handleCheckBox("auto_decline_cvv_override", {
-                            target: { checked },
-                          } as React.ChangeEvent<HTMLInputElement>)
-                        }
-                        disabled={accessType === "view"}
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Auto Decline CCV Override
-                      </h5>
-                    </div>
-                    <div className="flex items-center mt-[6px]">
-                      <Checkbox
-                        id={"Provisioned"}
-                        className="border border-black rounded-sm"
-                        checked={formData.auto_decline_street_override}
-                        onCheckedChange={(checked) =>
-                          handleCheckBox("auto_decline_street_override", {
-                            target: { checked },
-                          } as React.ChangeEvent<HTMLInputElement>)
-                        }
-                        disabled={accessType === "view"}
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Auto Decline Street Override
-                      </h5>
-                    </div>
-                    <div className="flex items-center mt-[6px]">
-                      <Checkbox
-                        id={"Provisioned"}
-                        className="border border-black rounded-sm"
-                        checked={formData.auto_decline_zip_override}
-                        onCheckedChange={(checked) =>
-                          handleCheckBox("auto_decline_zip_override", {
-                            target: { checked },
-                          } as React.ChangeEvent<HTMLInputElement>)
-                        }
-                        disabled={accessType === "view"}
-                      />
-                      <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
-                        Auto Decline Zip Override
-                      </h5>
-                    </div>
-                    <div className="flex items-center mt-[6px]">
+                    {/* <div className="flex items-center mt-[6px]">
                       <Checkbox
                         id={"Provisioned"}
                         className="border border-black rounded-sm"
@@ -1447,7 +1363,7 @@ const TransactionView = () => {
                       <h5 className="md:text-[20px] text-[12px] font-bold ml-[13px] text-darkSilverColor">
                         No Show
                       </h5>
-                    </div>
+                    </div> */}
 
                     {accessType !== "view" && (
                       <div className="mt-[21px] mb-[16px] flex justify-end col-span-10">

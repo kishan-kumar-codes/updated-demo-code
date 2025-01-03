@@ -11,23 +11,29 @@ interface ContactInfoProps {
     };
   };
   infoDialog: boolean;
+  setShowInfoDialog?: boolean;
 }
 
-const ContactInfo: FC<ContactInfoProps> = ({ contactInfo, infoDialog }) => {
+const ContactInfo: FC<ContactInfoProps> = ({
+  contactInfo,
+  infoDialog,
+  setShowInfoDialog,
+}) => {
   return (
     <div
       className={`${
         infoDialog ? "fixed z-[99] bottom-0" : "hidden"
-      }  w-full  top-0 left-0 `}
-    >
+      }  w-full  top-0 left-0 `}>
       <div
         style={{ height: "407px", zIndex: 55555 }}
-        className="bg-chinesWhite absolute bottom-0 w-full rounded-t-3xl  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
-      >
+        className="bg-chinesWhite absolute bottom-0 w-full rounded-t-3xl  shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
         <div className="flex items-center flex-col pt-2 rounded-lg">
-          <div className="bg-white h-1 w-14" />
+          <div
+            onClick={() => setShowInfoDialog(false)}
+            className="bg-white h-1 w-14 cursor-pointer"
+          />
           <div className="flex flex-col items-center mt-10">
-            <div className="avatar mb-2">
+            <div className="avatar cursor-pointer mb-2">
               {contactInfo.avatar?.src && ( // Use optional chaining here
                 <Image
                   alt="user"

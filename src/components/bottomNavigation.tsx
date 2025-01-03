@@ -52,7 +52,7 @@ const BottomNavigation: FC<BottomNavigationProps> = ({ component }) => {
     } else if (tab === "InboxView") {
       router.push("/inbox?name=All Messages");
     } else if (tab === "GlobalChatsView") {
-      router.push("/globalChat?name=All Conversion");
+      router.push("/globalChat?name=All incoming Activity");
     }
     if (context) {
       context.updateContextData({ searchTerm: tab });

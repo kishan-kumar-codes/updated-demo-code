@@ -34,7 +34,7 @@ const NewCompanyForm: React.FC = () => {
   // const { updateContextData, contextData, clearContext } = context;
   // const { data: session, status } = useSession();
   const [fileList, setFiles] = useState<File[]>([]);
-  const session?.expires =
+  const tokenToUse =
     session?.provider === "credentials"
       ? session.refreshToken
       : session?.accessToken;

@@ -111,7 +111,7 @@ export async function POST(req: Request) {
     } = body;
 
     // Verify JWT token
-    const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
+    // const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
 
     const variables = {
       name,
@@ -132,7 +132,7 @@ export async function POST(req: Request) {
     };
 
     // Execute GraphQL mutation
-    const data:any = await client.request(addCompanyMutation, variables);
+    const data: any = await client.request(addCompanyMutation, variables);
     const company = data.addcrmCompany.crmCompany;
 
     if (!company) {

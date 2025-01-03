@@ -43,20 +43,20 @@ const menuGroup = [
   },
 ];
 
-const Drawer: FC<DrawerProps> = ({ isOpen }) => {
+const Drawer: FC<DrawerProps> = ({ isOpen, setIsOpen = () => {} }) => {
   return (
     <div
-      style={{ height: "100vh" }}
-      className={` ${isOpen ? " transition-transform border border-[#631363] lg:sticky duration-400 ease-in-out translate-x-0  w-3/5 absolute z-40 top-0 left-0  shadow-sm md:w-60 lg:w-80 md:relative" : "hidden w-0 transition-transform duration-200 custom-scroll ease-in-out -translate-x-full "}`}>
+      style={{ height: "100%" }}
+      className={` ${isOpen ? " transition-transform border rounded-tr-lg rounded-br-lg border-[#631363] lg:sticky duration-400 ease-in-out translate-x-0  w-3/5 absolute z-40 top-0 left-0  shadow-sm md:w-60 lg:w-80 md:relative" : "hidden w-0 transition-transform duration-200 custom-scroll ease-in-out -translate-x-full "}`}>
       <div
-        className={`${isOpen && "bg-[#f4f4f4] shadow-md h-full rounded-tr-lg lg:rounded-tr-none lg:rounded-br-none rounded-br-lg sm:w-3/5   md:w-full"} md:overflow-y-hidden   sm:overflow-y-scroll `}>
+        className={`${isOpen && "bg-[#f4f4f4] shadow-md h-full rounded-tr-lg lg:rounded-tr-none lg:rounded-br-none rounded-br-lg sm:w-3/5   md:w-full"} md:overflow-y-hidden sm:overflow-y-scroll `}>
         <div className="h-[85px] 2xl:h-[113px] w-full text-white">
           <div className="w-full flex lg:hidden justify-end px-4 pt-4">
-            <X color="#6D6D6D" />
+            <X color="#6D6D6D" onClick={() => setIsOpen(false)} />
           </div>
-          <div className="flex pb-10 h-full justify-end pr-8 lg:bg-[#631363] items-center">
-            <div className="h-[62px] lg:h-[40px] lg:w-[40px] bg-white w-[62px] rounded-full border-none">
-              <Avatar className="h-10 w-10" />
+          <div className="flex pb-10 px-4 h-full justify-end pr-8 lg:bg-[#631363] items-center">
+            <div className="h-[42px] lg:h-[40px] lg:w-[40px] bg-white w-[42px] rounded-full border-none">
+              <Avatar className="h-[42px] w-[42px]" />
             </div>
             <div className="ml-[20px] text-[#6D6D6D]">
               <h5 className="text-[16px] lg:text-[24px] lg:text-white whitespace-nowrap font-bold">
@@ -68,16 +68,18 @@ const Drawer: FC<DrawerProps> = ({ isOpen }) => {
             </div>
           </div>
         </div>
-        <div className="relative py-2 px-[18px] h-full pb-10 overflow-y-hidden  ">
-          <input
-            aria-label="All"
-            placeholder="All"
-            className="block w-full  border-none  rounded-lg  px-3 placeholder-gray-400 focus:outline-none focus:ring focus:border-blue-300"
-            type="text"
-            name=""
-            id="drawerSearch"
-          />
-          <div className="h-full custom-scroll bg-[#f4f4f4] overflow-y-auto pb-[20px] lg:pb-[100px]">
+        <div className="relative px-[18px] h-[80%] md:h-[100%] lg:h-[100%] overflow-y-hidden  ">
+          <div className="pt-4 pb-4">
+            <input
+              aria-label="All"
+              placeholder="All"
+              className="block w-full  border-none  rounded-lg  px-3 placeholder-[#6D6D6D] focus:outline-none focus:ring focus:border-blue-300 bg-white"
+              type="text"
+              name=""
+              id="drawerSearch"
+            />
+          </div>
+          <div className="h-[100%] md:h-[90%] lg:h-[90%] custom-scroll bg-[#f4f4f4] overflow-y-auto pb-[20px] lg:pb-[100px]">
             {menuGroup.map((group, ind) => (
               <MenuGroup key={ind} group={group} />
             ))}

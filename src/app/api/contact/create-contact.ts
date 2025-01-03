@@ -79,7 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Get raw body and parse it manually
     const rawBody = await getRawBody(req);
     const body = JSON.parse(rawBody.toString());
-    console.log("body",body);
+    console.log("body", body);
     const {
       token,
       firstName,
@@ -96,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userId
     } = body;
 
-    const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
+    // const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
 
     const variables = {
       firstName,
@@ -113,7 +113,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userId
     };
 
-    console.log("variables",variables);
+    console.log("variables", variables);
 
     const data = await client.request(addContactMutation, variables);
     const contact = data?.addcrmContact.crmContact;

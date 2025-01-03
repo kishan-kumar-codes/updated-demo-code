@@ -14,9 +14,9 @@ const ScreenView: React.FC<ScreenViewProps> = ({ Childrens }) => {
   };
 
   return (
-    <div className="h-screen w-screen flex justify-center">
-      <div className="container lg:hidden bg-cultured flex flex-col mx-auto overflow-x-hidden sm:container md:container md:mx-auto h-full md:overflow-y-hidden sm:overflow-y-scroll">
-        <Header module="INBOX" showDrawer={handleDrawer} />
+    <div className="h-screen lg:h-[88vh] w-screen flex justify-center">
+      <div className=" lg:hidden w-full bg-cultured flex flex-col mx-auto overflow-x-hidden md:mx-auto h-full md:overflow-y-hidden sm:overflow-y-scroll">
+        <Header module="Inbox" showDrawer={handleDrawer} />
         <div className={`relative w-full flex flex-grow overflow-y-auto`}>
           {isOpen && (
             <div
@@ -28,8 +28,8 @@ const ScreenView: React.FC<ScreenViewProps> = ({ Childrens }) => {
           {Childrens}
         </div>
       </div>
-      <div className="container bg-cultured hidden lg:flex flex-col mx-auto overflow-x-hidden sm:container md:container lg:container md:mx-auto h-full sm:overflow-y-scroll">
-        <div className="className={`relative w-full flex flex-grow overflow-y-auto`">
+      <div className=" bg-cultured hidden lg:flex flex-col mx-auto overflow-x-hidden  md:mx-auto h-full sm:overflow-y-scroll">
+        <div className="relative w-full flex flex-grow overflow-y-auto">
           <Drawer isOpen={true} />
           {Childrens}
         </div>

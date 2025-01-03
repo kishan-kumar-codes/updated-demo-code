@@ -2,12 +2,12 @@
   "name": "environment",
   "version": "0.1.0",
   "private": true,
- "scripts": {
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "build:widget": "webpack --config webpack.config.js",
     "copy-widget": "mkdir -p .next/public/dist && cp -r public/dist/* .next/public/dist/",
-    "vercel-build": "yarn build && yarn build:widget && yarn copy-widget" ,
+    "vercel-build": "yarn build && yarn build:widget && yarn copy-widget",
     "start": "next start",
     "lint": "next lint",
     "email": "email dev",
@@ -32,10 +32,12 @@
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-dropdown-menu": "^2.1.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.2.0",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-radio-group": "^1.2.0",
+    "@radix-ui/react-scroll-area": "^1.2.2",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
@@ -113,9 +115,9 @@
     "url-loader": "^4.1.1",
     "utf-8-validate": "^6.0.3",
     "uuid": "^9.0.0",
+    "webfontloader": "^1.6.28",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4",
-    "webfontloader": "^1.6.28",
     "ws": "^8.13.0",
     "xlsx": "^0.18.5"
   },
@@ -149,8 +151,8 @@
     "prettier": "^3.3.3",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.1.5"
-  } ,
+  },
   "browser": {
     "crypto": false
-}
+  }
 }

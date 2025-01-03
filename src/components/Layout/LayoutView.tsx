@@ -149,6 +149,7 @@ import ContactDetails from "../allContacts/page";
 import "../../app/globals.css";
 import Header from "@/components/header";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 interface tabsInterface {
   menuName: string;
@@ -180,13 +181,17 @@ const EmailView: React.FC<EmailViewProps> = ({
     setShowFilterDialog(isShow);
   };
 
+  const searchParams = useSearchParams();
+  const messageType = searchParams?.get("name");
+
   return (
     <ScreenView
       Childrens={
         <div className="relative flex flex-col w-full ">
           <div className="grid grid-cols-1 max-h-screen overflow-hidden lg:grid-cols-[37%_63%]  ">
             <div className="w-full mt-4 px-5">
-              <div className="pb-4 flex items-center">
+              <div
+                className={`pb-4 ${messageType === "Create Message" ? "hidden" : "flex"} items-center`}>
                 <SearchBox Component={searchType} />
                 <button
                   onClick={() => handleFilters(true)}
@@ -207,10 +212,11 @@ const EmailView: React.FC<EmailViewProps> = ({
                   Filter
                 </button>
               </div>
-              <TabNavigation tabs={tabs} gridColumns={0} />
-              <div className="lg:min-w-[40%] overflow-y-auto h-[80%] pb-10">
-                {Childrens}
+              <div
+                className={` ${messageType === "Create Message" ? "hidden" : "flex"} `}>
+                <TabNavigation tabs={tabs} gridColumns={0} />
               </div>
+              <div className="lg:min-w-[40%] h-[80%] pb-10">{Childrens}</div>
             </div>
 
             <div className="">

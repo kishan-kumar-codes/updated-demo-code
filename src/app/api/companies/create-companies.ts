@@ -105,7 +105,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userId
     } = body;
 
-    const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
+    // const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
 
     console.log("userId", userId);
     const variables = {

@@ -44,8 +44,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("body", body);
     const { token, name, userId } = body;
 
-    // Decode token
-    const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
+    // // Decode token
+    // const decodedToken = jwt.verify(token.sessionToken, process.env.SECRET!);
 
     // Sanitize and remove '0x' prefix from userId
     // const sanitizedUserId = userId.replace(/^0x/, "");

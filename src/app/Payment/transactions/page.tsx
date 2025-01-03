@@ -255,7 +255,11 @@ function Index() {
                       tabName={"Transactions"}
                       amount={`$${transaction.transaction_amount / 100}`}
                       status={
-                        transaction.status_code === 101 ? "Paid" : "Pending"
+                        transaction.status_code === 101
+                          ? "Paid"
+                          : transaction.status_code === 201
+                            ? "Cancelled"
+                            : "Pending"
                       }
                       pathname="/Payment/transactions/transactionView"
                       query={{ id: transaction.id }}
